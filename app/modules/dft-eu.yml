@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Ingress
+metadata:
+  name: dft-eu-ingress
+spec:
+  rules:
+  - host: eu.rice.dft.go.th
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dft-eu-service
+          servicePort: 3000

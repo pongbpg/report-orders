@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1_subreport2" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e6a4c8b1-d4b6-4457-8ce8-c801df75dfe5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="index" class="java.lang.Object"/>
+	<field name="0" class="java.lang.String"/>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="60" width="100" height="20" uuid="921afd34-3dc5-45c3-8e8d-c26626ea3ca3"/>
+				<text><![CDATA[index]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="60" width="100" height="20" uuid="2b693b9e-968e-475d-97e9-a78f822dee8f"/>
+				<textFieldExpression><![CDATA[$F{index}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="97" width="100" height="20" uuid="fe7ed1bc-d8aa-45f2-873e-f5c74b182249"/>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="376" y="97" width="100" height="20" uuid="263d4eb9-ec0e-4548-9806-e87cff85505d"/>
+				<textFieldExpression><![CDATA[$F{0}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
