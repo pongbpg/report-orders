@@ -11,7 +11,7 @@
 	</background>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="20" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
@@ -24,7 +24,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="20" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
