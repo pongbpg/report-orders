@@ -17,10 +17,11 @@ admin.initializeApp({
 var db = admin.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true };
 db.settings(settings);
-exports.print = (req, res) => {
+exports.rpt01 = (req, res) => {
     db.collection('orders')
         .where('cutoffDate', '==', req.query.date)
         .where('cutoff', '==', true)
+        .orderBy('name','asc')
         .get()
         .then(snapShot => {
             let orders = [];
@@ -29,7 +30,7 @@ exports.print = (req, res) => {
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 const data = doc.data();
-                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price)}`
+                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price)}\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
@@ -42,11 +43,20 @@ exports.print = (req, res) => {
                 index++;
             })
             // res.json(orders)
-            res.ireport("orderlist.jrxml", "pdf", orders, {});
+            res.ireport("rpt01.jrxml", "pdf", orders, {});
         })
 
 }
-
+exports.test = (req, res) => {
+    db.collection('products')
+        .get()
+        .then(snapShot => {
+            snapShot.forEach(doc => {
+                db.collection('products').doc(doc.id).update({ alert: 1000, amount: 5000 })
+            })
+            res.json(true)
+        })
+}
 const initMsgOrder = (txt) => {
     const data = Object.assign(...txt.split('#').filter(f => f != "")
         .map(m => {
@@ -123,13 +133,13 @@ const yyyymmdd = () => {
     var now = new Date();
     return '' + now.getFullYear() + twoDigit(now.getMonth() + 1) + twoDigit(now.getDate());
 }
-const fourDigit = (n) => {
+const twoDigit = (n) => {
     if (n < 10) {
-        return '000' + n.toString();
-    } else if (n < 100) {
-        return '00' + n.toString();
-    } else if (n < 1000) {
-        return '0' + n.toString()
+        return '0' + n.toString();
+        // } else if (n < 100) {
+        //     return '00' + n.toString();
+        // } else if (n < 1000) {
+        //     return '0' + n.toString()
     } else {
         return n.toString();
     }
