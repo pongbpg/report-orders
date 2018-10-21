@@ -21,7 +21,7 @@ exports.rpt01 = (req, res) => {
     db.collection('orders')
         .where('cutoffDate', '==', req.query.date)
         .where('cutoff', '==', true)
-        .orderBy('name','asc')
+        .orderBy('name', 'asc')
         .get()
         .then(snapShot => {
             let orders = [];
@@ -30,7 +30,7 @@ exports.rpt01 = (req, res) => {
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 const data = doc.data();
-                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price,0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
+                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price, 0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
@@ -43,7 +43,7 @@ exports.rpt01 = (req, res) => {
                 index++;
             })
             // res.json(orders)
-            res.ireport("rpt01.jrxml", "pdf", orders, {});
+            res.ireport("rpt01.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'RPT01_' + req.query.date });
         })
 
 }
