@@ -30,7 +30,7 @@ exports.rpt01 = (req, res) => {
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 const data = doc.data();
-                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price)}\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
+                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price,0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
