@@ -20,7 +20,7 @@ db.settings(settings);
 exports.rpt01 = (req, res) => {
     db.collection('orders')
         .where('cutoffDate', '==', req.query.date)
-        .where('cutoff', '==', true)
+        // .where('cutoff', '==', true)
         .orderBy('name', 'asc')
         .get()
         .then(snapShot => {
@@ -47,16 +47,17 @@ exports.rpt01 = (req, res) => {
         })
 
 }
-exports.test = (req, res) => {
-    db.collection('products')
-        .get()
-        .then(snapShot => {
-            snapShot.forEach(doc => {
-                db.collection('products').doc(doc.id).update({ alert: 1000, amount: 5000 })
-            })
-            res.json(true)
-        })
-}
+// exports.test = (req, res) => {
+//     db.collection('pages').get()
+//         .then(pageDoc => {
+//             let pages = [];
+//             pageDoc.forEach(doc => {
+//                 pages.push(doc.id)
+//             })
+//             res.json(pages.indexOf('TCT'))
+//         })
+
+// }
 const initMsgOrder = (txt) => {
     const data = Object.assign(...txt.split('#').filter(f => f != "")
         .map(m => {
