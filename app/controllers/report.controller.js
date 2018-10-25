@@ -1,4 +1,6 @@
 const admin = require('firebase-admin');
+const moment = require('moment-timezone');
+moment.locale('th');
 admin.initializeApp({
     credential: admin.credential.cert({
         "type": "service_account",
@@ -17,9 +19,9 @@ admin.initializeApp({
 var db = admin.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true };
 db.settings(settings);
-exports.rpt01 = (req, res) => {
+exports.delivery = (req, res) => {
     db.collection('orders')
-        .where('cutoffDate', '==', req.query.date)
+        .where('cutoffDate', '==', req.query.startDate)
         // .where('cutoff', '==', true)
         .orderBy('name', 'asc')
         .get()
@@ -43,76 +45,113 @@ exports.rpt01 = (req, res) => {
                 index++;
             })
             // res.json(orders)
-            res.ireport("rpt01.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'RPT01_' + req.query.date });
+            res.ireport("delivery.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
         })
 
 }
-// exports.test = (req, res) => {
-//     db.collection('pages').get()
-//         .then(pageDoc => {
-//             let pages = [];
-//             pageDoc.forEach(doc => {
-//                 pages.push(doc.id)
-//             })
-//             res.json(pages.indexOf('TCT'))
-//         })
-
-// }
-const initMsgOrder = (txt) => {
-    const data = Object.assign(...txt.split('#').filter(f => f != "")
-        .map(m => {
-            if (m.split(':').length == 2) {
-                const dontReplces = ["name", "fb", "bank", "addr"];
-                const key = m.split(':')[0];
-                let value = m.split(':')[1];
-                if (!dontReplces.includes(key)) value = value.replace(/\s/g, '');
-                if (key !== 'addr') value = value.replace(/\n/g, '');
-                if (key == 'tel') value = value.replace(/\D/g, ''); //เหลือแต่ตัวเลข
-                if (key !== 'price') {
-                    value = value.trim();
-                    if (key == 'product') {
-                        value = value.split(',').map(p => {
-                            if (p.split('=').length == 2) {
-                                return {
-                                    code: p.split('=')[0].toUpperCase(),
-                                    amount: Number(p.split('=')[1].replace(/\D/g, ''))
-                                }
-                            } else {
-                                return {
-                                    code: 'รหัสสินค้า',
-                                    amount: 'undefined'
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    value = Number(value.replace(/\D/g, ''));
+exports.dailySale = (req, res) => {
+    var startDate = new Date(req.query.startDate)
+    var endDate = new Date(req.query.endDate)
+    endDate.setDate(endDate.getDate() + 1)
+    var r = req.r;
+    db.collection('emails').doc(req.query.uid)
+        .get()
+        .then(auth => {
+            if (auth.exists) {
+                let pages;
+                if (auth.data().role == 'owner') {
+                    pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST"];
                 }
-                return { [key]: value };
+                db.collection('orders')
+                    .where('timestamp', '>=', startDate)
+                    .where('timestamp', '<=', endDate)
+                    .get()
+                    .then(snapShot => {
+                        let orders = []
+                        snapShot.forEach(doc => {
+                            orders.push({ id: doc.id, ...doc.data() })
+                        })
+                        r.expr(orders).filter(f => {
+                            return r.expr(pages).contains(f('page'))
+                        })
+                            .group(g => {
+                                return g.pluck('page', 'orderDate')
+                            })
+                            .ungroup()
+                            .map(m => {
+                                return m('group').merge(m2 => {
+                                    return {
+                                        count: m('reduction').count(),
+                                        price: m('reduction').sum('price'),
+                                        promote: m('reduction').sum('promote'),
+                                        interest: m('reduction').sum('interest')
+                                    }
+                                })
+                            }).orderBy('orderDate', r.desc('price'))
+                            .run()
+                            .then(result => {
+                                const pages = result.filter(f => f.page.indexOf('@') == -1)
+                                    .map(m => {
+                                        const line = result.find(f => f.page == '@' + m.page);
+                                        const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                        return {
+                                            page: m.page,
+                                            orderDate: moment(orderDate).format('ll'),
+                                            priceFb: m.price,
+                                            countFb: m.count,
+                                            countLine: (line ? line.count : 0),
+                                            priceLine: (line ? line.price : 0),
+                                            promote: m.promote,
+                                            interest: m.interest
+                                        }
+                                    })
+                                res.ireport("dailySale.jrxml", req.query.file || "pdf", pages, {
+                                    OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    START_DATE: moment(req.query.startDate).format('LL'),
+                                    END_DATE: moment(req.query.endDate).format('LL'),
+                                });
+
+                            })
+                    })
+            } else {
+                res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
             }
-        }));
-    let text = formatOrder(data);
-    const indexUndefined = text.indexOf('undefined');
-    let success = true;
-    if (indexUndefined > -1) {
-        const t = text.substring(0, indexUndefined - 1).split(' ');
-        text = 'รายการสั่งของคุณไม่ถูกต้องค่ะ กรุณาตรวจสอบ "' + t[t.length - 1] + '"';
-        success = false;
-    }
-    return { text, success, data };
+        })
 }
-const formatOrder = (data) => {
-    return `
-ชื่อ: ${data.name}
-เบอร์โทร: ${data.tel}
-ที่อยู่: ${data.addr}
-สินค้า: ${data.product
-            ? data.product.map((p, i) => '\n' + p.code + ' ' + p.amount + 'ชิ้น')
-            : 'undefined'}
-ธนาคาร: ${data.bank} จำนวนเงิน: ${data.price ? formatMoney(data.price) : 'undefined'}
-FB: ${data.fb}
-Page: ${data.page}
-    `;
+exports.dailyTrack = (req, res) => {
+    const orderDate = req.query.startDate.substr(0, 4) + '-' + req.query.startDate.substr(4, 2) + '-' + req.query.startDate.substr(6, 2)
+
+    db.collection('orders').where('cutoffDate', '==', req.query.startDate).get()
+        .then(snapShot => {
+            let orders = [];
+            snapShot.forEach(doc => {
+                let link = '';
+                if (doc.data().name.substr(0, 1).toUpperCase() == 'A') {
+                    link = 'https://www.alphafast.com/th/track-alpha';
+                } else if (doc.data().name.substr(0, 1).toUpperCase() == 'K') {
+                    link = 'https://th.kerryexpress.com/th/track/?track';
+                } else if (doc.data().name.substr(0, 1).toUpperCase() == 'M') {
+                    link = 'http://track.thailandpost.co.th/tracking/default.aspx';
+                } else if (doc.data().name.substr(0, 1).toUpperCase() == 'R') {
+                    link = 'http://track.thailandpost.co.th/tracking/default.aspx';
+                }
+                orders.push({
+                    id: doc.id,
+                    name: doc.data().name.trim(),
+                    tracking: doc.data().tracking,
+                    link
+                })
+            })
+            orders = orders.sort((a, b) => {
+                return a.link + a.id > b.link + b.id ? 1 : -1;
+            })
+            // res.json(orders)
+
+            res.ireport("dailyTrack.jrxml", req.query.file || "pdf", orders, {
+                OUTPUT_NAME: 'dailyTrack' + req.query.startDate,
+                START_DATE: moment(orderDate).format('LL')
+            });
+        })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
