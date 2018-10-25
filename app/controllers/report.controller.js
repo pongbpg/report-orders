@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const moment = require('moment-timezone');
+const moment = require('moment');
 moment.locale('th');
 admin.initializeApp({
     credential: admin.credential.cert({
