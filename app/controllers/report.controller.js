@@ -32,7 +32,7 @@ exports.delivery = (req, res) => {
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 const data = doc.data();
-                const text = `${index+1}.${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price, 0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
+                const text = `${index + 1}.${data.name} ${data.tel}\n${data.addr.replace(/\n/g, ' ')}\n${data.bank} ${formatMoney(data.price, 0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
