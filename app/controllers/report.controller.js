@@ -94,7 +94,7 @@ exports.dailySale = (req, res) => {
                             .then(result => {
                                 const pages = result.filter(f => f.page.indexOf('@') == -1)
                                     .map(m => {
-                                        const line = result.find(f => f.page == '@' + m.page);
+                                        const line = result.find(f => f.page == '@' + m.page && f.orderDate == m.orderDate);
                                         const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
                                         return {
                                             page: m.page,
