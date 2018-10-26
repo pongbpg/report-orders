@@ -59,7 +59,7 @@ exports.dailySale = (req, res) => {
         .then(auth => {
             if (auth.exists) {
                 let pages = [];
-                if (auth.data().role == 'owner') {
+                if (auth.data().role == 'owner' || auth.data().role == 'super') {
                     pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST"];
                 } else {
                     pages = auth.data().pages || [];
