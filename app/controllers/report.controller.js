@@ -32,7 +32,7 @@ exports.delivery = (req, res) => {
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 const data = doc.data();
-                const text = `${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price, 0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
+                const text = `${index+1}.${data.name} ${data.tel}\n${data.addr}\n${data.bank} ${formatMoney(data.price, 0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
@@ -153,6 +153,14 @@ exports.dailyTrack = (req, res) => {
                 OUTPUT_NAME: 'dailyTrack' + req.query.startDate,
                 START_DATE: moment(orderDate).format('LL')
             });
+        })
+}
+exports.setpages = (req, res) => {
+    db.collection('emails').doc('3rJqdNwaaZVwPAP9nEnwQ6bS0dh2').set({
+        pages: ["@DB", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "DB", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST"]
+    }, { merge: true })
+        .then(result => {
+            res.json(result)
         })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
