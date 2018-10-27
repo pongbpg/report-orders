@@ -50,9 +50,9 @@ exports.delivery = (req, res) => {
 
 }
 exports.dailySale = (req, res) => {
-    var startDate = new Date(req.query.startDate)
-    var endDate = new Date(req.query.endDate)
-    endDate.setDate(endDate.getDate() + 1)
+    // var startDate = new Date(req.query.startDate)
+    // var endDate = new Date(req.query.endDate)
+    // endDate.setDate(endDate.getDate() + 1)
     var r = req.r;
     db.collection('emails').doc(req.query.uid)
         .get()
@@ -65,8 +65,8 @@ exports.dailySale = (req, res) => {
                     pages = auth.data().pages || [];
                 }
                 db.collection('orders')
-                    .where('timestamp', '>=', startDate)
-                    .where('timestamp', '<=', endDate)
+                    .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                    .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
                     .get()
                     .then(snapShot => {
                         let orders = []
@@ -155,13 +155,27 @@ exports.dailyTrack = (req, res) => {
             });
         })
 }
-exports.setpages = (req, res) => {
-    db.collection('emails').doc('3rJqdNwaaZVwPAP9nEnwQ6bS0dh2').set({
-        pages: ["@DB", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "DB", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST"]
-    }, { merge: true })
-        .then(result => {
-            res.json(result)
+exports.test = (req, res) => {
+    // var d = new Date();
+    var startDate = new Date(req.query.startDate)
+    var endDate = new Date(req.query.endDate)
+    endDate.setDate(endDate.getDate() + 1)
+    // console.log('UTC+7 Time:', d);
+    db.collection('orders')
+        .where('orderDate', '>=', req.query.startDate)
+        .where('orderDate', '<=', req.query.endDate)
+        .get()
+        .then(snapShot => {
+            let orders = []
+            snapShot.forEach(doc => {
+                orders.push({ id: doc.id, ...doc.data() })
+            })
+            res.json(orders.filter(f => f.page.indexOf('TS02') >= 0))
         })
+    // res.json({
+    //     startDate,
+    //     endDate
+    // })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
