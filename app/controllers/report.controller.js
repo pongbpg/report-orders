@@ -26,19 +26,27 @@ exports.delivery = (req, res) => {
         .orderBy('name', 'asc')
         .get()
         .then(snapShot => {
+            let orderx = [];
             let orders = [];
             let index = 0;
             let count = 0;
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
-                const data = doc.data();
-                const text = `${index + 1}.${data.name} ${data.tel}\n${data.addr.replace(/\n/g, ' ')}\n${data.bank} ${formatMoney(data.price, 0)} บาท\n${data.product.map(p => p.code + '=' + p.amount)}\nREF:${doc.id}`
+                orderx.push({ id: doc.id, ...doc.data() })
+            })
+            orderx.sort((a, b) => {
+                const aName = a.name.substr(0, 1) + a.id;
+                const bName = b.name.substr(0, 1) + b.id;
+                return aName > bName ? 1 : -1;
+            }).map(order => {
+                // const data = doc.data();
+                const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank} ${formatMoney(order.price, 0)} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id}`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
                     obj.col2 = text
                 }
-                if (obj.col2 || (index + 1) == snapShot.size) {
+                if (obj.col2 || (index + 1) == orderx.length) {
                     orders.push(obj)
                     obj = {};
                 }
@@ -127,21 +135,19 @@ exports.dailyTrack = (req, res) => {
         .then(snapShot => {
             let orders = [];
             snapShot.forEach(doc => {
-                let link = '';
-                if (doc.data().name.substr(0, 1).toUpperCase() == 'A') {
-                    link = 'https://www.alphafast.com/th/track-alpha';
-                } else if (doc.data().name.substr(0, 1).toUpperCase() == 'K') {
-                    link = 'https://th.kerryexpress.com/th/track/?track';
-                } else if (doc.data().name.substr(0, 1).toUpperCase() == 'M') {
-                    link = 'http://track.thailandpost.co.th/tracking/default.aspx';
-                } else if (doc.data().name.substr(0, 1).toUpperCase() == 'R') {
-                    link = 'http://track.thailandpost.co.th/tracking/default.aspx';
-                }
+                // let link = '';
+                // if (doc.data().tracking.length == 5 || doc.data().tracking.length == 8 || doc.data().tracking.length == 12) {
+                //     link = 'https://www.alphafast.com/th/track-alpha';
+                // } else if (doc.data().tracking.substr(0, 1).toUpperCase() == 'K' && doc.data().tracking.length == 13) {
+                //     link = 'https://th.kerryexpress.com/th/track/?track';
+                // } else if (doc.data().tracking.indexOf('TH') > -1 && doc.data().tracking.length == 13) {
+                //     link = 'http://track.thailandpost.co.th/tracking/default.aspx';
+                // }
                 orders.push({
                     id: doc.id,
                     name: doc.id + ' ' + doc.data().name.trim(),
                     tracking: doc.data().tracking,
-                    link
+                    link: doc.data().expressLink
                 })
             })
             orders = orders.sort((a, b) => {
@@ -157,20 +163,26 @@ exports.dailyTrack = (req, res) => {
 }
 exports.test = (req, res) => {
     // var d = new Date();
-    var startDate = new Date(req.query.startDate)
-    var endDate = new Date(req.query.endDate)
-    endDate.setDate(endDate.getDate() + 1)
+    // var startDate = new Date(req.query.startDate)
+    // var endDate = new Date(req.query.endDate)
+    // endDate.setDate(endDate.getDate() + 1)
     // console.log('UTC+7 Time:', d);
-    db.collection('orders')
-        .where('orderDate', '>=', req.query.startDate)
-        .where('orderDate', '<=', req.query.endDate)
-        .get()
+    db.collection('orders').get()
         .then(snapShot => {
             let orders = []
             snapShot.forEach(doc => {
-                orders.push({ id: doc.id, ...doc.data() })
+                // orders.push({ id: doc.id, ...doc.data() })
+                if (doc.data().tracking.length == 5 || doc.data().tracking.length == 8 || doc.data().tracking.length == 12) {
+                    db.collection('orders').doc(doc.id).set({ expressLink: 'https://www.alphafast.com/th/track-alpha', expressName: 'ALPHA FAST' }, { merge: true })
+                } else if (doc.data().tracking.substr(0, 1).toUpperCase() == 'K' && doc.data().tracking.length == 13) {
+                    db.collection('orders').doc(doc.id).set({ expressLink: 'https://th.kerryexpress.com/th/track/?track', expressName: 'KERRY' }, { merge: true })
+                } else if (doc.data().tracking.indexOf('TH') > -1 && doc.data().tracking.length == 13) {
+                    db.collection('orders').doc(doc.id).set({ expressLink: 'http://track.thailandpost.co.th/tracking/default.aspx', expressName: 'EMS' }, { merge: true })
+                } else {
+                    db.collection('orders').doc(doc.id).set({ expressLink: '', expressName: '', tracking: '' }, { merge: true })
+                }
             })
-            res.json(orders.filter(f => f.page.indexOf('TS02') >= 0))
+            res.json(true)
         })
     // res.json({
     //     startDate,
