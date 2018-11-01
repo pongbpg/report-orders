@@ -68,10 +68,17 @@ exports.dailySale = (req, res) => {
             if (auth.exists) {
                 let pages = [];
                 if (auth.data().role == 'owner' || auth.data().role == 'super') {
-                    pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01"];
+                    db.collection('pages').get().then(snapShot => {
+                        snapShot.forEach(doc => {
+                            pages.push(doc.id)
+                        })
+                    })
+                    // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
+                    //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
                 } else {
                     pages = auth.data().pages || [];
                 }
+
                 db.collection('orders')
                     .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                     .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
@@ -96,31 +103,72 @@ exports.dailySale = (req, res) => {
                                         promote: m('reduction').sum('promote'),
                                         interest: m('reduction').sum('interest')
                                     }
+                                }).merge(r.branch(m('group')('page').match('@').eq(null), {
+                                    fb: true,
+                                    page: m('group')('page')
+                                }, {
+                                        fb: false,
+                                        page: m('group')('page').split('@')(1)
+                                    }))
+                            })
+                            .group(g => {
+                                return g.pluck('page', 'orderDate')
+                            })
+                            .ungroup()
+                            .map(m => {
+                                return m('group').merge(m2 => {
+                                    // const orderDate = m('group')('orderDate').substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                    return {
+                                        // orderDate:moment(m('group')('orderDate')).format('ll'),
+                                        priceFb: m('reduction').filter({ fb: true }).sum('price'),
+                                        countFb: m('reduction').filter({ fb: true }).sum('count'),
+                                        promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
+                                        interestFb: m('reduction').filter({ fb: true }).sum('interest'),
+                                        priceLine: m('reduction').filter({ fb: false }).sum('price'),
+                                        countLine: m('reduction').filter({ fb: false }).sum('count'),
+                                        promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
+                                        interestLine: m('reduction').filter({ fb: false }).sum('interest'),
+                                        priceAll: m('reduction').sum('price'),
+                                        countAll: m('reduction').sum('count'),
+                                        promoteAll: m('reduction').sum('promote'),
+                                        interestAll: m('reduction').sum('interest')
+                                    }
                                 })
-                            }).orderBy('orderDate', r.desc('price'))
+                            })
+                            .orderBy('orderDate', r.desc('priceAll'))
                             .run()
                             .then(result => {
-                                const pages = result.filter(f => f.page.indexOf('@') == -1)
-                                    .map(m => {
-                                        const line = result.find(f => f.page == '@' + m.page && f.orderDate == m.orderDate);
-                                        const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
-                                        return {
-                                            page: m.page,
-                                            orderDate: moment(orderDate).format('ll'),
-                                            priceFb: m.price,
-                                            countFb: m.count,
-                                            countLine: (line ? line.count : 0),
-                                            priceLine: (line ? line.price : 0),
-                                            promote: m.promote,
-                                            interest: m.interest
-                                        }
-                                    })
+                                const pages = result.map(m => {
+                                    const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                    return {
+                                        ...m,
+                                        orderDate: moment(orderDate).format('ll')
+                                    }
+                                })
+                                //.filter(f => f.page.indexOf('@') == -1)
+                                // .map(m => {
+                                //     const line = result.find(f => f.page == '@' + m.page && f.orderDate == m.orderDate);
+                                //     const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                //     return {
+                                //         page: m.page,
+                                //         orderDate: moment(orderDate).format('ll'),
+                                //         priceFb: m.price,
+                                //         countFb: m.count,
+                                //         countLine: (line ? line.count : 0),
+                                //         priceLine: (line ? line.price : 0),
+                                //         promote: m.promote,
+                                //         interest: m.interest
+                                //     }
+                                // })
+                                //     .sort((a, b) => {
+                                //         return a.priceFb + a.priceLine > b.priceFb + b.priceLine ? -1 : 1;
+                                //     })
                                 res.ireport("dailySale.jrxml", req.query.file || "pdf", pages, {
                                     OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                     START_DATE: moment(req.query.startDate).format('LL'),
                                     END_DATE: moment(req.query.endDate).format('LL'),
                                 });
-
+                                // res.json(result)
                             })
                     })
             } else {
@@ -161,33 +209,32 @@ exports.dailyTrack = (req, res) => {
             });
         })
 }
+exports.excel = (req, res) => {
+    var XLSX = require('xlsx');
+    var workbook = XLSX.readFile('../report-orders/app/files/stock20181031.xlsx');
+    var ws = workbook.Sheets;
+    var data = XLSX.utils.sheet_to_json(ws['Sheet2'])
+
+    async function callback() {
+        for (var i = 0; i < data.length; i++) {
+            await db.collection('products').doc(data[i].id).set({ ...data[i] }, { merge: true })
+        }
+    }
+    callback();
+    res.json(true)
+}
 exports.test = (req, res) => {
-    // var d = new Date();
-    // var startDate = new Date(req.query.startDate)
-    // var endDate = new Date(req.query.endDate)
-    // endDate.setDate(endDate.getDate() + 1)
-    // console.log('UTC+7 Time:', d);
-    db.collection('orders').get()
+    db.collection('orders').where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
+        .where('page', '==', '@TS01')
+        .get()
         .then(snapShot => {
-            let orders = []
+            // let xx = [];
             snapShot.forEach(doc => {
-                // orders.push({ id: doc.id, ...doc.data() })
-                if (doc.data().tracking.length == 5 || doc.data().tracking.length == 8 || doc.data().tracking.length == 12) {
-                    db.collection('orders').doc(doc.id).set({ expressLink: 'https://www.alphafast.com/th/track-alpha', expressName: 'ALPHA FAST' }, { merge: true })
-                } else if (doc.data().tracking.substr(0, 1).toUpperCase() == 'K' && doc.data().tracking.length == 13) {
-                    db.collection('orders').doc(doc.id).set({ expressLink: 'https://th.kerryexpress.com/th/track/?track', expressName: 'KERRY' }, { merge: true })
-                } else if (doc.data().tracking.indexOf('TH') > -1 && doc.data().tracking.length == 13) {
-                    db.collection('orders').doc(doc.id).set({ expressLink: 'http://track.thailandpost.co.th/tracking/default.aspx', expressName: 'EMS' }, { merge: true })
-                } else {
-                    db.collection('orders').doc(doc.id).set({ expressLink: '', expressName: '', tracking: '' }, { merge: true })
-                }
+                // xx.push({ id: doc.id, ...doc.data() })
+                db.collection('orders').doc(doc.id).set({ page: '@TO01' }, { merge: true })
             })
             res.json(true)
         })
-    // res.json({
-    //     startDate,
-    //     endDate
-    // })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {

@@ -3,5 +3,5 @@ module.exports = function (app) {
     app.get('/delivery', ctrl.delivery);
     app.get('/dailySale', ctrl.dailySale);
     app.get('/dailyTrack', ctrl.dailyTrack);
-    // app.get('/test', ctrl.test);
+    app.get('/test', ctrl.test);
 }
