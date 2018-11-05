@@ -10,7 +10,7 @@
 	<field name="name" class="java.lang.String"/>
 	<field name="tracking" class="java.lang.String"/>
 	<field name="link" class="java.lang.String"/>
-	<group name="GRP_LINK" isReprintHeaderOnEachPage="true">
+	<group name="GRP_LINK">
 		<groupExpression><![CDATA[$F{link}]]></groupExpression>
 		<groupHeader>
 			<band height="30">
@@ -19,8 +19,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="18" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["ลูกค้าสามารถตรวจสอบเลขพัสดุได้ที่ลิ้งค์นี้ค่ะ  "+$F{link}
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA["ลูกค้าสามารถตรวจสอบเลขพัสดุได้ที่ลิ้งค์นี้ค่ะ  "+$F{link}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -31,32 +30,17 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<pageHeader>
-		<band height="56">
+	<title>
+		<band height="50">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="26" width="555" height="30" uuid="e3507520-dcb6-4889-8c1d-2d1a37749611"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="30" uuid="e3507520-dcb6-4889-8c1d-2d1a37749611"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="20" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["เลขพัสดุประจำวันที่ "+$P{START_DATE}
-]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="496" y="6" width="38" height="20" uuid="00c515c0-7188-4a79-ac5c-ab38b647f223"/>
-				<textElement textAlignment="Right">
-					<font fontName="TH SarabunPSK" size="12" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="534" y="6" width="22" height="20" uuid="0c3d76e7-42e1-4590-a291-d257b7b29daa"/>
-				<textElement>
-					<font fontName="TH SarabunPSK" size="12" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["/"+$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["เลขพัสดุประจำวันที่ "+$P{START_DATE}]]></textFieldExpression>
 			</textField>
 		</band>
-	</pageHeader>
+	</title>
 	<detail>
 		<band height="20">
 			<textField>
