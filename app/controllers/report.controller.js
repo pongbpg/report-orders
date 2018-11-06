@@ -182,7 +182,7 @@ exports.dailyTrack = (req, res) => {
                 // }
                 orders.push({
                     id: doc.id,
-                    name: doc.id + ' ' + doc.data().name.trim(),
+                    name: doc.data().name.trim(),
                     tracking: doc.data().tracking,
                     link: doc.data().expressLink
                 })
@@ -213,7 +213,20 @@ exports.excel = (req, res) => {
     res.json(true)
 }
 exports.test = (req, res) => {
-
+    res.json(true)
+}
+exports.movePage = (req, res) => {
+    db.collection('orders').where('page', '==', '@TS01')
+        .where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
+        .get()
+        .then(snapShot => {
+            let orders = []
+            snapShot.forEach(doc => {
+                orders.push({ id: doc.id, ...doc.data() })
+                // db.collection('orders').doc(doc.id).update({ page: '@TO01' })
+            })
+            res.json(orders)
+        })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
