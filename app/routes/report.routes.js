@@ -4,5 +4,5 @@ module.exports = function (app) {
     app.get('/dailySale', ctrl.dailySale);
     app.get('/dailyTrack', ctrl.dailyTrack);
     app.get('/test', ctrl.test);
-    app.get('/counter/page', ctrl.counterPage);
+    app.get('/counter', ctrl.counterPage);
 }
