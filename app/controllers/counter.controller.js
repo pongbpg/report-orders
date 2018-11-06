@@ -26,9 +26,11 @@ exports.page = (req, res) => {
             .then(doc => {
                 if (doc.exists) {
                     let counters = doc.data().counters || [];
+                    const id = doc.data().id;
                     const index = counters.findIndex(f => f.date == yyyymmdd())
                     if (index > -1) {
                         counters[index]['count'] = counters[index]['count'] + 1;
+                        counters[index]['params'] = req.query
                     } else {
                         counters.push({
                             date: yyyymmdd(),
@@ -38,14 +40,14 @@ exports.page = (req, res) => {
                     }
                     db.collection('pages').doc(page).set({ counters }, { merge: true })
                         .then(result => {
-                            res.send(true)
+                            res.redirect('http://m.me/' + id)
                         })
                 } else {
-                    res.send(true)
+                    res.redirect('http://m.me/tpf001')
                 }
             })
     } else {
-        res.send(false)
+        res.redirect('http://m.me/tpf001')
     }
 }
 const yyyymmdd = () => {
