@@ -228,6 +228,37 @@ exports.movePage = (req, res) => {
             res.json(orders)
         })
 }
+exports.counterPage = (req, res) => {
+    if (req.query.page) {
+        const page = req.query.page.toUpperCase();
+        db.collection('pages').doc(page).get()
+            .then(doc => {
+                if (doc.exists) {
+                    let counters = doc.data().counters || [];
+                    const id = doc.data().id;
+                    const index = counters.findIndex(f => f.date == yyyymmdd())
+                    if (index > -1) {
+                        counters[index]['count'] = counters[index]['count'] + 1;
+                        counters[index]['params'] = req.query
+                    } else {
+                        counters.push({
+                            date: yyyymmdd(),
+                            count: 1,
+                            params: req.query
+                        })
+                    }
+                    db.collection('pages').doc(page).set({ counters }, { merge: true })
+                        .then(result => {
+                            res.redirect('http://m.me/' + id)
+                        })
+                } else {
+                    res.redirect('http://m.me/tpf001')
+                }
+            })
+    } else {
+        res.redirect('http://m.me/tpf001')
+    }
+}
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
         decimalCount = Math.abs(decimalCount);
