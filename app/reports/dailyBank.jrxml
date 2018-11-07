@@ -53,7 +53,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEALL}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Auto" pattern="#,##0.00">
+				<textField evaluationTime="Auto" pattern="###0">
 					<reportElement mode="Opaque" x="283" y="0" width="123" height="20" backcolor="#CCFFCC" uuid="f7510ec6-1991-459f-a419-7335b0f57c2c"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
@@ -188,7 +188,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_PRICEALL}]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Auto" pattern="#,##0.00">
+			<textField evaluationTime="Auto" pattern="###0">
 				<reportElement mode="Opaque" x="283" y="0" width="123" height="20" backcolor="#CCCCFF" uuid="110c261d-e49e-45c2-bbe8-68419a575260"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
