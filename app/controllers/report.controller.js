@@ -165,6 +165,76 @@ exports.dailySale = (req, res) => {
 
 
 }
+exports.dailyBank = (req, res) => {
+    async function getDailySale() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    if (['owner', 'stock'].indexOf(auth.data().role) > -1) {
+                        db.collection('orders')
+                            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                    orders.push({
+                                        id: doc.id,
+                                        ...doc.data(),
+                                        bank: bank == null ? "ลืมใส่" : bank[0]
+                                    })
+                                })
+                                r.expr(orders)
+                                    .group(g => {
+                                        return g.pluck('bank', 'orderDate')
+                                    })
+                                    .ungroup()
+                                    .map(m => {
+                                        return m('group').merge(m2 => {
+                                            return {
+                                                countAll: m('reduction').count(),
+                                                priceAll: m('reduction').sum('price')
+                                            }
+                                        })
+                                        // .merge(r.branch(m('group')('bank').eq('COD'), {
+                                        //     bank: 'COD'
+                                        // }, {
+                                        //         bank: m('group')('bank')
+                                        //     }))
+                                    })
+                                    .orderBy('orderDate', r.desc('priceAll'))
+                                    .run()
+                                    .then(result => {
+                                        const datas = result.map(m => {
+                                            const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            return {
+                                                ...m,
+                                                orderDate: moment(orderDate).format('ll')
+                                            }
+                                        })
+
+                                        res.ireport("dailyBank.jrxml", req.query.file || "pdf", datas, {
+                                            OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                        });
+                                        // res.json(result)
+                                    })
+                            })
+                    } else {
+                        res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                    }
+                }
+            })
+    }
+
+    getDailySale();
+
+
+}
 exports.dailyTrack = (req, res) => {
     const orderDate = req.query.startDate.substr(0, 4) + '-' + req.query.startDate.substr(4, 2) + '-' + req.query.startDate.substr(6, 2)
 
