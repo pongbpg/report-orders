@@ -15,7 +15,6 @@
 	<field name="priceLine" class="java.lang.Double"/>
 	<field name="promoteAll" class="java.lang.Double"/>
 	<field name="interestAll" class="java.lang.Integer"/>
-	<field name="team" class="java.lang.String"/>
 	<variable name="GRP_SUM_PRICEFB" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
 	</variable>
@@ -52,25 +51,6 @@
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
 	</variable>
 	<variable name="SUM_PROMOTE" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{promoteAll}]]></variableExpression>
-	</variable>
-	<variable name="GRP_SUM_PRICEFB_1" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
-	</variable>
-	<variable name="GRP_SUM_PRICELINE_1" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$F{priceLine}]]></variableExpression>
-	</variable>
-	<variable name="GRP_SUM_COUNTFB_1" class="java.lang.Integer" resetType="Group" resetGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$F{countFb}]]></variableExpression>
-	</variable>
-	<variable name="GRP_SUM_COUNTLINE_1" class="java.lang.Integer" resetType="Group" resetGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$F{countLine}]]></variableExpression>
-	</variable>
-	<variable name="GRP_SUM_INTEREST_1" class="java.lang.Integer" resetType="Group" resetGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$F{interestAll}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="GRP_SUM_PROMOTE_1" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
 		<variableExpression><![CDATA[$F{promoteAll}]]></variableExpression>
 	</variable>
 	<group name="grpDate">
@@ -180,117 +160,6 @@
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{GRP_SUM_INTEREST}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-	</group>
-	<group name="grpTeam">
-		<groupExpression><![CDATA[$F{team}]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="100" height="20" backcolor="#FFCCFF" uuid="c8a83516-c1be-4cf8-bc0f-216dae693888"/>
-					<box leftPadding="10">
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Team "+$F{team}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="336" y="0" width="70" height="20" backcolor="#FFCCFF" uuid="a31a3dfc-08da-4dbc-86f4-720b534b4368"/>
-					<box rightPadding="5">
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICELINE_1}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="100" y="0" width="66" height="20" backcolor="#FFCCFF" uuid="4d6fc3d7-a9c2-4e13-8739-e089f020ef57"/>
-					<box leftPadding="5">
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_INTEREST_1}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="266" y="0" width="70" height="20" backcolor="#FFCCFF" uuid="26647ab0-f03d-411e-8a31-b9e0ccef4267"/>
-					<box rightPadding="5">
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB_1}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="166" y="0" width="50" height="20" backcolor="#FFCCFF" uuid="d0d1a5f6-5376-4bc9-8d40-6910ce47d442"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTFB_1}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="216" y="0" width="50" height="20" backcolor="#FFCCFF" uuid="fffd7dab-6382-44e8-a779-866e2a9ddd3e"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTLINE_1}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="489" y="0" width="66" height="20" backcolor="#FFCCFF" uuid="24614dcf-d833-4d09-9e1f-549ffd2e78fb"/>
-					<box rightPadding="5">
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_PROMOTE_1}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="406" y="0" width="83" height="20" backcolor="#FFCCFF" uuid="e9d25db1-c2b0-4a26-b249-454037e127e0"/>
-					<box rightPadding="5">
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB_1}+$V{GRP_SUM_PRICELINE_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
