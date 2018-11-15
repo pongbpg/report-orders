@@ -225,7 +225,7 @@ exports.dailyProduct = (req, res) => {
                             .getField('product')
                             .reduce((le, ri) => {
                                 return le.add(ri)
-                            })
+                            }).default([])
                             .group('code')
                             .ungroup()
                             .map(m2 => {
