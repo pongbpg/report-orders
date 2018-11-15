@@ -3,7 +3,7 @@ module.exports = function (app) {
     app.get('/delivery', ctrl.delivery);
     app.get('/dailyTrack', ctrl.dailyTrack);
     app.get('/dailySale', ctrl.dailySale);
-    app.get('/dailyPage', ctrl.dailyPage);
+    app.get('/dailyProduct', ctrl.dailyProduct);
     app.get('/dailyBank', ctrl.dailyBank);
     app.get('/test', ctrl.test);
     app.get('/counter', ctrl.counterPage);

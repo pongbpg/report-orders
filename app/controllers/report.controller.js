@@ -182,7 +182,7 @@ exports.dailySale = (req, res) => {
 
 
 }
-exports.dailyPage = (req, res) => {
+exports.dailyProduct = (req, res) => {
     var r = req.r;
     async function asyncFunc() {
         let orders = [], products = [];
@@ -210,19 +210,54 @@ exports.dailyPage = (req, res) => {
     }
     asyncFunc()
         .then(result => {
-            r.expr(result.orders)
+            r.expr(result)
                 .merge(m => {
                     return {
-                        product: m('product').merge(m2 => {
+                        orders: m('orders').map(m2 => {
                             return {
-                                fb: r.branch(m('page').match('@').eq(null), true, false)
+                                product: m2('product').merge(m3 => {
+                                    return {
+                                        fb: r.branch(m2('page').match('@').eq(null), true, false),
+                                    }
+                                }).without('name'),
                             }
                         })
+                            .getField('product')
+                            .reduce((le, ri) => {
+                                return le.add(ri)
+                            })
+                            .group('code')
+                            .ungroup()
+                            .map(m2 => {
+                                return {
+                                    code: m2('group'),
+                                    amountFb: m2('reduction')
+                                        .filter({ fb: true }).sum('amount'),
+                                    amountLine: m2('reduction').filter({ fb: false }).sum('amount'),
+                                    amount: m2('reduction').sum('amount'),
+                                    priceFb: m('orders').filter(f => {
+                                        return f('page').match('@').eq(null)
+                                    }).sum('price'),
+                                    priceLine: m('orders').filter(f => {
+                                        return f('page').match('@').ne(null)
+                                    }).sum('price'),
+                                    price: m('orders').sum('price'),
+                                    name: m('products').filter({ id: m2('group') })(0)('name')
+                                }
+                            }),
                     }
                 })
+                .getField('orders')
+                .orderBy(r.desc('amount'))
                 .run()
-                .then(data => {
-                    res.json(data)
+                .then(datas => {
+                    // res.json(datas)
+                    res.ireport("dailyProduct.jasper", req.query.file || "pdf", datas, {
+                        PAGE: (req.query.page == 'ALL' ? 'ทั้งหมด' : req.query.page),
+                        OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                        START_DATE: moment(req.query.startDate).format('LL'),
+                        END_DATE: moment(req.query.endDate).format('LL'),
+                    });
                 })
         })
 }
