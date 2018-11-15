@@ -39,6 +39,39 @@ exports.delivery = (req, res) => {
         })
 
 }
+exports.dailyTrack = (req, res) => {
+    const orderDate = req.query.startDate.substr(0, 4) + '-' + req.query.startDate.substr(4, 2) + '-' + req.query.startDate.substr(6, 2)
+
+    db.collection('orders').where('cutoffDate', '==', req.query.startDate).get()
+        .then(snapShot => {
+            let orders = [];
+            snapShot.forEach(doc => {
+                // let link = '';
+                // if (doc.data().tracking.length == 5 || doc.data().tracking.length == 8 || doc.data().tracking.length == 12) {
+                //     link = 'https://www.alphafast.com/th/track-alpha';
+                // } else if (doc.data().tracking.substr(0, 1).toUpperCase() == 'K' && doc.data().tracking.length == 13) {
+                //     link = 'https://th.kerryexpress.com/th/track/?track';
+                // } else if (doc.data().tracking.indexOf('TH') > -1 && doc.data().tracking.length == 13) {
+                //     link = 'http://track.thailandpost.co.th/tracking/default.aspx';
+                // }
+                orders.push({
+                    id: doc.id,
+                    name: (req.query.id ? doc.id + ' ' : '') + doc.data().name.trim(),
+                    tracking: doc.data().tracking,
+                    link: doc.data().expressLink
+                })
+            })
+            orders = orders.sort((a, b) => {
+                return a.link + a.id > b.link + b.id ? 1 : -1;
+            })
+            // res.json(orders)
+
+            res.ireport("dailyTrack.jrxml", req.query.file || "pdf", orders, {
+                OUTPUT_NAME: 'dailyTrack' + req.query.startDate,
+                START_DATE: moment(orderDate).format('LL')
+            });
+        })
+}
 exports.dailySale = (req, res) => {
     async function getDailySale() {
         let pages = [];
@@ -149,6 +182,50 @@ exports.dailySale = (req, res) => {
 
 
 }
+exports.dailyPage = (req, res) => {
+    var r = req.r;
+    async function asyncFunc() {
+        let orders = [], products = [];
+        await db.collection('products').get().then(snapShot => {
+            snapShot.forEach(doc => {
+                products.push({ id: doc.id, ...doc.data() })
+            })
+        })
+        await db.collection('orders')
+            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+            .get()
+            .then(snapShot => {
+                const pages = [req.query.page, '@' + req.query.page]
+                snapShot.forEach(doc => {
+                    if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
+                        orders.push({ id: doc.id, ...doc.data() })
+                    }
+                })
+            })
+        return {
+            orders,
+            products
+        }
+    }
+    asyncFunc()
+        .then(result => {
+            r.expr(result.orders)
+                .merge(m => {
+                    return {
+                        product: m('product').merge(m2 => {
+                            return {
+                                fb: r.branch(m('page').match('@').eq(null), true, false)
+                            }
+                        })
+                    }
+                })
+                .run()
+                .then(data => {
+                    res.json(data)
+                })
+        })
+}
 exports.dailyBank = (req, res) => {
     async function getDailySale() {
         var r = req.r;
@@ -219,39 +296,7 @@ exports.dailyBank = (req, res) => {
 
 
 }
-exports.dailyTrack = (req, res) => {
-    const orderDate = req.query.startDate.substr(0, 4) + '-' + req.query.startDate.substr(4, 2) + '-' + req.query.startDate.substr(6, 2)
 
-    db.collection('orders').where('cutoffDate', '==', req.query.startDate).get()
-        .then(snapShot => {
-            let orders = [];
-            snapShot.forEach(doc => {
-                // let link = '';
-                // if (doc.data().tracking.length == 5 || doc.data().tracking.length == 8 || doc.data().tracking.length == 12) {
-                //     link = 'https://www.alphafast.com/th/track-alpha';
-                // } else if (doc.data().tracking.substr(0, 1).toUpperCase() == 'K' && doc.data().tracking.length == 13) {
-                //     link = 'https://th.kerryexpress.com/th/track/?track';
-                // } else if (doc.data().tracking.indexOf('TH') > -1 && doc.data().tracking.length == 13) {
-                //     link = 'http://track.thailandpost.co.th/tracking/default.aspx';
-                // }
-                orders.push({
-                    id: doc.id,
-                    name: doc.data().name.trim(),
-                    tracking: doc.data().tracking,
-                    link: doc.data().expressLink
-                })
-            })
-            orders = orders.sort((a, b) => {
-                return a.link + a.id > b.link + b.id ? 1 : -1;
-            })
-            // res.json(orders)
-
-            res.ireport("dailyTrack.jrxml", req.query.file || "pdf", orders, {
-                OUTPUT_NAME: 'dailyTrack' + req.query.startDate,
-                START_DATE: moment(orderDate).format('LL')
-            });
-        })
-}
 exports.excel = (req, res) => {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../report-orders/app/files/stock20181031.xlsx');
