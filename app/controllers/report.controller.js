@@ -22,7 +22,7 @@ exports.delivery = (req, res) => {
                 return aName > bName ? 1 : -1;
             }).map(order => {
                 // const data = doc.data();
-                const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank} ${formatMoney(order.price, 0)} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id}`
+                const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank} ${formatMoney(order.price, 0)} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
