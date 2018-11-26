@@ -20,6 +20,7 @@
 	<field name="admin" class="java.lang.String"/>
 	<field name="priceAll" class="java.lang.Double"/>
 	<field name="priceX" class="java.lang.Double"/>
+	<field name="countAdmin" class="java.lang.Integer"/>
 	<variable name="GRP_SUM_PRICEFB" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
 	</variable>
@@ -91,7 +92,7 @@
 		<groupHeader>
 			<band height="20">
 				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="125" height="20" backcolor="#CCFFCC" uuid="c8387b9c-f8bd-48e0-a53f-1a5bdb2b591a"/>
+					<reportElement mode="Opaque" x="0" y="0" width="125" height="20" backcolor="#CCCCFF" uuid="c8387b9c-f8bd-48e0-a53f-1a5bdb2b591a"/>
 					<box leftPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -104,7 +105,7 @@
 					<textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="365" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="3ee536f4-a961-450b-a078-ae8de115fd71"/>
+					<reportElement mode="Opaque" x="365" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="3ee536f4-a961-450b-a078-ae8de115fd71"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -117,7 +118,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="425" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="7eda15ac-0f2c-455e-8b57-465da2f0ce6d"/>
+					<reportElement mode="Opaque" x="425" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="7eda15ac-0f2c-455e-8b57-465da2f0ce6d"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -130,7 +131,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICELINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="485" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="64df783d-bbec-48aa-93ed-0ab10b3f1e3c"/>
+					<reportElement mode="Opaque" x="485" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="64df783d-bbec-48aa-93ed-0ab10b3f1e3c"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -143,7 +144,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB}+$V{GRP_SUM_PRICELINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="245" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="0e1af4a4-6003-45df-b3e7-2b6d2f1ed846"/>
+					<reportElement mode="Opaque" x="245" y="0" width="40" height="20" backcolor="#CCCCFF" uuid="0e1af4a4-6003-45df-b3e7-2b6d2f1ed846"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -156,7 +157,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="285" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="c597c350-196c-42ed-b21f-365ca32e378b"/>
+					<reportElement mode="Opaque" x="285" y="0" width="40" height="20" backcolor="#CCCCFF" uuid="c597c350-196c-42ed-b21f-365ca32e378b"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -169,7 +170,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="125" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="05f6cc94-a183-4eeb-9e39-974db76e2db0"/>
+					<reportElement mode="Opaque" x="125" y="0" width="40" height="20" backcolor="#CCCCFF" uuid="05f6cc94-a183-4eeb-9e39-974db76e2db0"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -182,7 +183,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_INTERESTFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="325" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="9a918fd9-9ed1-4794-bab3-94ef168fb060"/>
+					<reportElement mode="Opaque" x="325" y="0" width="40" height="20" backcolor="#CCCCFF" uuid="9a918fd9-9ed1-4794-bab3-94ef168fb060"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -195,7 +196,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTLINE}+$V{GRP_SUM_COUNTFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="165" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="4f6b7269-5543-4e4b-8f38-a431ba80037b"/>
+					<reportElement mode="Opaque" x="165" y="0" width="40" height="20" backcolor="#CCCCFF" uuid="4f6b7269-5543-4e4b-8f38-a431ba80037b"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -208,7 +209,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_INTERESTLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="205" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="9ceabdc4-9455-4ae5-a5d1-6f495bbf0882"/>
+					<reportElement mode="Opaque" x="205" y="0" width="40" height="20" backcolor="#CCCCFF" uuid="9ceabdc4-9455-4ae5-a5d1-6f495bbf0882"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -365,7 +366,7 @@
 		<groupHeader>
 			<band height="20">
 				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="125" height="20" backcolor="#CCCCCC" uuid="b9fe25a5-6a1f-42de-bdb2-1e4c4f12447b"/>
+					<reportElement mode="Opaque" x="0" y="0" width="125" height="20" backcolor="#CCFFCC" uuid="b9fe25a5-6a1f-42de-bdb2-1e4c4f12447b"/>
 					<box leftPadding="20">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -378,7 +379,7 @@
 					<textFieldExpression><![CDATA["เพจ "+$F{page}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="125" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="0b7ed759-ce15-48c4-895e-b5e5bf5e558b"/>
+					<reportElement mode="Opaque" x="125" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="0b7ed759-ce15-48c4-895e-b5e5bf5e558b"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -391,7 +392,7 @@
 					<textFieldExpression><![CDATA[$F{interestFb}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="165" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="49b70c63-25ac-44f7-856a-3481acbb7870"/>
+					<reportElement mode="Opaque" x="165" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="49b70c63-25ac-44f7-856a-3481acbb7870"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -404,7 +405,7 @@
 					<textFieldExpression><![CDATA[$F{interestLine}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="205" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="8a03632f-3f2c-4a2a-8dce-efcc3356c2a6"/>
+					<reportElement mode="Opaque" x="205" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="8a03632f-3f2c-4a2a-8dce-efcc3356c2a6"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -417,7 +418,7 @@
 					<textFieldExpression><![CDATA[$F{interestFb}+$F{interestLine}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="485" y="0" width="70" height="20" backcolor="#CCCCCC" uuid="555f7101-7877-4b84-ac1a-09f1be101292"/>
+					<reportElement mode="Opaque" x="485" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="555f7101-7877-4b84-ac1a-09f1be101292"/>
 					<box leftPadding="0" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -430,7 +431,7 @@
 					<textFieldExpression><![CDATA[$F{priceX}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="245" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="d007df9d-aecb-4b1c-99d2-a6ff15d6409e"/>
+					<reportElement mode="Opaque" x="245" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="d007df9d-aecb-4b1c-99d2-a6ff15d6409e"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -443,7 +444,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTFB_1_1}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="285" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="23697e1c-95d5-46d8-b0a2-8bc9103f722b"/>
+					<reportElement mode="Opaque" x="285" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="23697e1c-95d5-46d8-b0a2-8bc9103f722b"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -456,7 +457,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTLINE_1_1}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement mode="Opaque" x="325" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="8abb1e8f-f6e6-4867-ad9e-049dc9933b91"/>
+					<reportElement mode="Opaque" x="325" y="0" width="40" height="20" backcolor="#CCFFCC" uuid="8abb1e8f-f6e6-4867-ad9e-049dc9933b91"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -469,7 +470,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTFB_1_1}+$V{GRP_SUM_COUNTLINE_1_1}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="365" y="0" width="60" height="20" backcolor="#CCCCCC" uuid="8e5cd1c1-a51a-4002-8fb4-717a13d70a9a"/>
+					<reportElement mode="Opaque" x="365" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="8e5cd1c1-a51a-4002-8fb4-717a13d70a9a"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -482,7 +483,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB_1_1}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="425" y="0" width="60" height="20" backcolor="#CCCCCC" uuid="5fb8db99-9a71-4054-9a39-83cada3d0399"/>
+					<reportElement mode="Opaque" x="425" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="5fb8db99-9a71-4054-9a39-83cada3d0399"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -690,6 +691,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20">
+			<printWhenExpression><![CDATA[$F{countAdmin}>1]]></printWhenExpression>
 			<textField>
 				<reportElement x="245" y="0" width="40" height="20" uuid="6a6e9cf4-ec04-4815-bf52-cd900ef17b33"/>
 				<box>

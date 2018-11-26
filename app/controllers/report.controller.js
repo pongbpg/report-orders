@@ -165,7 +165,8 @@ exports.dailySayHi = (req, res) => {
                                 .do(d => {
                                     return d.merge(m => {
                                         return {
-                                            priceX: d.filter({ page: m('page') }).sum('priceAll')
+                                            priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
+                                            countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
                                         }
                                     })
                                 })
