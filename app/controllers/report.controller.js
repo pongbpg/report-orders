@@ -72,16 +72,28 @@ exports.dailyTrack = (req, res) => {
             });
         })
 }
-exports.dailySale = (req, res) => {
-    async function getDailySale() {
+exports.dailySayHi = (req, res) => {
+    async function getDailySayHi() {
         let pages = [];
         let admins = [];
+        let sayhis = [];
+        let sayhiPages = [];
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
                 admins.push({ id: doc.id, ...doc.data() })
             })
         })
+        await db.collection('sayhis')
+            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+            .get().then(snapShot => {
+                snapShot.forEach(doc => {
+                    sayhis.push({ id: doc.id, ...doc.data() })
+                    sayhiPages.push(doc.id)
+                    sayhiPages.push(doc.data().date + '@' + doc.data().page)
+                })
+            })
         await db.collection('emails').doc(req.query.uid)
             .get()
             .then(auth => {
@@ -106,11 +118,11 @@ exports.dailySale = (req, res) => {
                             })
                             r.expr(orders).filter(f => {
                                 return r.expr(pages).contains(f('page'))
-                            })
-                                .group(g => {
-                                    return g.pluck('page', 'orderDate')
-                                })
-                                .ungroup()
+                            }).filter(f => {
+                                return r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                            }).group(g => {
+                                return g.pluck('page', 'orderDate', 'admin')
+                            }).ungroup()
                                 .map(m => {
                                     return m('group').merge(m2 => {
                                         return {
@@ -128,31 +140,36 @@ exports.dailySale = (req, res) => {
                                         }))
                                 })
                                 .group(g => {
-                                    return g.pluck('page', 'orderDate')
+                                    return g.pluck('page', 'orderDate', 'admin')
                                 })
                                 .ungroup()
                                 .map(m => {
                                     return m('group').merge(m2 => {
-                                        // const orderDate = m('group')('orderDate').substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
                                         return {
-                                            // orderDate:moment(m('group')('orderDate')).format('ll'),
                                             priceFb: m('reduction').filter({ fb: true }).sum('price'),
                                             countFb: m('reduction').filter({ fb: true }).sum('count'),
-                                            promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
-                                            interestFb: m('reduction').filter({ fb: true }).sum('interest'),
+                                            // promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
+                                            // interestFb: m('reduction').filter({ fb: true }).sum('interest'),
                                             priceLine: m('reduction').filter({ fb: false }).sum('price'),
                                             countLine: m('reduction').filter({ fb: false }).sum('count'),
-                                            promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
-                                            interestLine: m('reduction').filter({ fb: false }).sum('interest'),
+                                            // promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
+                                            // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                                             priceAll: m('reduction').sum('price'),
                                             countAll: m('reduction').sum('count'),
-                                            promoteAll: m('reduction').sum('promote'),
-                                            interestAll: m('reduction').sum('interest'),
-                                            team: r.expr(admins).filter({ id: m('group')('page') })(0)('team')
+                                            interestFb: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('fb'),
+                                            interestLine: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('line'),
+                                            team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
                                         }
                                     })
                                 })
-                                .orderBy('orderDate', 'team', r.desc('priceAll'))
+                                .do(d => {
+                                    return d.merge(m => {
+                                        return {
+                                            priceX: d.filter({ page: m('page') }).sum('priceAll')
+                                        }
+                                    })
+                                })
+                                .orderBy('orderDate', 'team', r.desc('priceX'), 'page', r.desc('priceAll'))
                                 .run()
                                 .then(result => {
                                     const pages = result.map(m => {
@@ -165,14 +182,135 @@ exports.dailySale = (req, res) => {
                                         }
                                     })
 
-                                    res.ireport("dailySale.jrxml", req.query.file || "pdf", pages, {
-                                        OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    res.ireport("dailySayHi.jrxml", req.query.file || "pdf", pages, {
+                                        OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
                                     });
-                                    // res.json(pages)
+                                    // res.json(result)
                                 })
                         })
+                } else {
+                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                }
+            })
+    }
+
+    getDailySayHi();
+
+
+}
+exports.dailySale = (req, res) => {
+    async function getDailySale() {
+        let pages = [];
+        let admins = [];
+        let sayhis = [];
+        var r = req.r;
+        await db.collection('pages').get().then(snapShot => {
+            snapShot.forEach(doc => {
+                admins.push({ id: doc.id, ...doc.data() })
+            })
+        })
+        await db.collection('sayhis')
+            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+            .get().then(snapShot => {
+                snapShot.forEach(doc => {
+                    sayhis.push({ id: doc.id, ...doc.data() })
+                })
+            })
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    if (['owner', 'stock'].indexOf(auth.data().role) > -1) {
+                        // pages = admins.map(m => m.id)
+                        // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
+                        //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
+
+                        db.collection('orders')
+                            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    if (doc.data().bank.indexOf('CM') == -1)
+                                        orders.push({ id: doc.id, ...doc.data() })
+                                })
+                                r.expr(orders)
+                                    // .filter(f => {
+                                    //     return r.expr(pages).contains(f('page'))
+                                    // })
+                                    .group(g => {
+                                        return g.pluck('page', 'orderDate')
+                                    })
+                                    .ungroup()
+                                    .map(m => {
+                                        return m('group').merge(m2 => {
+                                            return {
+                                                count: m('reduction').count(),
+                                                price: m('reduction').sum('price'),
+                                                promote: m('reduction').sum('promote'),
+                                                interest: m('reduction').sum('interest')
+                                            }
+                                        }).merge(r.branch(m('group')('page').match('@').eq(null), {
+                                            fb: true,
+                                            page: m('group')('page')
+                                        }, {
+                                                fb: false,
+                                                page: m('group')('page').split('@')(1)
+                                            }))
+                                    })
+                                    .group(g => {
+                                        return g.pluck('page', 'orderDate')
+                                    })
+                                    .ungroup()
+                                    .map(m => {
+                                        return m('group').merge(m2 => {
+                                            // const orderDate = m('group')('orderDate').substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            return {
+                                                // orderDate:moment(m('group')('orderDate')).format('ll'),
+                                                priceFb: m('reduction').filter({ fb: true }).sum('price'),
+                                                countFb: m('reduction').filter({ fb: true }).sum('count'),
+                                                promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
+                                                interestFb: m('reduction').filter({ fb: true }).sum('interest'),
+                                                priceLine: m('reduction').filter({ fb: false }).sum('price'),
+                                                countLine: m('reduction').filter({ fb: false }).sum('count'),
+                                                promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
+                                                interestLine: m('reduction').filter({ fb: false }).sum('interest'),
+                                                priceAll: m('reduction').sum('price'),
+                                                countAll: m('reduction').sum('count'),
+                                                promoteAll: m('reduction').sum('promote'),
+                                                interestAll: m('reduction').sum('interest'),
+                                                team: r.expr(admins).filter({ id: m('group')('page') })(0)('team')
+                                            }
+                                        })
+                                    })
+                                    .orderBy('orderDate', 'team', r.desc('priceAll'))
+                                    .run()
+                                    .then(result => {
+                                        const pages = result.map(m => {
+                                            const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            // console.log(m.page)
+                                            return {
+                                                ...m,
+                                                orderDate: moment(orderDate).format('ll'),
+                                                page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
+                                            }
+                                        })
+
+                                        res.ireport("dailySale.jrxml", req.query.file || "pdf", pages, {
+                                            OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                        });
+                                        // res.json(pages)
+                                    })
+                            })
+                    } else {
+                        res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                    }
                 } else {
                     res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
                 }
@@ -358,14 +496,14 @@ exports.test = (req, res) => {
     // })
 }
 exports.movePage = (req, res) => {
-    db.collection('orders').where('page', '==', '@TS01')
-        .where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
+    db.collection('orders').where('userId', '==', 'U45b67ab5094188b650a0ef2c07773e42')
+        // .where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
         .get()
         .then(snapShot => {
             let orders = []
             snapShot.forEach(doc => {
                 orders.push({ id: doc.id, ...doc.data() })
-                // db.collection('orders').doc(doc.id).update({ page: '@TO01' })
+                // db.collection('orders').doc(doc.id).update({ admin: 'tas' })
             })
             res.json(orders)
         })
