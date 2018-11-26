@@ -101,7 +101,8 @@ exports.dailySale = (req, res) => {
                         .then(snapShot => {
                             let orders = []
                             snapShot.forEach(doc => {
-                                orders.push({ id: doc.id, ...doc.data() })
+                                if (doc.data().bank.indexOf('CM') == -1)
+                                    orders.push({ id: doc.id, ...doc.data() })
                             })
                             r.expr(orders).filter(f => {
                                 return r.expr(pages).contains(f('page'))
