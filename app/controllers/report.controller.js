@@ -98,7 +98,8 @@ exports.dailySayHi = (req, res) => {
             .get()
             .then(auth => {
                 if (auth.exists) {
-                    if (auth.data().role == 'owner') {
+                    const role = auth.data().role;
+                    if (role == 'owner') {
                         pages = admins.map(m => m.id)
                         // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
                         //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
@@ -119,7 +120,10 @@ exports.dailySayHi = (req, res) => {
                             r.expr(orders).filter(f => {
                                 return r.expr(pages).contains(f('page'))
                             }).filter(f => {
-                                return r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                                return r.branch(r.expr(role).eq('owner'),
+                                    true,
+                                    r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                                )
                             }).group(g => {
                                 return g.pluck('page', 'orderDate', 'admin')
                             }).ungroup()
@@ -156,8 +160,8 @@ exports.dailySayHi = (req, res) => {
                                             // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                                             priceAll: m('reduction').sum('price'),
                                             countAll: m('reduction').sum('count'),
-                                            interestFb: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('fb'),
-                                            interestLine: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('line'),
+                                            interestFb: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('fb').default(-1),
+                                            interestLine: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('line').default(-1),
                                             team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
                                         }
                                     })

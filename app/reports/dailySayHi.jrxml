@@ -33,11 +33,11 @@
 	<variable name="GRP_SUM_COUNTLINE" class="java.lang.Integer" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{countLine}]]></variableExpression>
 	</variable>
-	<variable name="GRP_SUM_INTERESTFB" class="java.lang.Integer" resetType="Group" resetGroup="grpDate" incrementType="Group" incrementGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$V{GRP_SUM_INTERESTFB_1}]]></variableExpression>
+	<variable name="GRP_SUM_INTERESTFB" class="java.lang.Integer" resetType="Group" resetGroup="grpDate" incrementType="Group" incrementGroup="grpPage" calculation="Sum">
+		<variableExpression><![CDATA[$F{interestFb}]]></variableExpression>
 	</variable>
-	<variable name="GRP_SUM_INTERESTLINE" class="java.lang.Integer" resetType="Group" resetGroup="grpDate" incrementType="Group" incrementGroup="grpTeam" calculation="Sum">
-		<variableExpression><![CDATA[$V{GRP_SUM_INTERESTLINE_1}]]></variableExpression>
+	<variable name="GRP_SUM_INTERESTLINE" class="java.lang.Integer" resetType="Group" resetGroup="grpDate" incrementType="Group" incrementGroup="grpPage" calculation="Sum">
+		<variableExpression><![CDATA[$F{interestLine}]]></variableExpression>
 	</variable>
 	<variable name="SUM_PRICEFB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
@@ -51,10 +51,10 @@
 	<variable name="SUM_COUNTLINE" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{countLine}]]></variableExpression>
 	</variable>
-	<variable name="SUM_INTERESTFB" class="java.lang.Integer" calculation="Sum">
+	<variable name="SUM_INTERESTFB" class="java.lang.Integer" incrementType="Group" incrementGroup="grpPage" calculation="Sum">
 		<variableExpression><![CDATA[$F{interestFb}]]></variableExpression>
 	</variable>
-	<variable name="SUM_INTERESTLINE" class="java.lang.Integer" calculation="Sum">
+	<variable name="SUM_INTERESTLINE" class="java.lang.Integer" incrementType="Group" incrementGroup="grpPage" calculation="Sum">
 		<variableExpression><![CDATA[$F{interestLine}]]></variableExpression>
 	</variable>
 	<variable name="GRP_SUM_PRICEFB_1" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
@@ -69,10 +69,10 @@
 	<variable name="GRP_SUM_COUNTLINE_1" class="java.lang.Integer" resetType="Group" resetGroup="grpTeam" calculation="Sum">
 		<variableExpression><![CDATA[$F{countLine}]]></variableExpression>
 	</variable>
-	<variable name="GRP_SUM_INTERESTFB_1" class="java.lang.Integer" resetType="None">
+	<variable name="GRP_SUM_INTERESTFB_1" class="java.lang.Integer" resetType="Group" resetGroup="grpTeam" incrementType="Group" incrementGroup="grpPage" calculation="Sum">
 		<variableExpression><![CDATA[$F{interestFb}]]></variableExpression>
 	</variable>
-	<variable name="GRP_SUM_INTERESTLINE_1" class="java.lang.Integer" resetType="None">
+	<variable name="GRP_SUM_INTERESTLINE_1" class="java.lang.Integer" resetType="Group" resetGroup="grpTeam" incrementType="Group" incrementGroup="grpPage" calculation="Sum">
 		<variableExpression><![CDATA[$F{interestLine}]]></variableExpression>
 	</variable>
 	<variable name="GRP_SUM_PRICEFB_1_1" class="java.lang.Double" resetType="Group" resetGroup="grpPage" calculation="Sum">
@@ -692,7 +692,7 @@
 	<detail>
 		<band height="20">
 			<printWhenExpression><![CDATA[$F{countAdmin}>1]]></printWhenExpression>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="245" y="0" width="40" height="20" uuid="6a6e9cf4-ec04-4815-bf52-cd900ef17b33"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -705,7 +705,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{countFb}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="285" y="0" width="40" height="20" uuid="f7b01fd8-2e97-44b2-bdec-32362a9ef6e3"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -718,7 +718,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{countLine}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0">
+			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement x="365" y="0" width="60" height="20" uuid="ae674426-b1a5-4ef1-bb91-1822cd0eb4c4"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
@@ -731,7 +731,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{priceFb}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0">
+			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement x="425" y="0" width="60" height="20" uuid="03f63fbc-4a46-40c9-86f5-cad54e1729fe"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
@@ -744,7 +744,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{priceLine}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="125" y="0" width="40" height="20" uuid="ada58bca-05f1-42df-bcdc-8e41f8d5207e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -757,7 +757,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0">
+			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement x="485" y="0" width="70" height="20" uuid="259d534a-eb05-40c4-b9bf-f126c33241ad"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
@@ -783,7 +783,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA["- Admin "+$F{admin}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="325" y="0" width="40" height="20" uuid="de049c31-8ce3-4679-b059-b27701a48e64"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -796,7 +796,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{countLine}+$F{countFb}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="165" y="0" width="40" height="20" uuid="2f14401f-fc54-44c3-b765-5471f15918ed"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -809,7 +809,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="205" y="0" width="40" height="20" uuid="086c414b-ee0a-4d24-8da4-0ec9cb5fea37"/>
 				<box>
 					<topPen lineWidth="0.5"/>
