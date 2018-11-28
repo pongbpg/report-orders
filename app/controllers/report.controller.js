@@ -475,7 +475,71 @@ exports.dailyBank = (req, res) => {
 
 
 }
+exports.dailyStatement = (req, res) => {
+    async function getDailyStatement() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    if (['owner', 'stock'].indexOf(auth.data().role) > -1) {
+                        db.collection('orders')
+                            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                    const time = doc.data().bank.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                    const timestamp = new Date(doc.data().timestamp.toMillis());
+                                    let orderTime = twoDigit(timestamp.getHours()) + '.' + twoDigit(timestamp.getMinutes());
+                                    if (bank != null) {
+                                        if (['CM', 'COD'].indexOf(bank[0]) == -1) {
+                                            // console.log(doc.data().timestamp)
+                                            orders.push({
+                                                id: doc.id,
+                                                ...doc.data(),
+                                                bank: bank[0],
+                                                time: time[0],
+                                                orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                                orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1,'days').format('YYYYMMDD') : doc.data().orderDate
+                                            })
+                                        }
+                                    }
+                                })
+                                r.expr(orders)
+                                    .orderBy('bank', 'orderDate', 'time')
+                                    .pluck('bank', 'orderDate', 'time', 'page', 'price', 'id', 'name', 'tel', 'orderTime')
+                                    .run()
+                                    .then(result => {
+                                        const datas = result.map(m => {
+                                            const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            return {
+                                                ...m,
+                                                orderDate: moment(orderDate).format('ll')
+                                            }
+                                        })
 
+                                        res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                            OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                        });
+                                        // res.json(result)
+                                    })
+                            })
+                    } else {
+                        res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                    }
+                }
+            })
+    }
+
+    getDailyStatement();
+
+
+}
 exports.excel = (req, res) => {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../report-orders/app/files/stock20181031.xlsx');
