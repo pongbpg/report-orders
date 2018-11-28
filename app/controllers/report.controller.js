@@ -160,8 +160,8 @@ exports.dailySayHi = (req, res) => {
                                             // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                                             priceAll: m('reduction').sum('price'),
                                             countAll: m('reduction').sum('count'),
-                                            interestFb: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('fb').default(-1),
-                                            interestLine: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('line').default(-1),
+                                            interestFb: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('fb').default(0),
+                                            interestLine: r.expr(sayhis).filter({ id: m('group')('orderDate').add(m('group')('page')) })(0)('line').default(0),
                                             team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
                                         }
                                     })
