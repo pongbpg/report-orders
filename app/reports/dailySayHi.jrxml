@@ -691,7 +691,6 @@
 	</columnHeader>
 	<detail>
 		<band height="20">
-			<printWhenExpression><![CDATA[$F{countAdmin}>1]]></printWhenExpression>
 			<textField evaluationTime="Auto">
 				<reportElement x="245" y="0" width="40" height="20" uuid="6a6e9cf4-ec04-4815-bf52-cd900ef17b33"/>
 				<box>

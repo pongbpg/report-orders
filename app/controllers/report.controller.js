@@ -503,7 +503,7 @@ exports.dailyStatement = (req, res) => {
                                                 bank: bank[0],
                                                 time: time[0],
                                                 orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
-                                                orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1,'days').format('YYYYMMDD') : doc.data().orderDate
+                                                orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate
                                             })
                                         }
                                     }
