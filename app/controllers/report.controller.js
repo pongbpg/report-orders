@@ -91,7 +91,7 @@ exports.dailySayHi = (req, res) => {
                 snapShot.forEach(doc => {
                     sayhis.push({ id: doc.id, ...doc.data() })
                     sayhiPages.push(doc.id)
-                    sayhiPages.push(doc.data().date + '@' + doc.data().page)
+                    sayhiPages.push((req.query.sum == 'all' ? 'SUM' : doc.data().date) + '@' + doc.data().page)
                 })
             })
         await db.collection('emails').doc(req.query.uid)
@@ -115,7 +115,10 @@ exports.dailySayHi = (req, res) => {
                             let orders = []
                             snapShot.forEach(doc => {
                                 if (doc.data().bank.indexOf('CM') == -1)
-                                    orders.push({ id: doc.id, ...doc.data() })
+                                    orders.push({
+                                        id: doc.id, ...doc.data(),
+                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
+                                    })
                             })
                             r.expr(orders).filter(f => {
                                 return r.expr(pages).contains(f('page'))
@@ -182,7 +185,7 @@ exports.dailySayHi = (req, res) => {
                                         // console.log(m.page)
                                         return {
                                             ...m,
-                                            orderDate: moment(orderDate).format('ll'),
+                                            orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll'),
                                             page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
                                         }
                                     })
@@ -192,7 +195,7 @@ exports.dailySayHi = (req, res) => {
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
                                     });
-                                    // res.json(result)
+                                    // res.json(pages)
                                 })
                         })
                 } else {
@@ -216,14 +219,14 @@ exports.dailySale = (req, res) => {
                 admins.push({ id: doc.id, ...doc.data() })
             })
         })
-        await db.collection('sayhis')
-            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
-            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
-            .get().then(snapShot => {
-                snapShot.forEach(doc => {
-                    sayhis.push({ id: doc.id, ...doc.data() })
-                })
-            })
+        // await db.collection('sayhis')
+        //     .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+        //     .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+        //     .get().then(snapShot => {
+        //         snapShot.forEach(doc => {
+        //             sayhis.push({ id: doc.id, ...doc.data() })
+        //         })
+        //     })
         await db.collection('emails').doc(req.query.uid)
             .get()
             .then(auth => {
@@ -241,7 +244,10 @@ exports.dailySale = (req, res) => {
                                 let orders = []
                                 snapShot.forEach(doc => {
                                     if (doc.data().bank.indexOf('CM') == -1)
-                                        orders.push({ id: doc.id, ...doc.data() })
+                                        orders.push({
+                                            id: doc.id, ...doc.data(),
+                                            orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
+                                        })
                                 })
                                 r.expr(orders)
                                     // .filter(f => {
@@ -300,7 +306,7 @@ exports.dailySale = (req, res) => {
                                             // console.log(m.page)
                                             return {
                                                 ...m,
-                                                orderDate: moment(orderDate).format('ll'),
+                                                orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll'),
                                                 page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
                                             }
                                         })
