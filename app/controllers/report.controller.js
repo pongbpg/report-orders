@@ -338,8 +338,8 @@ exports.dailyCost = (req, res) => {
                             date: dates[d],
                             ...pages[p],
                             orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
-                            costFb: cost ? cost.fb : 0,
-                            costLine: cost ? cost.line : 0
+                            adsFb: cost ? cost.fb : 0,
+                            adsLine: cost ? cost.line : 0
                         })
                     }
                 }
@@ -354,7 +354,7 @@ exports.dailyCost = (req, res) => {
                             orders.push({
                                 id: doc.id, ...doc.data(),
                                 orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
+                                // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
                                 fb: doc.data().page.indexOf('@') == -1 ? true : false,
                                 product: doc.data().product.map(m => {
                                     return {
@@ -373,24 +373,63 @@ exports.dailyCost = (req, res) => {
                             .merge(m => {
                                 return {
                                     orders: m('orders').group(g => {
-                                        return g.pluck('page', 'fb', 'claim', 'orderDate', 'admin')
+                                        return g.pluck('page', 'fb', 'orderDate')
                                     }).ungroup()
                                         .map(m2 => {
                                             return m2('group').merge(m3 => {
                                                 return {
                                                     price: m2('reduction').sum('price'),
-                                                    costProduct: m2('reduction').map(m4 => {
+                                                    cost: m2('reduction').map(m4 => {
                                                         return { cost: m4('product').sum('cost') }
                                                     }).sum('cost'),
-                                                    amountOrder: m2('reduction').count()
+                                                    // amountOrder: m2('reduction').count()
+                                                }
+                                            })
+                                        })
+                                        .group(g => {
+                                            return g.pluck('page', 'orderDate')
+                                        })
+                                        .ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    costFb: m2('reduction').filter({ fb: true }).sum('cost'),
+                                                    costLine: m2('reduction').filter({ fb: false }).sum('cost'),
+                                                    priceFb: m2('reduction').filter({ fb: true }).sum('price'),
+                                                    priceLine: m2('reduction').filter({ fb: false }).sum('price'),
+                                                }
+                                            })
+                                        }),
+                                    results: m('results').group(g => {
+                                        return g.pluck('team', 'page', 'orderDate')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    adsFb: m2('reduction').sum('adsFb'),
+                                                    adsLine: m2('reduction').sum('adsLine')
                                                 }
                                             })
                                         })
                                 }
                             })
+                            .do(d => {
+                                return d('results').map(m => {
+                                    return d('orders').filter({ orderDate: m('orderDate'), page: m('page') })
+                                        .merge(m.pluck('adsFb', 'adsLine', 'team'))
+                                }).reduce((le, ri) => {
+                                    return le.add(ri)
+                                }).default([])
+                            })
+                            .orderBy('orderDate', 'team', 'page')
                             .run()
                             .then(result => {
-                                res.json(result)
+                                // res.json(result)
+                                res.ireport("dailyCost.jasper", req.query.file || "pdf", result, {
+                                    OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    START_DATE: moment(req.query.startDate).format('LL'),
+                                    END_DATE: moment(req.query.endDate).format('LL'),
+                                });
                             })
 
                     })

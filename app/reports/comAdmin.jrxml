@@ -115,7 +115,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[วันที่/เพจ]]></text>
+				<text><![CDATA[แอดมิน/เพจ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="210" y="0" width="216" height="40" uuid="29a54f33-5be8-4161-9736-bac4c3f2aecb"/>
