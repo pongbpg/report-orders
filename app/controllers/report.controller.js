@@ -208,8 +208,8 @@ exports.dailySayHi = (req, res) => {
 
 
 }
-exports.commission = (req, res) => {
-    async function getComission() {
+exports.comAdmin = (req, res) => {
+    async function comAdmin() {
         let pages = [];
         let admins = [];
         var r = req.r;
@@ -284,8 +284,8 @@ exports.commission = (req, res) => {
                                 .run()
                                 .then(result => {
                                     // res.json(result)
-                                    res.ireport("commission.jrxml", req.query.file || "pdf", result, {
-                                        OUTPUT_NAME: 'commission' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
+                                        OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
                                     });
@@ -297,7 +297,7 @@ exports.commission = (req, res) => {
             })
     }
 
-    getComission();
+    comAdmin();
 
 
 }

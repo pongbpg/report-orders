@@ -8,7 +8,7 @@ module.exports = function (app) {
     app.get('/dailyBank', ctrl.dailyBank);
     app.get('/dailyStatement', ctrl.dailyStatement);
     app.get('/dailyCost', ctrl.dailyCost);
-    app.get('/commission', ctrl.commission);
+    app.get('/com/admin', ctrl.comAdmin);
     // app.get('/test', ctrl.movePage);
     // app.get('/counter', ctrl.counterPage);
 }
