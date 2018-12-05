@@ -208,6 +208,200 @@ exports.dailySayHi = (req, res) => {
 
 
 }
+exports.commission = (req, res) => {
+    async function getComission() {
+        let pages = [];
+        let admins = [];
+        var r = req.r;
+        await db.collection('pages').get().then(snapShot => {
+            snapShot.forEach(doc => {
+                admins.push({ id: doc.id, ...doc.data() })
+            })
+        })
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    const role = auth.data().role;
+                    if (role == 'owner') {
+                        pages = admins.map(m => m.id)
+                        // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
+                        //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
+                    } else {
+                        pages = auth.data().pages || [];
+                    }
+                    // console.log(admins)
+                    db.collection('orders')
+                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .get()
+                        .then(snapShot => {
+                            let orders = []
+                            snapShot.forEach(doc => {
+                                if (doc.data().bank.indexOf('CM') == -1)
+                                    orders.push({
+                                        id: doc.id, ...doc.data(),
+                                        page: doc.data().page.replace('@', '')
+                                    })
+                            })
+                            r.expr(orders)
+                                .group(g => {
+                                    return g.pluck('userId', 'page')
+                                })
+                                .ungroup()
+                                .map(m => {
+                                    return m('group').pluck('page').merge({
+                                        admin: m('reduction')(0)('admin'),
+                                        price: m('reduction').sum('price')
+                                    })
+                                })
+                                .do(d => {
+                                    return d.merge(m => {
+                                        return {
+                                            sumPage: d.filter({ page: m('page') }).sum('price')
+                                        }
+                                    }).merge(m => {
+                                        return {
+                                            rate: r.branch(m('sumPage').ge(1000000), 0.04,
+                                                m('sumPage').ge(700000), 0.035,
+                                                m('sumPage').ge(500000), 0.03,
+                                                m('sumPage').ge(400000), 0.025,
+                                                m('sumPage').ge(350000), 0.0225,
+                                                m('sumPage').ge(300000), 0.02,
+                                                m('sumPage').ge(250000), 0.015,
+                                                m('sumPage').ge(200000), 0.0125,
+                                                0
+                                            )
+                                        }
+                                    })
+                                        .merge(m => {
+                                            return {
+                                                com: m('rate').mul(m('price'))
+                                            }
+                                        })
+                                })
+                                .orderBy('admin', r.desc('com'))
+                                .run()
+                                .then(result => {
+                                    // res.json(result)
+                                    res.ireport("commission.jrxml", req.query.file || "pdf", result, {
+                                        OUTPUT_NAME: 'commission' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        START_DATE: moment(req.query.startDate).format('LL'),
+                                        END_DATE: moment(req.query.endDate).format('LL'),
+                                    });
+                                })
+                        })
+                } else {
+                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                }
+            })
+    }
+
+    getComission();
+
+
+}
+exports.dailyCost = (req, res) => {
+    async function getDailyCost() {
+        let pages = [];
+        let admins = [];
+        let products = [];
+        let costs = [];
+        var r = req.r;
+        await db.collection('pages').get().then(snapShot => {
+            snapShot.forEach(doc => {
+                admins.push({ ...doc.data(), page: doc.id })
+            })
+            pages = admins.filter(f => f.page.indexOf('@') == -1)
+        })
+        await db.collection('products').get().then(snapShot => {
+            snapShot.forEach(doc => {
+                products.push({ id: doc.id, ...doc.data() })
+            })
+        })
+        await db.collection('costs')
+            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+            .get().then(snapShot => {
+                snapShot.forEach(doc => {
+                    costs.push({ id: doc.id, ...doc.data() })
+                })
+            })
+        await db.collection('emails').doc(req.query.uid).get().then(auth => {
+            if (auth.data().role == 'owner') {
+                const dates = enumerateDaysBetweenDates(req.query.startDate, req.query.endDate);
+                const results = [];
+                for (let d = 0; d < dates.length; d++) {
+                    for (let p = 0; p < pages.length; p++) {
+                        const cost = costs.find(f => f.id == dates[d] + pages[p].page)
+                        results.push({
+                            date: dates[d],
+                            ...pages[p],
+                            orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
+                            costFb: cost ? cost.fb : 0,
+                            costLine: cost ? cost.line : 0
+                        })
+                    }
+                }
+                db.collection('orders')
+                    .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                    .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                    .get()
+                    .then(snapShot => {
+                        let orders = []
+                        snapShot.forEach(doc => {
+                            // if (doc.data().bank.indexOf('CM') == -1)
+                            orders.push({
+                                id: doc.id, ...doc.data(),
+                                orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
+                                fb: doc.data().page.indexOf('@') == -1 ? true : false,
+                                product: doc.data().product.map(m => {
+                                    return {
+                                        ...m,
+                                        cost: products.find(f => f.id == m.code).cost * m.amount
+                                    }
+                                }),
+                                page: doc.data().page.replace('@', '')
+                            })
+                        })
+
+                        r.expr({
+                            orders,
+                            results
+                        })
+                            .merge(m => {
+                                return {
+                                    orders: m('orders').group(g => {
+                                        return g.pluck('page', 'fb', 'claim', 'orderDate', 'admin')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    price: m2('reduction').sum('price'),
+                                                    costProduct: m2('reduction').map(m4 => {
+                                                        return { cost: m4('product').sum('cost') }
+                                                    }).sum('cost'),
+                                                    amountOrder: m2('reduction').count()
+                                                }
+                                            })
+                                        })
+                                }
+                            })
+                            .run()
+                            .then(result => {
+                                res.json(result)
+                            })
+
+                    })
+
+            } else {
+                res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+            }
+        })
+    }
+    getDailyCost();
+}
 exports.dailySale = (req, res) => {
     async function getDailySale() {
         let pages = [];
@@ -546,6 +740,7 @@ exports.dailyStatement = (req, res) => {
 
 
 }
+
 exports.excel = (req, res) => {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../report-orders/app/files/stock20181031.xlsx');
@@ -645,3 +840,13 @@ const twoDigit = (n) => {
         return n.toString();
     }
 }
+const enumerateDaysBetweenDates = (startDate, endDate) => {
+    startDate = moment(startDate);
+    endDate = moment(endDate);
+    var now = startDate, dates = [];
+    while (now.isBefore(endDate) || now.isSame(endDate)) {
+        dates.push(now.format('YYYYMMDD'));
+        now.add(1, 'days');
+    }
+    return dates;
+};
