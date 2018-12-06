@@ -20,6 +20,7 @@
 	<field name="adsLine" class="java.lang.Double"/>
 	<field name="costFb" class="java.lang.Double"/>
 	<field name="costLine" class="java.lang.Double"/>
+	<field name="costCm" class="java.lang.Double"/>
 	<variable name="GRP_SUM_PRICEFB" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
 	</variable>
@@ -31,6 +32,9 @@
 	</variable>
 	<variable name="GRP_SUM_COSTFB" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{costFb}]]></variableExpression>
+	</variable>
+	<variable name="GRP_SUM_COSTCM" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
+		<variableExpression><![CDATA[$F{costCm}]]></variableExpression>
 	</variable>
 	<variable name="GRP_SUM_ADSFB" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{adsFb}]]></variableExpression>
@@ -50,6 +54,9 @@
 	<variable name="GRP_TEAM_SUM_COSTLINE" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
 		<variableExpression><![CDATA[$F{costLine}]]></variableExpression>
 	</variable>
+	<variable name="GRP_TEAM_SUM_COSTCM" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
+		<variableExpression><![CDATA[$F{costCm}]]></variableExpression>
+	</variable>
 	<variable name="GRP_TEAM_SUM_ADSFB" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
 		<variableExpression><![CDATA[$F{adsFb}]]></variableExpression>
 	</variable>
@@ -67,6 +74,9 @@
 	</variable>
 	<variable name="SUM_COSTLINE" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{costLine}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COSTCM" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{costCm}]]></variableExpression>
 	</variable>
 	<variable name="SUM_ADSFB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{adsFb}]]></variableExpression>
@@ -92,7 +102,7 @@
 					<textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="100" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="3ee536f4-a961-450b-a078-ae8de115fd71"/>
+					<reportElement mode="Opaque" x="100" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="3ee536f4-a961-450b-a078-ae8de115fd71"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -105,7 +115,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="170" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="7eda15ac-0f2c-455e-8b57-465da2f0ce6d"/>
+					<reportElement mode="Opaque" x="160" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="7eda15ac-0f2c-455e-8b57-465da2f0ce6d"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -118,7 +128,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICELINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="240" y="0" width="83" height="20" backcolor="#CCFFCC" uuid="64df783d-bbec-48aa-93ed-0ab10b3f1e3c"/>
+					<reportElement mode="Opaque" x="220" y="0" width="65" height="20" backcolor="#CCFFCC" uuid="64df783d-bbec-48aa-93ed-0ab10b3f1e3c"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -131,7 +141,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB}+$V{GRP_SUM_PRICELINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="443" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="5aa9904c-f12e-4154-a56c-c348fad8afdf"/>
+					<reportElement mode="Opaque" x="450" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="5aa9904c-f12e-4154-a56c-c348fad8afdf"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -141,10 +151,10 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_COSTFB}+$V{GRP_SUM_COSTLINE}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_SUM_COSTFB}+$V{GRP_SUM_COSTLINE}+$V{GRP_SUM_COSTCM}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="323" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="2bc618df-f9d2-4d98-8df9-dc5cfc52976e"/>
+					<reportElement mode="Opaque" x="285" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="2bc618df-f9d2-4d98-8df9-dc5cfc52976e"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -157,7 +167,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COSTFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="383" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="0c6e7fc0-ccbe-4934-a561-05bdd748a6fe"/>
+					<reportElement mode="Opaque" x="340" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="0c6e7fc0-ccbe-4934-a561-05bdd748a6fe"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -170,7 +180,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_COSTLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="513" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="9bdc5064-7a58-46d2-bef2-ffb519dbfc98"/>
+					<reportElement mode="Opaque" x="540" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="9bdc5064-7a58-46d2-bef2-ffb519dbfc98"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -183,7 +193,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_ADSFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="633" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="3de0cc86-c9ad-4a93-b45e-44feba882050"/>
+					<reportElement mode="Opaque" x="650" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="3de0cc86-c9ad-4a93-b45e-44feba882050"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -196,7 +206,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_ADSFB}+$V{GRP_SUM_ADSLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="573" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="29677259-be97-48b3-8c1f-54598cac93de"/>
+					<reportElement mode="Opaque" x="595" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="29677259-be97-48b3-8c1f-54598cac93de"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -209,7 +219,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_SUM_ADSLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="703" y="0" width="99" height="20" backcolor="#CCFFCC" uuid="c01d9dc7-2eda-4213-b5ab-6ff5ba55262f"/>
+					<reportElement mode="Opaque" x="742" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="c01d9dc7-2eda-4213-b5ab-6ff5ba55262f"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -222,6 +232,51 @@
 					<textFieldExpression><![CDATA[($V{GRP_SUM_PRICEFB}+$V{GRP_SUM_PRICELINE})-
 ($V{GRP_SUM_COSTFB}+$V{GRP_SUM_COSTLINE})-
 ($V{GRP_SUM_ADSFB}+$V{GRP_SUM_ADSLINE})]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0.00">
+					<reportElement mode="Opaque" x="505" y="0" width="35" height="20" backcolor="#CCFFCC" uuid="4912af0d-fca7-487d-840b-7cf56b28bf21"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{GRP_SUM_COSTFB}+$V{GRP_SUM_COSTLINE}+$V{GRP_SUM_COSTCM})/
+    ($V{GRP_SUM_PRICEFB}+$V{GRP_SUM_PRICELINE})
+)*100]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0.00">
+					<reportElement mode="Opaque" x="705" y="0" width="37" height="20" backcolor="#CCFFCC" uuid="e7721330-e362-439f-9d7c-d4f9ef74e16d"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{GRP_SUM_ADSFB}+$V{GRP_SUM_ADSLINE})/
+
+    ($V{GRP_SUM_PRICEFB}+$V{GRP_SUM_PRICELINE})
+
+) *100]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="395" y="0" width="55" height="20" backcolor="#CCFFCC" uuid="36990765-b9dd-4633-9a3a-610b309de43f"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{GRP_SUM_COSTCM}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -244,7 +299,7 @@
 					<textFieldExpression><![CDATA["Team "+$F{team}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="170" y="0" width="70" height="20" backcolor="#FFCCFF" uuid="a31a3dfc-08da-4dbc-86f4-720b534b4368"/>
+					<reportElement mode="Opaque" x="160" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="a31a3dfc-08da-4dbc-86f4-720b534b4368"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -257,7 +312,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_PRICELINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="100" y="0" width="70" height="20" backcolor="#FFCCFF" uuid="26647ab0-f03d-411e-8a31-b9e0ccef4267"/>
+					<reportElement mode="Opaque" x="100" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="26647ab0-f03d-411e-8a31-b9e0ccef4267"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -270,7 +325,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_PRICEFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="240" y="0" width="83" height="20" backcolor="#FFCCFF" uuid="e9d25db1-c2b0-4a26-b249-454037e127e0"/>
+					<reportElement mode="Opaque" x="220" y="0" width="65" height="20" backcolor="#FFCCFF" uuid="e9d25db1-c2b0-4a26-b249-454037e127e0"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -283,7 +338,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_PRICEFB}+$V{GRP_TEAM_SUM_PRICELINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="383" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="300290f6-f4a6-4f0f-909a-5a9baabbf400"/>
+					<reportElement mode="Opaque" x="340" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="300290f6-f4a6-4f0f-909a-5a9baabbf400"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -296,7 +351,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_COSTLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="443" y="0" width="70" height="20" backcolor="#FFCCFF" uuid="d0260699-e713-49c9-986e-b3df0e17b7bf"/>
+					<reportElement mode="Opaque" x="450" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="d0260699-e713-49c9-986e-b3df0e17b7bf"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -306,10 +361,10 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_COSTFB}+$V{GRP_TEAM_SUM_COSTLINE}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_COSTFB}+$V{GRP_TEAM_SUM_COSTLINE}+$V{GRP_TEAM_SUM_COSTCM}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="323" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="17410a83-76e3-4290-9a01-8e97496879c6"/>
+					<reportElement mode="Opaque" x="285" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="17410a83-76e3-4290-9a01-8e97496879c6"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -322,7 +377,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_COSTFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="633" y="0" width="70" height="20" backcolor="#FFCCFF" uuid="7f95e949-c6fd-4d75-9d93-538abac7a012"/>
+					<reportElement mode="Opaque" x="650" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="7f95e949-c6fd-4d75-9d93-538abac7a012"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -335,7 +390,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_ADSFB}+$V{GRP_TEAM_SUM_ADSLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="513" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="87d48112-b60c-4f90-8d8b-8605a951a82f"/>
+					<reportElement mode="Opaque" x="540" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="87d48112-b60c-4f90-8d8b-8605a951a82f"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -348,7 +403,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_ADSFB}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="573" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="7f0ef3fd-4f01-4371-bf2c-48f472925ca0"/>
+					<reportElement mode="Opaque" x="595" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="7f0ef3fd-4f01-4371-bf2c-48f472925ca0"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -361,7 +416,7 @@
 					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_ADSLINE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
-					<reportElement mode="Opaque" x="703" y="0" width="99" height="20" backcolor="#FFCCFF" uuid="f3d60a7b-4258-4ed5-925d-440d2d30fc52"/>
+					<reportElement mode="Opaque" x="742" y="0" width="60" height="20" backcolor="#FFCCFF" uuid="f3d60a7b-4258-4ed5-925d-440d2d30fc52"/>
 					<box rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -374,6 +429,53 @@
 					<textFieldExpression><![CDATA[($V{GRP_TEAM_SUM_PRICEFB}+$V{GRP_TEAM_SUM_PRICELINE})-
 ($V{GRP_TEAM_SUM_COSTFB}+$V{GRP_TEAM_SUM_COSTLINE})-
 ($V{GRP_TEAM_SUM_ADSFB}+$V{GRP_TEAM_SUM_ADSLINE})]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0.00">
+					<reportElement mode="Opaque" x="505" y="0" width="35" height="20" backcolor="#FFCCFF" uuid="4331d207-db4e-40a3-bcf3-d8bca912be4a"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{GRP_TEAM_SUM_COSTFB}+$V{GRP_TEAM_SUM_COSTLINE}+$V{GRP_TEAM_SUM_COSTCM})/
+
+    ($V{GRP_TEAM_SUM_PRICEFB}+$V{GRP_TEAM_SUM_PRICELINE})
+
+) *100]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0.00">
+					<reportElement mode="Opaque" x="705" y="0" width="37" height="20" backcolor="#FFCCFF" uuid="0395a4f8-23f3-47fb-89b0-9aba71d234d8"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{GRP_TEAM_SUM_ADSFB}+$V{GRP_TEAM_SUM_ADSLINE})/
+
+    ($V{GRP_TEAM_SUM_PRICEFB}+$V{GRP_TEAM_SUM_PRICELINE})
+
+)  *100]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="395" y="0" width="55" height="20" backcolor="#FFCCFF" uuid="1a7cbd6a-4f63-47ac-aa19-53d80349261a"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_COSTCM}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -412,7 +514,7 @@
 				<text><![CDATA[วันที่/เพจ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="223" height="20" uuid="568c0536-3b2a-4e2d-b8d8-e3b3c0da8860"/>
+				<reportElement x="100" y="0" width="185" height="20" uuid="568c0536-3b2a-4e2d-b8d8-e3b3c0da8860"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -425,7 +527,7 @@
 				<text><![CDATA[ยอดขาย]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="20" width="70" height="20" uuid="3086ecdb-0307-4bbb-bef4-cac126fde8dd"/>
+				<reportElement x="100" y="20" width="60" height="20" uuid="3086ecdb-0307-4bbb-bef4-cac126fde8dd"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -438,7 +540,7 @@
 				<text><![CDATA[FB]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="20" width="70" height="20" uuid="03d53d61-5fe4-4373-86d3-484d25f108db"/>
+				<reportElement x="160" y="20" width="60" height="20" uuid="03d53d61-5fe4-4373-86d3-484d25f108db"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -451,7 +553,7 @@
 				<text><![CDATA[LINE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="20" width="83" height="20" uuid="6e9036c0-ab52-4a3a-8302-de71a1f1cc15"/>
+				<reportElement x="220" y="20" width="65" height="20" uuid="6e9036c0-ab52-4a3a-8302-de71a1f1cc15"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -464,7 +566,7 @@
 				<text><![CDATA[รวม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="323" y="0" width="190" height="20" uuid="a18651a3-df26-4def-b26d-9bade164bc11"/>
+				<reportElement x="285" y="0" width="255" height="20" uuid="a18651a3-df26-4def-b26d-9bade164bc11"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -474,10 +576,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ต้นทุน]]></text>
+				<text><![CDATA[ต้นทุนสินค้า]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="443" y="20" width="70" height="20" uuid="216e8974-d1d3-4310-adb0-18dff46515a8"/>
+				<reportElement x="450" y="20" width="55" height="20" uuid="216e8974-d1d3-4310-adb0-18dff46515a8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -490,7 +592,7 @@
 				<text><![CDATA[รวม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="323" y="20" width="60" height="20" uuid="3799f41e-5b9d-4475-92e9-9ec81544b6c2"/>
+				<reportElement x="285" y="20" width="55" height="20" uuid="3799f41e-5b9d-4475-92e9-9ec81544b6c2"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -503,7 +605,7 @@
 				<text><![CDATA[FB]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="383" y="20" width="60" height="20" uuid="c1899465-7c8f-4d1b-987b-6ed0fe861961"/>
+				<reportElement x="340" y="20" width="55" height="20" uuid="c1899465-7c8f-4d1b-987b-6ed0fe861961"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -516,7 +618,7 @@
 				<text><![CDATA[LINE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="513" y="20" width="60" height="20" uuid="d936a0ad-cec3-4f15-adee-a8b812819e69"/>
+				<reportElement x="540" y="20" width="55" height="20" uuid="d936a0ad-cec3-4f15-adee-a8b812819e69"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -529,7 +631,7 @@
 				<text><![CDATA[FB]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="573" y="20" width="60" height="20" uuid="9d0ab38a-a951-4e27-9e8b-1158475cfafd"/>
+				<reportElement x="595" y="20" width="55" height="20" uuid="9d0ab38a-a951-4e27-9e8b-1158475cfafd"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -542,7 +644,7 @@
 				<text><![CDATA[LINE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="633" y="20" width="70" height="20" uuid="dbfe531e-3460-4d80-b41b-4edbc466568e"/>
+				<reportElement x="650" y="20" width="55" height="20" uuid="dbfe531e-3460-4d80-b41b-4edbc466568e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -555,7 +657,7 @@
 				<text><![CDATA[รวม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="513" y="0" width="190" height="20" uuid="4013bc49-8cb3-4fb6-910f-6c80656728ba"/>
+				<reportElement x="540" y="0" width="202" height="20" uuid="4013bc49-8cb3-4fb6-910f-6c80656728ba"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -568,7 +670,7 @@
 				<text><![CDATA[ค่าโฆษณา]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="703" y="0" width="99" height="40" uuid="4ddf7d59-da7f-488c-8e40-2d8f9df3eebb"/>
+				<reportElement x="742" y="0" width="60" height="40" uuid="4ddf7d59-da7f-488c-8e40-2d8f9df3eebb"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -579,6 +681,45 @@
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[คงเหลือ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="20" width="35" height="20" uuid="6b5345ba-adfa-4707-9325-0e202c4578cc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="705" y="20" width="37" height="20" uuid="91f1535f-1f53-4d86-973a-d7d4ef7aac8f"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="20" width="55" height="20" uuid="6a85324a-9308-49f5-9f71-dfa02fa20527"/>
+				<box leftPadding="5" rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เคลม]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -598,7 +739,7 @@
 				<textFieldExpression><![CDATA[$F{page}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="100" y="0" width="70" height="20" uuid="ae674426-b1a5-4ef1-bb91-1822cd0eb4c4"/>
+				<reportElement x="100" y="0" width="60" height="20" uuid="ae674426-b1a5-4ef1-bb91-1822cd0eb4c4"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -611,7 +752,7 @@
 				<textFieldExpression><![CDATA[$F{priceFb}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="170" y="0" width="70" height="20" uuid="03f63fbc-4a46-40c9-86f5-cad54e1729fe"/>
+				<reportElement x="160" y="0" width="60" height="20" uuid="03f63fbc-4a46-40c9-86f5-cad54e1729fe"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -624,7 +765,7 @@
 				<textFieldExpression><![CDATA[$F{priceLine}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="240" y="0" width="83" height="20" uuid="259d534a-eb05-40c4-b9bf-f126c33241ad"/>
+				<reportElement x="220" y="0" width="65" height="20" uuid="259d534a-eb05-40c4-b9bf-f126c33241ad"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -637,7 +778,7 @@
 				<textFieldExpression><![CDATA[$F{priceFb}+$F{priceLine}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="443" y="0" width="70" height="20" uuid="332f48c7-01ef-42e7-b911-c28ff4c94a95"/>
+				<reportElement x="450" y="0" width="55" height="20" uuid="332f48c7-01ef-42e7-b911-c28ff4c94a95"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -647,10 +788,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{costFb}+$F{costLine}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{costFb}+$F{costLine}+$F{costCm}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="323" y="0" width="60" height="20" uuid="47de7ac5-005c-4aa0-89ab-bdb090afc622"/>
+				<reportElement x="285" y="0" width="55" height="20" uuid="47de7ac5-005c-4aa0-89ab-bdb090afc622"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -663,7 +804,7 @@
 				<textFieldExpression><![CDATA[$F{costFb}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="383" y="0" width="60" height="20" uuid="006de64c-3c5a-405d-8128-a2a6a656d117"/>
+				<reportElement x="340" y="0" width="55" height="20" uuid="006de64c-3c5a-405d-8128-a2a6a656d117"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -676,7 +817,7 @@
 				<textFieldExpression><![CDATA[$F{costLine}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="513" y="0" width="60" height="20" uuid="ff81d9ee-89e7-4747-b01e-25d413c5f9e5"/>
+				<reportElement x="540" y="0" width="55" height="20" uuid="ff81d9ee-89e7-4747-b01e-25d413c5f9e5"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -689,7 +830,7 @@
 				<textFieldExpression><![CDATA[$F{adsFb}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="573" y="0" width="60" height="20" uuid="4f498f22-4ddb-470f-941b-7ef683cfe1bc"/>
+				<reportElement x="595" y="0" width="55" height="20" uuid="4f498f22-4ddb-470f-941b-7ef683cfe1bc"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -702,7 +843,7 @@
 				<textFieldExpression><![CDATA[$F{adsLine}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="633" y="0" width="70" height="20" uuid="6f827fb5-221d-4f54-981d-f15631b165d9"/>
+				<reportElement x="650" y="0" width="55" height="20" uuid="6f827fb5-221d-4f54-981d-f15631b165d9"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -715,7 +856,7 @@
 				<textFieldExpression><![CDATA[$F{adsFb}+$F{adsLine}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="703" y="0" width="99" height="20" uuid="ff5b3961-f862-4082-878a-1b02ef698ff5"/>
+				<reportElement x="742" y="0" width="60" height="20" uuid="ff5b3961-f862-4082-878a-1b02ef698ff5"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -729,12 +870,59 @@
 ($F{costFb}+$F{costLine})-
 ($F{adsFb}+$F{adsLine})]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="505" y="0" width="35" height="20" uuid="4644976c-a43d-4b24-bf5d-bbea62e53cec"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{costFb}+$F{costLine}+$F{costCm})/
+
+    ($F{priceFb}+$F{priceLine})
+
+) *100]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="705" y="0" width="37" height="20" uuid="c3661e7b-7fa2-427b-9cc1-e9d650212952"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{adsFb}+$F{adsLine})/
+
+    ($F{priceFb}+$F{priceLine})
+
+) *100]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="395" y="0" width="55" height="20" uuid="317dad9c-b433-4e79-b7b7-78f2ace38c52"/>
+				<box rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costCm}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="20">
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="170" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="320d7105-9a2d-494d-a486-3e36ac109832"/>
+				<reportElement mode="Opaque" x="160" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="320d7105-9a2d-494d-a486-3e36ac109832"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -747,7 +935,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_PRICELINE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="100" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="ebff80ff-9013-4f70-9440-899d5254a8b0"/>
+				<reportElement mode="Opaque" x="100" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="ebff80ff-9013-4f70-9440-899d5254a8b0"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -760,7 +948,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_PRICEFB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="240" y="0" width="83" height="20" backcolor="#CCCCFF" uuid="e5dce9ed-2408-4fe3-8e40-86d82d2a92d5"/>
+				<reportElement mode="Opaque" x="220" y="0" width="65" height="20" backcolor="#CCCCFF" uuid="e5dce9ed-2408-4fe3-8e40-86d82d2a92d5"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -786,7 +974,7 @@
 				<textFieldExpression><![CDATA["รวมทั้งหมด"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="443" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="b05816b2-60ad-490a-8e48-beea9953ac5c"/>
+				<reportElement mode="Opaque" x="450" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="b05816b2-60ad-490a-8e48-beea9953ac5c"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -796,10 +984,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_COSTFB}+$V{SUM_COSTLINE}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_COSTFB}+$V{SUM_COSTLINE}+$V{SUM_COSTCM}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="323" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="fa054ff0-0e3a-4933-8006-7f93749e3f91"/>
+				<reportElement mode="Opaque" x="285" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="fa054ff0-0e3a-4933-8006-7f93749e3f91"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -812,7 +1000,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_COSTFB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="383" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="137ff376-2dc0-4452-a7ec-08b3bc1e9cec"/>
+				<reportElement mode="Opaque" x="340" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="137ff376-2dc0-4452-a7ec-08b3bc1e9cec"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -825,7 +1013,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_COSTLINE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="633" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="fd48a469-3684-407a-aadf-ccea4b538631"/>
+				<reportElement mode="Opaque" x="650" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="fd48a469-3684-407a-aadf-ccea4b538631"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -838,7 +1026,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_ADSFB}+$V{SUM_ADSLINE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="513" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="8f7620ee-b6cc-450a-9f9c-18fdbdac9998"/>
+				<reportElement mode="Opaque" x="540" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="8f7620ee-b6cc-450a-9f9c-18fdbdac9998"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -851,7 +1039,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_ADSFB}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="573" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="9816477a-fdfa-425c-9837-66dfe8073d4b"/>
+				<reportElement mode="Opaque" x="595" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="9816477a-fdfa-425c-9837-66dfe8073d4b"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -864,7 +1052,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_ADSLINE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
-				<reportElement mode="Opaque" x="703" y="0" width="99" height="20" backcolor="#CCCCFF" uuid="c4523487-dee1-4bae-9b14-1352e9a8ab0f"/>
+				<reportElement mode="Opaque" x="742" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="c4523487-dee1-4bae-9b14-1352e9a8ab0f"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -877,6 +1065,53 @@
 				<textFieldExpression><![CDATA[($V{SUM_PRICEFB}+$V{SUM_PRICELINE})-
 ($V{SUM_COSTFB}+$V{SUM_COSTLINE})-
 ($V{SUM_ADSFB}+$V{SUM_ADSLINE})]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" pattern="#,##0.00">
+				<reportElement mode="Opaque" x="505" y="0" width="35" height="20" backcolor="#CCCCFF" uuid="b930feeb-6be0-4b41-ae01-4a3a14422494"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($V{SUM_COSTFB}+$V{SUM_COSTLINE}+$V{SUM_COSTCM})/
+
+    ($V{SUM_PRICEFB}+$V{SUM_PRICELINE})
+
+)   *100]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" pattern="#,##0.00">
+				<reportElement mode="Opaque" x="705" y="0" width="37" height="20" backcolor="#CCCCFF" uuid="03c29387-313e-4588-971d-43e1c16f3145"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($V{SUM_ADSFB}+$V{SUM_ADSLINE})/
+
+    ($V{SUM_PRICEFB}+$V{SUM_PRICELINE})
+
+)   *100]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" pattern="#,##0">
+				<reportElement mode="Opaque" x="395" y="0" width="55" height="20" backcolor="#CCCCFF" uuid="e8bf45e1-b673-4db5-ba4f-3ec439883a82"/>
+				<box rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_COSTCM}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
