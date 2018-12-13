@@ -528,7 +528,7 @@ $V{GRP_TEAM_SUM_DELIVERY}]]></textFieldExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["รายงานยอดขายประจำวันที่ "+
+				<textFieldExpression><![CDATA["รายงานกำไรขาดทุนประจำวันที่ "+
 ($P{START_DATE}==$P{END_DATE}
     ? $P{START_DATE}
     :$P{START_DATE}+" ถึง "+$P{END_DATE}
