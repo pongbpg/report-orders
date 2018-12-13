@@ -344,7 +344,8 @@ exports.dailyCost = (req, res) => {
                             ...pages[p],
                             orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
                             adsFb: cost ? cost.fb : 0,
-                            adsLine: cost ? cost.line : 0
+                            adsLine: cost ? cost.line : 0,
+                            delivery: cost ? cost.delivery : 0
                         })
                     }
                 }
@@ -417,7 +418,8 @@ exports.dailyCost = (req, res) => {
                                                 return {
                                                     adsFb: m2('reduction').sum('adsFb'),
                                                     adsLine: m2('reduction').sum('adsLine'),
-                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))
+                                                    delivery: m2('reduction').sum('delivery'),
+                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine')).add(m2('reduction').sum('delivery'))
                                                 }
                                             })
                                         })
@@ -426,7 +428,7 @@ exports.dailyCost = (req, res) => {
                             .do(d => {
                                 return d('results').map(m => {
                                     return d('orders').filter({ orderDate: m('orderDate'), page: m('page') })
-                                        .merge(m.pluck('adsFb', 'adsLine', 'ads', 'team'))
+                                        .merge(m.pluck('adsFb', 'adsLine','delivery', 'ads', 'team'))
                                 }).reduce((le, ri) => {
                                     return le.add(ri)
                                 }).default([])
