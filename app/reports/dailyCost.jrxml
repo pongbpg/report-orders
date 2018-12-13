@@ -22,6 +22,7 @@
 	<field name="costLine" class="java.lang.Double"/>
 	<field name="costCm" class="java.lang.Double"/>
 	<field name="delivery" class="java.lang.Double"/>
+	<field name="balance" class="java.lang.Double"/>
 	<variable name="GRP_SUM_PRICEFB" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
 	</variable>
@@ -45,6 +46,9 @@
 	</variable>
 	<variable name="GRP_SUM_DELIVERY" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
 		<variableExpression><![CDATA[$F{delivery}]]></variableExpression>
+	</variable>
+	<variable name="GRP_SUM_BALANCE" class="java.lang.Double" resetType="Group" resetGroup="grpDate" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance}]]></variableExpression>
 	</variable>
 	<variable name="GRP_TEAM_SUM_PRICEFB" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
@@ -70,6 +74,9 @@
 	<variable name="GRP_TEAM_SUM_DELIVERY" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
 		<variableExpression><![CDATA[$F{delivery}]]></variableExpression>
 	</variable>
+	<variable name="GRP_TEAM_SUM_BALANCE" class="java.lang.Double" resetType="Group" resetGroup="grpTeam" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance}]]></variableExpression>
+	</variable>
 	<variable name="SUM_PRICEFB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{priceFb}]]></variableExpression>
 	</variable>
@@ -93,6 +100,9 @@
 	</variable>
 	<variable name="SUM_DELIVERY" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{delivery}]]></variableExpression>
+	</variable>
+	<variable name="SUM_BALANCE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance}]]></variableExpression>
 	</variable>
 	<group name="grpDate">
 		<groupExpression><![CDATA[$F{orderDate}]]></groupExpression>
@@ -239,10 +249,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($V{GRP_SUM_PRICEFB}+$V{GRP_SUM_PRICELINE})-
-($V{GRP_SUM_COSTFB}+$V{GRP_SUM_COSTLINE})-
-($V{GRP_SUM_ADSFB}+$V{GRP_SUM_ADSLINE})-
-$V{GRP_SUM_DELIVERY}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_SUM_BALANCE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
 					<reportElement mode="Opaque" x="455" y="0" width="35" height="20" backcolor="#CCFFCC" uuid="4912af0d-fca7-487d-840b-7cf56b28bf21"/>
@@ -450,10 +457,7 @@ $V{GRP_SUM_DELIVERY}]]></textFieldExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($V{GRP_TEAM_SUM_PRICEFB}+$V{GRP_TEAM_SUM_PRICELINE})-
-($V{GRP_TEAM_SUM_COSTFB}+$V{GRP_TEAM_SUM_COSTLINE})-
-($V{GRP_TEAM_SUM_ADSFB}+$V{GRP_TEAM_SUM_ADSLINE})-
-$V{GRP_TEAM_SUM_DELIVERY}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_TEAM_SUM_BALANCE}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
 					<reportElement mode="Opaque" x="455" y="0" width="35" height="20" backcolor="#FFCCFF" uuid="4331d207-db4e-40a3-bcf3-d8bca912be4a"/>
@@ -917,10 +921,7 @@ $V{GRP_TEAM_SUM_DELIVERY}]]></textFieldExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{priceFb}+$F{priceLine})-
-($F{costFb}+$F{costLine})-
-($F{adsFb}+$F{adsLine})-
-$F{delivery}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{balance}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="455" y="0" width="35" height="20" uuid="4644976c-a43d-4b24-bf5d-bbea62e53cec"/>
@@ -1127,10 +1128,7 @@ $F{delivery}]]></textFieldExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($V{SUM_PRICEFB}+$V{SUM_PRICELINE})-
-($V{SUM_COSTFB}+$V{SUM_COSTLINE})-
-($V{SUM_ADSFB}+$V{SUM_ADSLINE})-
-$V{SUM_DELIVERY}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_BALANCE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
 				<reportElement mode="Opaque" x="455" y="0" width="35" height="20" backcolor="#CCCCFF" uuid="b930feeb-6be0-4b41-ae01-4a3a14422494"/>
