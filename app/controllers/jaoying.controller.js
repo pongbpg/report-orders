@@ -32,16 +32,16 @@ exports.delivery = (req, res) => {
                             .reduce((le, ri) => { return le.add(ri) }).default(0),
                         id: m('reduction')(0)('id'),
                         //     .reduce((le, ri) => { return le.add(',').add(ri) }),
-                        // list: m('reduction').pluck('id', 'product', 'bank', 'price')
-                        //     .map(m2 => {
-                        //         return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
-                        //             .add(m2('product').map(m3 => { return m3('code').add('=', m3('amount').coerceTo('string'), 'ตัว') })
-                        //                 .reduce((le, ri) => {
-                        //                     return le.add(',', ri)
-                        //                 })
-                        //             )
-                        //     })
-                        //     .reduce((le, ri) => { return le.add('\n').add(ri) }),
+                        list: m('reduction').pluck('id', 'product', 'bank', 'price')
+                            .map(m2 => {
+                                return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
+                                    .add(m2('product').map(m3 => { return m3('code').add(':',m3('name'),' ', m3('amount').coerceTo('string'), 'ตัว') })
+                                        .reduce((le, ri) => {
+                                            return le.add(',', ri)
+                                        })
+                                    )
+                            })
+                            .reduce((le, ri) => { return le.add('\n').add(ri) }),
                         // price: m('reduction').getField('price')
                         //     .reduce((le, ri) => { return le.coerceTo('string').add(',').add(ri.coerceTo('string')) }),
                     }
@@ -50,20 +50,20 @@ exports.delivery = (req, res) => {
                 .run()
                 .then(result => {
                     // res.json(result)
-                    orders = result.map(order => {
-                        const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nจำนวน ${order.amount} ตัว\nFB:${order.fb}`;
+                    result.map(order => {
+
+                        const text = `${index + 1}. ${order.name} (${order.amount})\nโทร.${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}\n${req.query.detail == 'show' ? order.list : ''}`;
                         // console.log(index,text)
-                        // if (index % 2 == 0) {
-                        // obj.col1 = text
-                        // } else {
-                        //     obj.col2 = text
-                        // }
-                        // if (obj.col2 || (index + 1) == result.length) {
-                        // orders.push(obj)
-                        //     obj = {};
-                        // }
+                        if (index % 2 == 0) {
+                            obj.col1 = text
+                        } else {
+                            obj.col2 = text
+                        }
+                        if (obj.col2 || (index + 1) == result.length) {
+                            orders.push(obj)
+                            obj = {};
+                        }
                         index++;
-                        return {col1:text}
                     })
                     // res.json(orders)
                     res.ireport("delivery2.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
@@ -107,9 +107,13 @@ exports.dailyStatement = (req, res) => {
                                     }
                                 }
                             })
-                            r.expr(orders)
-                                .orderBy('bank', 'orderDate', 'time')
-                                .pluck('bank', 'orderDate', 'time', 'page', 'price', 'id', 'name', 'tel', 'orderTime')
+                            var expr = r.expr(orders)
+                                .orderBy('bank', 'orderDate', 'time');
+                            if (req.query.order == 'id') {
+                                expr = r.expr(orders)
+                                    .orderBy('bank', 'id')
+                            }
+                            expr.pluck('bank', 'orderDate', 'time', 'fb', 'price', 'id', 'name', 'tel', 'orderTime')
                                 .run()
                                 .then(result => {
                                     const datas = result.map(m => {
@@ -120,7 +124,7 @@ exports.dailyStatement = (req, res) => {
                                         }
                                     })
 
-                                    res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                    res.ireport("dailyStatement2.jrxml", req.query.file || "pdf", datas, {
                                         OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
