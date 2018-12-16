@@ -25,20 +25,23 @@ exports.delivery = (req, res) => {
                         tel: m('group'),
                         name: m('reduction')(0)('name'),
                         addr: m('reduction')(0)('addr'),
-                        // product: m('reduction').getField('product')
-                        //     .reduce((le, ri) => { return le.add(ri) }).default([]),
+                        fb: m('reduction')(0)('fb'),
+                        amount: m('reduction').getField('product')//.pluck('amount')
+                            .map(m2 => { return m2('amount') })
+                            .reduce((le, ri) => { return le.add(ri) })
+                            .reduce((le, ri) => { return le.add(ri) }).default(0),
                         id: m('reduction')(0)('id'),
                         //     .reduce((le, ri) => { return le.add(',').add(ri) }),
-                        list: m('reduction').pluck('id', 'product', 'bank', 'price')
-                            .map(m2 => {
-                                return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
-                                    .add(m2('product').map(m3 => { return r.expr('แบบ ').add(m3('code'), '=', m3('amount').coerceTo('string'), 'ตัว') })
-                                        .reduce((le, ri) => {
-                                            return le.add(',', ri)
-                                        })
-                                    )
-                            })
-                            .reduce((le, ri) => { return le.add('\n').add(ri) }),
+                        // list: m('reduction').pluck('id', 'product', 'bank', 'price')
+                        //     .map(m2 => {
+                        //         return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
+                        //             .add(m2('product').map(m3 => { return m3('code').add('=', m3('amount').coerceTo('string'), 'ตัว') })
+                        //                 .reduce((le, ri) => {
+                        //                     return le.add(',', ri)
+                        //                 })
+                        //             )
+                        //     })
+                        //     .reduce((le, ri) => { return le.add('\n').add(ri) }),
                         // price: m('reduction').getField('price')
                         //     .reduce((le, ri) => { return le.coerceTo('string').add(',').add(ri.coerceTo('string')) }),
                     }
@@ -47,22 +50,23 @@ exports.delivery = (req, res) => {
                 .run()
                 .then(result => {
                     // res.json(result)
-                    result.map(order => {
-                        const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr}\n${order.list}`;
+                    orders = result.map(order => {
+                        const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nจำนวน ${order.amount} ตัว\nFB:${order.fb}`;
                         // console.log(index,text)
-                        if (index % 2 == 0) {
-                            obj.col1 = text
-                        } else {
-                            obj.col2 = text
-                        }
-                        if (obj.col2 || (index + 1) == result.length) {
-                            orders.push(obj)
-                            obj = {};
-                        }
+                        // if (index % 2 == 0) {
+                        // obj.col1 = text
+                        // } else {
+                        //     obj.col2 = text
+                        // }
+                        // if (obj.col2 || (index + 1) == result.length) {
+                        // orders.push(obj)
+                        //     obj = {};
+                        // }
                         index++;
+                        return {col1:text}
                     })
-                    // res.json(result)
-                    res.ireport("delivery.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
+                    // res.json(orders)
+                    res.ireport("delivery2.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
                 })
 
             // res.json(orderx)
@@ -70,6 +74,71 @@ exports.delivery = (req, res) => {
         })
 
 }
+exports.dailyStatement = (req, res) => {
+    async function getDailyStatement() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+
+                    db.collection('orders')
+                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .get()
+                        .then(snapShot => {
+                            let orders = []
+                            snapShot.forEach(doc => {
+                                const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                const time = doc.data().bank.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                const timestamp = new Date(doc.data().timestamp.toMillis());
+                                let orderTime = twoDigit(timestamp.getHours()) + '.' + twoDigit(timestamp.getMinutes());
+                                if (bank != null) {
+                                    if (['CM', 'COD'].indexOf(bank[0]) == -1) {
+                                        // console.log(doc.data().timestamp)
+                                        orders.push({
+                                            id: doc.id,
+                                            ...doc.data(),
+                                            bank: bank[0],
+                                            time: time[0],
+                                            orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                            orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate
+                                        })
+                                    }
+                                }
+                            })
+                            r.expr(orders)
+                                .orderBy('bank', 'orderDate', 'time')
+                                .pluck('bank', 'orderDate', 'time', 'page', 'price', 'id', 'name', 'tel', 'orderTime')
+                                .run()
+                                .then(result => {
+                                    const datas = result.map(m => {
+                                        const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                        return {
+                                            ...m,
+                                            orderDate: moment(orderDate).format('ll')
+                                        }
+                                    })
+
+                                    res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                        OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        START_DATE: moment(req.query.startDate).format('LL'),
+                                        END_DATE: moment(req.query.endDate).format('LL'),
+                                    });
+                                    // res.json(result)
+                                })
+                        })
+                } else {
+                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                }
+            })
+    }
+
+    getDailyStatement();
+
+
+}
+
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
         decimalCount = Math.abs(decimalCount);
