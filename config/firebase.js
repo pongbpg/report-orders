@@ -14,7 +14,26 @@ admin.initializeApp({
     }),
     databaseURL: 'https://bot-orders.firebaseio.com'
 });
-var db = admin.firestore();
+var jyDB = admin.initializeApp({
+    credential: admin.credential.cert({
+        "type": "service_account",
+        "project_id": "jaoyingdb",
+        "private_key_id": "2cf451d3de9be259c04fd265f48cfb3982f4b66d",
+        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCuGECaVFsAFX0e\njtkBHJDraGf0zUUN/dzLsR4qRQ0wyeHSCs4tSC5CxJb2HVAxQeuHhCWtfvbnDbZ4\npRyEdX9QvlgfpiYJ82YJ2ZpMMKUbD4gL39tNLqp4+eKrGITg90T5JiFehouiOURP\n9nMkLSIkIInlIf6Blmzc3iGmVquh/LZOORAhjUKBhG8dj7H7zH3b9hz0WPOYhnZU\nX4pmOSCgMBKHOL9nLFcPVpdayl8d/WfyMP1QO4I5UMvXy92kbp5LfZ8ZEIP8IybR\nWvbzd/DFZhuvRR0nlyJ1khSxb+OioyWLAzxpUUfuOIdxtcMgjMYRNKvp/eRDo2+1\n9irThfdbAgMBAAECggEAUUZiNopGF4JwsIjotxOidjv+ODNyVwdagj90QTCOaWX+\nRiQkP9CQRDxp64kgzHYlYlUnj9kTpCdrNeSDLTV7U/MgydmzrXaTfuq3FXWqRrlX\n/o8p3tz32dVy5ARk2G+npBcQggQXAQtyIFCCTXPCmhIUvkNCATZ8KRqMpA6XPt4p\nUOSNenN64rP8BzGdc1nLKFQ6MEjHJFfEfiNlEiwIp9QKW2yME8qIjnjFhSuZdIua\n0BYJ8UWvBP7QApEroZBVIthbcF/00TvWBlsBBNqOEv+75pNEAesUior+hwDFjOn/\n+r+XnDQODym5pHWeAk6OLO4j3r2CfN1Vl7N3ZY2iJQKBgQDmbFkIwsQ1LNTigbFl\nsS2PCwwgoc2/PZV60e5w+4AZqaDkHXW8xAkOOepR++283LdgP+WCavONo9Tp1qXv\n88L/q0aPLTtEmykI4l0T6SsO+no1H2sfCX5pwsv1MWEausoprPrIuwHQJ4P6kcbr\npTKfO6E0mf2h8DfSD09AHOAwBQKBgQDBa0mKcoDMUNeScHhvGXlJ4DGM7vPzUeBN\nwZLWpDvwN8nnvmJ6NwLd7OT9TL7qnz7dXW98/kKrRumoJnKkUvyiQGXMmtShh3gg\nHaWyelqUbKuXQS1Yr+/X+VwUh+H/qMqn5VDr+Fi6bHQsohaoUx81c7S4GvIA6n4Q\n4mXYDvwH3wKBgBoZRZBfdxfKxyYMqIorIkzkZHBBw2sYz5iEtKwpYF4Hv4h26cIC\ntj/dQXQdw9SzbzXApv85m/J8Dv6ZaFwgUQLiZHCNH/xqUqCF+yLpMw5UQolH0LtI\nOQBDpxRTjnsXkxRbWmBoBhGMmD9GSbChGnW8rEqn8nloGvp473IEk0P9AoGAVS4o\nnv46VsCrj2RUxajUT4Kaj9SUPu4p+FRtlHWTqAEJvDOOLwCXFKFFX4Ay/CTRjK+f\nb86SEdgTAuibyF57wADYVDlDtzdv4cTsuiNETOVm1B/yFoK0/8pjkO8eynbNeQ92\nidU/TiqBJz7i95JTxjiEuCe1uE2M42axL2u59sUCgYAYJK41LCTnxEvYSXLSmeQj\nuoxUKhn9CbL3NfUhzUH923BKOJK5epDtDxRP8PWv2k5EkvsrOZw5H/v0CLFXpmiN\n0Vr/LoxocOC75m7IQjqZWYqp8dqJ0ndu4Uqf4SDzqFicru3uUCyURjAPas06qS/h\n8An3kdg5H6D0XeFsNJLn0w==\n-----END PRIVATE KEY-----\n",
+        "client_email": "firebase-adminsdk-leda9@jaoyingdb.iam.gserviceaccount.com",
+        "client_id": "105580220196218695728",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-leda9%40jaoyingdb.iam.gserviceaccount.com"
+    }),
+    databaseURL: 'https://jaoyingdb.firebaseio.com'
+}, "jaoyingdb");
+var topslimDB = admin.firestore();
+var jaoyingDB = jyDB.firestore();
 const settings = {/* your settings... */ timestampsInSnapshots: true };
-db.settings(settings);
-module.exports = db;
+topslimDB.settings(settings);
+jaoyingDB.settings(settings);
+
+exports.topslim = topslimDB;
+exports.jaoying = jaoyingDB;

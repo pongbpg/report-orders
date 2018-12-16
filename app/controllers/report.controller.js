@@ -1,5 +1,5 @@
 const moment = require('moment');
-const db = require('../../config/firebase');
+const db = require('../../config/firebase').topslim;
 moment.locale('th');
 exports.delivery = (req, res) => {
     db.collection('orders')
