@@ -1,5 +1,6 @@
 const moment = require('moment');
 const db = require('../../config/firebase').topslim;
+const admin = require('firebase-admin');
 moment.locale('th');
 exports.delivery = (req, res) => {
     db.collection('orders')
@@ -310,7 +311,7 @@ exports.dailyCost = (req, res) => {
     async function getDailyCost() {
         let pages = [];
         let admins = [];
-        let products = [];
+        // let products = [];
         let costs = [];
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
@@ -319,11 +320,11 @@ exports.dailyCost = (req, res) => {
             })
             pages = admins.filter(f => f.page.indexOf('@') == -1)
         })
-        await db.collection('products').get().then(snapShot => {
-            snapShot.forEach(doc => {
-                products.push({ id: doc.id, ...doc.data() })
-            })
-        })
+        // await db.collection('products').get().then(snapShot => {
+        //     snapShot.forEach(doc => {
+        //         products.push({ id: doc.id, ...doc.data() })
+        //     })
+        // })
         await db.collection('costs')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
@@ -366,7 +367,7 @@ exports.dailyCost = (req, res) => {
                                 product: doc.data().product.map(m => {
                                     return {
                                         ...m,
-                                        cost: products.find(f => f.id == m.code).cost * m.amount
+                                        cost: m.cost * m.amount//products.find(f => f.id == m.code).cost * m.amount
                                     }
                                 }),
                                 page: doc.data().page.replace('@', '')
@@ -428,7 +429,7 @@ exports.dailyCost = (req, res) => {
                             .do(d => {
                                 return d('results').map(m => {
                                     return d('orders').filter({ orderDate: m('orderDate'), page: m('page') })
-                                        .merge(m.pluck('adsFb', 'adsLine','delivery', 'ads', 'team'))
+                                        .merge(m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team'))
                                 }).reduce((le, ri) => {
                                     return le.add(ri)
                                 }).default([])
@@ -584,70 +585,47 @@ exports.dailySale = (req, res) => {
 }
 exports.dailyProduct = (req, res) => {
     var r = req.r;
-    async function asyncFunc() {
-        let orders = [], products = [];
-        await db.collection('products').get().then(snapShot => {
+    let orders = [];
+    db.collection('orders')
+        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+        .get()
+        .then(snapShot => {
+            const pages = [req.query.page, '@' + req.query.page]
             snapShot.forEach(doc => {
-                products.push({ id: doc.id, ...doc.data() })
+                if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
+                    orders.push({ id: doc.id, ...doc.data() })
+                }
             })
-        })
-        await db.collection('orders')
-            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-            .get()
-            .then(snapShot => {
-                const pages = [req.query.page, '@' + req.query.page]
-                snapShot.forEach(doc => {
-                    if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
-                        orders.push({ id: doc.id, ...doc.data() })
-                    }
-                })
-            })
-        return {
-            orders,
-            products
-        }
-    }
-    asyncFunc()
-        .then(result => {
-            r.expr(result)
+            r.expr(orders)
                 .merge(m => {
                     return {
-                        orders: m('orders').map(m2 => {
+                        product: m('product').merge(m3 => {
                             return {
-                                product: m2('product').merge(m3 => {
-                                    return {
-                                        fb: r.branch(m2('page').match('@').eq(null), true, false),
-                                    }
-                                }).without('name'),
+                                claim: r.branch(m('bank').match('CM').eq(null), false, true),
+                                cost: m3('cost').mul(m3('amount'))
                             }
                         })
-                            .getField('product')
-                            .reduce((le, ri) => {
-                                return le.add(ri)
-                            }).default([])
-                            .group('code')
-                            .ungroup()
-                            .map(m2 => {
-                                return {
-                                    code: m2('group'),
-                                    amountFb: m2('reduction')
-                                        .filter({ fb: true }).sum('amount'),
-                                    amountLine: m2('reduction').filter({ fb: false }).sum('amount'),
-                                    amount: m2('reduction').sum('amount'),
-                                    priceFb: m('orders').filter(f => {
-                                        return f('page').match('@').eq(null)
-                                    }).sum('price'),
-                                    priceLine: m('orders').filter(f => {
-                                        return f('page').match('@').ne(null)
-                                    }).sum('price'),
-                                    price: m('orders').sum('price'),
-                                    name: m('products').filter({ id: m2('group') })(0)('name')
-                                }
-                            }),
                     }
                 })
-                .getField('orders')
+                .getField('product')
+                .reduce((le, ri) => {
+                    return le.add(ri)
+                }).default([])
+                .group('code')
+                .ungroup()
+                .map(m => {
+                    return {
+                        code: m('group'),
+                        amountSale: m('reduction').filter({ claim: false }).sum('amount'),
+                        amountCm: m('reduction').filter({ claim: true }).sum('amount'),
+                        amount: m('reduction').sum('amount'),
+                        costSale: m('reduction').filter({ claim: false }).sum('cost'),
+                        costCm: m('reduction').filter({ claim: true }).sum('cost'),
+                        cost: m('reduction').sum('cost'),
+                        name: m('reduction')(0)('name')
+                    }
+                })
                 .orderBy(r.desc('amount'))
                 .run()
                 .then(datas => {
@@ -821,19 +799,18 @@ exports.costClaim = (req, res) => {
             })
         })
         db.collection('orders')
-            .where('orderDate', '>=', '20181101')
-            .where('orderDate', '<=', '20181130')
+            // .where('orderDate', '>=', '20')
+            // .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
             .get()
             .then(snapShot => {
                 let orders = []
                 snapShot.forEach(doc => {
-                    if (doc.data().bank.indexOf('CM') > -1)
-                        orders.push(doc.data().product.map(m => {
-                            return products.find(f => f.id == m.code).cost * m.amount
-                        }).reduce((le, ri) => le + ri)
-                        )
+                    // if (doc.data().bank.indexOf('CM') > -1)
+                    // db.collection('orders').doc(doc.id).update({ product2: admin.firestore.FieldValue.delete() })
+                    orders.push(doc.id)
+                    // )
                 })
-                res.json(orders.reduce((le, ri) => le + ri))
+                res.json(orders)
             })
     }
     test()

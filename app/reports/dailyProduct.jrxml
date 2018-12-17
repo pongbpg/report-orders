@@ -10,20 +10,29 @@
 	<parameter name="PAGE" class="java.lang.String"/>
 	<field name="code" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
-	<field name="amountFb" class="java.lang.Integer"/>
-	<field name="amountLine" class="java.lang.Integer"/>
+	<field name="amountSale" class="java.lang.Integer"/>
+	<field name="amountCm" class="java.lang.Integer"/>
 	<field name="amount" class="java.lang.Integer"/>
-	<field name="priceFb" class="java.lang.Double"/>
-	<field name="priceLine" class="java.lang.Double"/>
-	<field name="price" class="java.lang.Double"/>
-	<variable name="SUM_AMOUNTFB" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{amountFb}]]></variableExpression>
+	<field name="costSale" class="java.lang.Double"/>
+	<field name="costCm" class="java.lang.Double"/>
+	<field name="cost" class="java.lang.Double"/>
+	<variable name="SUM_AMOUNTSALE" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountSale}]]></variableExpression>
 	</variable>
-	<variable name="SUM_AMOUNTLINE" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{amountLine}]]></variableExpression>
+	<variable name="SUM_AMOUNTCM" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountCm}]]></variableExpression>
 	</variable>
 	<variable name="SUM_AMOUNT" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COSTSALE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{costSale}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COSTCM" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{costCm}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COST" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cost}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -69,11 +78,11 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[จำนวนสินค้า (ชิ้น)]]></text>
+				<text><![CDATA[จำนวน (ชิ้น)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="225" y="20" width="50" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="53fa3749-9214-4544-a6e1-2b91b5717167"/>
-				<box leftPadding="5" rightPadding="5">
+				<box rightPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -82,11 +91,11 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[FB]]></text>
+				<text><![CDATA[ขาย]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="275" y="20" width="50" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="db3cdd48-f40b-4828-8ece-7d0000ea47bb"/>
-				<box leftPadding="5" rightPadding="5">
+				<box rightPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -95,7 +104,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[LINE]]></text>
+				<text><![CDATA[เคลม]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="375" y="0" width="180" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="568c0536-3b2a-4e2d-b8d8-e3b3c0da8860"/>
@@ -108,11 +117,11 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ยอดขาย (บาท)]]></text>
+				<text><![CDATA[ต้นทุน (บาท)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="375" y="20" width="60" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="3086ecdb-0307-4bbb-bef4-cac126fde8dd"/>
-				<box leftPadding="5" rightPadding="5">
+				<box rightPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -121,11 +130,11 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[FB]]></text>
+				<text><![CDATA[ขาย]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="435" y="20" width="60" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="03d53d61-5fe4-4373-86d3-484d25f108db"/>
-				<box leftPadding="5" rightPadding="5">
+				<box rightPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -134,11 +143,11 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[LINE]]></text>
+				<text><![CDATA[เคลม]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="325" y="20" width="50" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="a27223aa-cba1-43af-bd50-00326072eca1"/>
-				<box>
+				<box rightPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -151,7 +160,7 @@
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="495" y="20" width="60" height="20" forecolor="#000000" backcolor="#CCCCFF" uuid="6e9036c0-ab52-4a3a-8302-de71a1f1cc15"/>
-				<box>
+				<box rightPadding="0">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -168,7 +177,7 @@
 		<band height="20">
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="225" height="20" uuid="b9fe25a5-6a1f-42de-bdb2-1e4c4f12447b"/>
-				<box leftPadding="10">
+				<box leftPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -190,7 +199,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{amountFb}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{amountSale}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
 				<reportElement stretchType="RelativeToBandHeight" x="275" y="0" width="50" height="20" uuid="f7b01fd8-2e97-44b2-bdec-32362a9ef6e3"/>
@@ -203,7 +212,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{amountLine}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{amountCm}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
 				<reportElement stretchType="RelativeToBandHeight" x="375" y="0" width="60" height="20" uuid="ae674426-b1a5-4ef1-bb91-1822cd0eb4c4"/>
@@ -216,7 +225,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[0]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{costSale}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
 				<reportElement stretchType="RelativeToBandHeight" x="435" y="0" width="60" height="20" uuid="03f63fbc-4a46-40c9-86f5-cad54e1729fe"/>
@@ -229,7 +238,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[0]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{costCm}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
 				<reportElement stretchType="RelativeToBandHeight" x="325" y="0" width="50" height="20" uuid="fc2aa08a-13ad-439f-9d52-b72d10199267"/>
@@ -246,7 +255,7 @@
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
 				<reportElement stretchType="RelativeToBandHeight" x="495" y="0" width="60" height="20" uuid="259d534a-eb05-40c4-b9bf-f126c33241ad"/>
-				<box leftPadding="0" rightPadding="5">
+				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -255,7 +264,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[0]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cost}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -272,7 +281,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{priceLine}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_COSTCM}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement mode="Opaque" x="375" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="ebff80ff-9013-4f70-9440-899d5254a8b0"/>
@@ -285,7 +294,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{priceFb}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_COSTSALE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement mode="Opaque" x="225" y="0" width="50" height="20" backcolor="#CCCCFF" uuid="e8c772d0-cbd4-417f-be27-45cbd22d5ae3"/>
@@ -298,7 +307,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_AMOUNTFB}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_AMOUNTSALE}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement mode="Opaque" x="495" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="e5dce9ed-2408-4fe3-8e40-86d82d2a92d5"/>
@@ -311,7 +320,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_COST}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement mode="Opaque" x="325" y="0" width="50" height="20" backcolor="#CCCCFF" uuid="110c261d-e49e-45c2-bbe8-68419a575260"/>
@@ -337,7 +346,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_AMOUNTLINE}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_AMOUNTCM}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="0" y="0" width="225" height="20" backcolor="#CCCCFF" uuid="fa30e03e-de2b-4dfe-90d8-767bd0d0928c"/>
