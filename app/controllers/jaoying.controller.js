@@ -37,7 +37,7 @@ exports.delivery = (req, res) => {
                                 return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
                                     .add(m2('product').map(m3 => { return m3('code').add(':',m3('name'),' ', m3('amount').coerceTo('string'), 'ตัว') })
                                         .reduce((le, ri) => {
-                                            return le.add(',', ri)
+                                            return le.add(',\n', ri)
                                         })
                                     )
                             })
