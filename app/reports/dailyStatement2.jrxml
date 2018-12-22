@@ -17,6 +17,7 @@
 	<field name="tel" class="java.lang.String"/>
 	<field name="orderTime" class="java.lang.String"/>
 	<field name="fb" class="java.lang.String"/>
+	<field name="admin" class="java.lang.String"/>
 	<variable name="sum_date_price" class="java.lang.Double" resetType="Group" resetGroup="grp_date" calculation="Sum">
 		<variableExpression><![CDATA[$F{price}]]></variableExpression>
 	</variable>
@@ -69,7 +70,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<text><![CDATA[ลูกค้า]]></text>
+					<text><![CDATA[Admin]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="134" y="62" width="50" height="40" uuid="6e9036c0-ab52-4a3a-8302-de71a1f1cc15"/>
@@ -261,7 +262,7 @@
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="184" y="0" width="121" height="20" uuid="31339678-9d22-4706-8a3f-e4ea0f1608d7"/>
-				<box leftPadding="0" rightPadding="5">
+				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
@@ -283,7 +284,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{admin}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="405" y="0" width="70" height="20" uuid="358fd226-ce60-4a1a-b793-32682a38d0af"/>

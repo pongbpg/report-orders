@@ -35,7 +35,7 @@ exports.delivery = (req, res) => {
                         list: m('reduction').pluck('id', 'product', 'bank', 'price')
                             .map(m2 => {
                                 return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
-                                    .add(m2('product').map(m3 => { return m3('code').add(':',m3('name'),' ', m3('amount').coerceTo('string'), 'ตัว') })
+                                    .add(m2('product').map(m3 => { return m3('code').add(':', m3('name'), ' ', m3('amount').coerceTo('string'), 'ตัว') })
                                         .reduce((le, ri) => {
                                             return le.add(',\n', ri)
                                         })
@@ -113,7 +113,7 @@ exports.dailyStatement = (req, res) => {
                                 expr = r.expr(orders)
                                     .orderBy('bank', 'id')
                             }
-                            expr.pluck('bank', 'orderDate', 'time', 'fb', 'price', 'id', 'name', 'tel', 'orderTime')
+                            expr.pluck('bank', 'orderDate', 'time', 'fb', 'price', 'id', 'name', 'admin', 'tel', 'orderTime')
                                 .run()
                                 .then(result => {
                                     const datas = result.map(m => {
