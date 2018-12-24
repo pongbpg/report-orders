@@ -7,12 +7,12 @@
 	<import value="nylon.report.*"/>
 	<field name="col1" class="java.lang.String"/>
 	<field name="col2" class="java.lang.String"/>
-	<group name="grpCol1" minHeightToStartNewPage="80">
+	<group name="grpCol1" minHeightToStartNewPage="120">
 		<groupExpression><![CDATA[$F{col1}]]></groupExpression>
 		<groupHeader>
-			<band height="80">
+			<band height="120">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="80" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="120" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
 					<box topPadding="5" leftPadding="10" bottomPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -20,12 +20,12 @@
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement verticalAlignment="Top">
-						<font fontName="TH SarabunPSK" size="18" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<font fontName="TH SarabunPSK" size="17" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="80" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="120" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
 					<box topPadding="5" leftPadding="10" bottomPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -33,7 +33,7 @@
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement verticalAlignment="Top">
-						<font fontName="TH SarabunPSK" size="18" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<font fontName="TH SarabunPSK" size="17" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{col2}]]></textFieldExpression>
 				</textField>
