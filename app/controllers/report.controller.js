@@ -258,17 +258,13 @@ exports.comAdmin = (req, res) => {
                                 .map(m => {
                                     return m('group').pluck('page').merge({
                                         admin: m('reduction')(0)('admin'),
-                                        price: m('reduction').sum('price'),
-                                        delivery: m('reduction').sum('delivery')
+                                        price: m('reduction').sum('price')
                                     })
                                 })
                                 .do(d => {
                                     return d.merge(m => {
                                         return {
-                                            sumPage: d.filter({ page: m('page') }).sum('price')
-                                                .sub(
-                                                    d.filter({ page: m('page') }).sum('delivery')
-                                                ),
+                                            sumPage: d.filter({ page: m('page') }).sum('price'),
                                         }
                                     }).merge(m => {
                                         return {
@@ -286,7 +282,7 @@ exports.comAdmin = (req, res) => {
                                     })
                                         .merge(m => {
                                             return {
-                                                com: m('rate').mul(m('price').sub(m('delivery')))
+                                                com: m('rate').mul(m('price'))
                                             }
                                         })
                                 })
