@@ -52,7 +52,7 @@ exports.delivery = (req, res) => {
                     // res.json(result)
                     result.map(order => {
 
-                        const text = `${index + 1}. ${order.name} (${order.amount})\nโทร.${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}\n${req.query.detail == 'show' ? order.list : ''}`;
+                        const text = `${index + 1}. ${order.name} (${order.amount})\nโทร.${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}${req.query.detail == 'show' ? '\n' + order.list : ''}`;
                         // console.log(index,text)
                         if (index % 2 == 0) {
                             obj.col1 = text
@@ -142,7 +142,233 @@ exports.dailyStatement = (req, res) => {
 
 
 }
+exports.cutoffSale = (req, res) => {
+    var r = req.r;
+    return db.collection('orders')
+        // .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+        // .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+        .where('cutoffDate', '==', req.query.cutoffDate)
+        .get()
+        .then(snapShot => {
+            let orders = []
+            snapShot.forEach(doc => {
+                orders.push({ id: doc.id, ...doc.data() })
+            })
+            r.expr(orders)
+                .group(g => {
+                    return g.pluck('orderDate', 'admin')
+                }).ungroup()
+                .map(m => {
+                    return m('group').merge(m2 => {
+                        return {
+                            // count: m('reduction').count(),
+                            price: m('reduction').sum('price'),
+                            // promote: m('reduction').sum('promote'),
+                            // interest: m('reduction').sum('interest')
+                        }
+                    })
+                })
+                .group(g => {
+                    return g.pluck('orderDate', 'admin')
+                })
+                .ungroup()
+                .map(m => {
+                    return m('group').merge(m2 => {
+                        return {
+                            // priceFb: m('reduction').filter({ fb: true }).sum('price'),
+                            // countFb: m('reduction').filter({ fb: true }).sum('count'),
+                            // promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
+                            // interestFb: m('reduction').filter({ fb: true }).sum('interest'),
+                            // priceLine: m('reduction').filter({ fb: false }).sum('price'),
+                            // countLine: m('reduction').filter({ fb: false }).sum('count'),
+                            // promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
+                            // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
+                            priceAll: m('reduction').sum('price'),
+                            // countAll: m('reduction').sum('count'),
+                            // interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
+                            // interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
+                            // team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
+                            // cc: r.expr(sayhis)
+                        }
+                    })
+                })
+                .do(d => {
+                    return d.merge(m => {
+                        return {
+                            priceX: d.filter({ orderDate: m('orderDate') }).sum('priceAll'),
+                            // countAdmin: d.filter({ orderDate: m('orderDate') }).group('admin').ungroup().count()
+                        }
+                    })
+                })
+                .orderBy('orderDate', r.desc('priceX'), r.desc('priceAll'))
+                .run()
+                .then(result => {
+                    const pages = result.map(m => {
+                        const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                        // console.log(m.page)
+                        return {
+                            ...m,
+                            orderDate: moment(orderDate).format('ll'),
+                            // page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
+                        }
+                    })
 
+                    res.ireport("cutoffSale.jrxml", req.query.file || "pdf", pages, {
+                        OUTPUT_NAME: 'ยอดขายรอบวันที่_' + req.query.cutoffDate,
+                        CUTOFF_DATE: moment(req.query.cutoffDate).format('LL')
+                    });
+                    // res.json(pages)
+                })
+        })
+}
+exports.test = (req, res) => {
+    // res.json(decodeURI(req.body.txt))
+    const txt = decodeURI(req.body.txt);
+    let orders = [];
+    let banks = [];
+    let data = Object.assign(...txt.split('#').filter(f => f != "")
+        .map(m => {
+            if (m.split(':').length == 2) {
+                const dontReplces = ["name", "fb", "bank", "addr"];
+                let key = m.split(':')[0].toLowerCase();
+                switch (key) {
+                    case 'n': key = 'name'; break;
+                    case 't': key = 'tel'; break;
+                    case 'a': key = 'addr'; break;
+                    case 'o': key = 'product'; break;
+                    case 'b': key = 'banks'; break;
+                    // case 'p': key = 'price'; break;
+                    case 'f': key = 'fb'; break;
+                    // case 'l': key = 'fb'; break;
+                    // case 'z': key = 'page'; break;
+                    // case 'd': key = 'delivery'; break;
+                    case 'cutoffdate': key = 'cutoffDate'; break;
+                    default: key;
+                }
+                let value = m.split(':')[1];
+                if (!dontReplces.includes(key)) value = value.replace(/\s/g, '');
+                if (key !== 'addr' && key !== 'fb') value = value.replace(/\n/g, '').toUpperCase();
+                if (key == 'tel') {
+                    value = value.replace(/\D/g, ''); //เหลือแต่ตัวเลข
+                    if (value.length != 10) {
+                        value = 'undefined'
+                    }
+                }
+                if (key !== 'price' && key !== 'delivery') {
+                    value = value.trim();
+                    if (key == 'product') {
+                        const str = value;
+                        // let orders = [];
+                        let arr = str.split(',');
+                        for (var a in arr) {
+                            if (arr[a].split('=').length == 2) {
+                                const code = arr[a].split('=')[0].toUpperCase();
+                                const amount = Number(arr[a].split('=')[1].replace(/\D/g, ''));
+                                const orderIndex = orders.findIndex(f => f.code == code);
+                                if (orderIndex > -1 && amount > 0) {
+                                    orders[orderIndex]['amount'] = orders[orderIndex]['amount'] + amount
+                                } else {
+                                    orders.push({
+                                        code,
+                                        amount,
+                                        name: ''
+                                    })
+                                }
+                            } else {
+                                const orderIndex = orders.findIndex(f => f.code == 'รหัสสินค้า');
+                                if (orderIndex > -1) {
+
+                                } else {
+                                    orders.push({
+                                        code: 'รหัสสินค้า',
+                                        amount: 'undefined'
+                                    })
+                                }
+                            }
+                        }
+                        value = orders
+                    } else if (key == 'name') {
+                        if (value.length < 2) {
+                            value = 'undefined';
+                        }
+                    } else if (key == 'banks') {
+                        const str = value;
+                        let arr = str.split(',');
+                        for (var a in arr) {
+                            if (arr[a].split('=').length == 2) {
+                                const bank1 = arr[a].split('=')[0].toUpperCase();
+                                let price = Number(arr[a].split('=')[1].replace(/\D/g, ''));
+                                let bank = '';
+                                let time = '00.00';
+                                if (bank1.match(/[a-zA-Z]+/g, '') == null) {
+                                    bank = 'ธนาคาร';
+                                    time = 'undefined';
+                                }
+                                if (bank1.match(/\d{2}\.\d{2}/g) == null && ['COD', 'CM'].indexOf(bank1) == -1) {
+                                    bank = bank1.match(/[a-zA-Z]+/g, '')[0];
+                                    time = 'เวลาโอน';
+                                    price = 'undefined';
+                                }
+                                if (time != 'undefined' && price != 'undefined') {
+                                    bank = bank1.match(/[a-zA-Z]+/g, '')[0];
+                                    time = ['COD', 'CM'].indexOf(bank1) == -1 ? bank1.match(/\d{2}\.\d{2}/g)[0] : time;
+                                }
+                                banks.push({
+                                    bank,
+                                    time,
+                                    price
+                                })
+                            } else {
+                                banks.push({
+                                    bank: 'ธนาคาร',
+                                    price: 'undefined'
+                                })
+                            }
+                        }
+                        value = banks
+                    }
+                } else {
+                    value = Number(value.replace(/\D/g, ''));
+                }
+                return { [key]: value };
+            }
+        })
+    );
+    data.price = data.banks.map(b => b.price).reduce((le, ri) => le + ri)
+    // data = data.map(m => {
+    //     return {
+    //         ...m,
+    //         price: m.banks//.map(b => b.price).reduce((le, ri) => le + ri)
+    //     }
+    // })
+    res.json(data)
+    // const refs = orders.map(order => db.collection('products').doc(order.code));
+    // db.getAll(...refs)
+    //     .then(snapShot => {
+    //         let products = [];
+    //         snapShot.forEach(doc => {
+    //             if (doc.exists)
+    //                 products.push({ id: doc.id, ...doc.data() })
+    //         })
+    //         for (var order in data.product) {
+    //             const code = data.product[order]['code'];
+    //             const amount = data.product[order]['amount'];
+    //             const product = products.find(f => f.id === data.product[order]['code'])
+    //             if (product) {
+    //                 if (product.amount >= amount) {
+    //                     data.product[order]['name'] = product.name;
+    //                 } else {
+    //                     data.product[order]['code'] = code + `เหลือเพียง${product.amount}ชิ้น`;
+    //                     data.product[order]['amount'] = 'undefined';
+    //                 }
+    //             } else {
+    //                 data.product[order]['code'] = ' รหัส' + code + 'ไม่มีในรายการสินค้า';
+    //                 data.product[order]['amount'] = 'undefined';
+    //             }
+    //         }
+    //         res.json(data)
+    //     })
+}
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
         decimalCount = Math.abs(decimalCount);

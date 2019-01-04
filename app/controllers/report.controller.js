@@ -789,32 +789,83 @@ exports.excel = (req, res) => {
     callback();
     res.json(true)
 }
-exports.costClaim = (req, res) => {
-
-    async function test() {
-        let products = [];
-        await db.collection('products').get().then(snapShot => {
+exports.cod = (req, res) => {
+    db.collection('orders')
+        .where('orderDate', '>=', '20181201')
+        .where('orderDate', '<=', '20181231')
+        .where('bank', '==', 'COD')
+        .get()
+        .then(snapShot => {
+            let cost = 0;
             snapShot.forEach(doc => {
-                products.push({ id: doc.id, ...doc.data() })
+                // if (doc.data().bank.indexOf('COD') > -1) {
+                    cost += 70;
+                // }
             })
+            res.json(cost)
         })
-        db.collection('orders')
-            // .where('orderDate', '>=', '20')
-            // .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-            .get()
-            .then(snapShot => {
-                let orders = []
-                snapShot.forEach(doc => {
-                    // if (doc.data().bank.indexOf('CM') > -1)
+}
+exports.infoCustomer = (req, res) => {
+    var r = req.r;
+    db.collection('orders')
+        .limit(100)
+        .get()
+        .then(snapShot => {
+            let orders = []
+            snapShot.forEach(doc => {
+                if (doc.data().bank.indexOf('CM') == -1)
                     // db.collection('orders').doc(doc.id).update({ product2: admin.firestore.FieldValue.delete() })
-                    orders.push(doc.id)
-                    // )
-                })
-                res.json(orders)
+                    orders.push({
+                        id: doc.id,
+                        ...doc.data(),
+                        page: doc.data().page.replace('@', ''),
+                        source: doc.data().page.indexOf('@') > -1 ? 'LINE' : 'FACEBOOK',
+                        postcode: doc.data().addr.match(/\d{5}/g) == null ? '' : doc.data().addr.match(/\d{5}/g)[0]
+                    })
+                // )
             })
-    }
-    test()
+            r.expr(orders)
+                .group(g => {
+                    return g.pluck('page')
+                })
+                .ungroup()
+                .map(m => {
+                    return m('group').merge({
+                        reduction: m('reduction').group('tel').ungroup()
+                            .map(m2 => {
+                                return {
+                                    phone: r.expr("'", m2('group')),
+                                    value: m2('reduction').sum('price'),
+                                    social: m2('reduction')(0)('fb'),
+                                    zip: m2('reduction')(0)('postcode'),
+                                    name: m2('reduction')(0)('name'),
+                                    source: m2('reduction')(0)('source')
+                                }
+                            })
+                            .orderBy(r.desc('value'))
+                    })
+                })
+                .run()
+                .then(result => {
+                    // res.json(result);
+                    const XLSX = require('xlsx');
+                    // /* create workbook & set props*/
+                    const wb = { SheetNames: [], Sheets: {} };
 
+                    // // /* create file 'in memory' */
+                    for (var prop in result) {
+                        var ws = XLSX.utils.json_to_sheet(result[prop]['reduction']);
+                        XLSX.utils.book_append_sheet(wb, ws, result[prop]['page']);
+                    }
+                    // // res.json(ws);
+                    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+                    var filename = "topslim_customer.xlsx";
+                    res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                    res.type('application/octet-stream');
+                    res.send(wbout);
+                })
+        })
 }
 exports.movePage = (req, res) => {
     db.collection('orders').where('userId', '==', 'U45b67ab5094188b650a0ef2c07773e42')
