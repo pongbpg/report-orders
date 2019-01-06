@@ -23,9 +23,9 @@ exports.delivery = (req, res) => {
                 .map(m => {
                     return {
                         tel: m('group'),
-                        name: m('reduction')(0)('name'),
-                        addr: m('reduction')(0)('addr'),
-                        fb: m('reduction')(0)('fb'),
+                        name: m('reduction')(m('reduction').count().sub(1))('name'),
+                        addr: m('reduction')(m('reduction').count().sub(1))('addr'),
+                        fb: m('reduction')(m('reduction').count().sub(1))('fb'),
                         amount: m('reduction').getField('product')//.pluck('amount')
                             .map(m2 => { return m2('amount') })
                             .reduce((le, ri) => { return le.add(ri) })
@@ -368,6 +368,32 @@ exports.test = (req, res) => {
     //         }
     //         res.json(data)
     //     })
+}
+exports.test2 = (req, res) => {
+    const r = req.r;
+    db.collection('orders')
+        .where('cutoffDate', '==', '20190104')
+        .where('tel', '==', '0881883434')
+        .get()
+        .then(snapShot => {
+            let orders = [];
+            snapShot.forEach(doc => {
+                orders.push({ id: doc.id, ...doc.data() })
+            })
+            const len = orders.length - 1;
+            const data = 'ชื่อ: ' + orders[len].name +
+                '\nโทร: ' + orders[len].tel +
+                '\nที่อยู่: ' + orders[len].addr +
+                '\nFB: ' + orders[len].fb +
+                '\nรายการสั่งซื้อ' + orders.map((order, i) => {
+                    return '\n#' + (i + 1) + ' ' + order.id +
+                        order.product.map(product => {
+                            return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'
+                        }) + '\n' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'
+                }) +
+                '\nยอดรวม: ' + formatMoney(orders.map(order => order.price).reduce((le, ri) => le + ri), 0) + ' บาท'
+            res.json(data)
+        })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {

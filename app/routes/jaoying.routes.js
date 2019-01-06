@@ -9,6 +9,6 @@ module.exports = function (app) {
     app.get('/dailyStatement', ctrl.dailyStatement);
     // app.get('/dailyCost', ctrl.dailyCost);
     // app.get('/com/admin', ctrl.comAdmin);
-    // app.post('/test', ctrl.test);
+    // app.get('/test', ctrl.test2);
     // app.get('/counter', ctrl.counterPage);
 }
