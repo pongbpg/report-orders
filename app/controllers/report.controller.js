@@ -427,12 +427,24 @@ exports.dailyCost = (req, res) => {
                                 }
                             })
                             .do(d => {
-                                return d('results').map(m => {
-                                    return d('orders').filter({ orderDate: m('orderDate'), page: m('page') })
-                                        .merge(m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team'))
-                                }).reduce((le, ri) => {
-                                    return le.add(ri)
-                                }).default([])
+                                return d('results').merge(m => {
+                                    return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
+                                        .merge(m2 => {
+                                            var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
+                                            return r.branch(x.count().ge(1), x(0), {
+                                                costFb: 0,
+                                                costLine: 0,
+                                                costCm: 0,
+                                                cost: 0,
+                                                priceFb: 0,
+                                                priceLine: 0,
+                                                price: 0,
+                                            })
+                                        })
+                                })
+                                // .reduce((le, ri) => {
+                                //     return le.add(ri)
+                                // }).default([])
                             })
                             .merge(m => {
                                 return {
@@ -799,7 +811,7 @@ exports.cod = (req, res) => {
             let cost = 0;
             snapShot.forEach(doc => {
                 // if (doc.data().bank.indexOf('COD') > -1) {
-                    cost += 70;
+                cost += 70;
                 // }
             })
             res.json(cost)
