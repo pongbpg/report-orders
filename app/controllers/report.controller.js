@@ -23,7 +23,7 @@ exports.delivery = (req, res) => {
                 return aName > bName ? 1 : -1;
             }).map(order => {
                 // const data = doc.data();
-                const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank} ${formatMoney(order.price, 0)} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
+                const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
                 if (index % 2 == 0) {
                     obj.col1 = text
                 } else {
@@ -666,12 +666,20 @@ exports.dailyBank = (req, res) => {
                             .then(snapShot => {
                                 let orders = []
                                 snapShot.forEach(doc => {
-                                    const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
-                                    orders.push({
-                                        id: doc.id,
-                                        ...doc.data(),
-                                        bank: bank == null ? "ลืมใส่" : bank[0]
-                                    })
+
+                                    // orders.push({
+                                    //     id: doc.id,
+                                    //     ...doc.data(),
+                                    //     // bank: bank == null ? "ลืมใส่" : bank[0]
+                                    // })
+                                    for (var i = 0; i < doc.data().banks.length; i++) {
+                                        const bank = doc.data().banks[i].name.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                        orders.push({
+                                            bank: bank == null ? "ลืมใส่" : bank[0],
+                                            price: doc.data().banks[i].price,
+                                            orderDate: doc.data().orderDate
+                                        })
+                                    }
                                 })
                                 r.expr(orders)
                                     .group(g => {
@@ -736,23 +744,40 @@ exports.dailyStatement = (req, res) => {
                             .then(snapShot => {
                                 let orders = []
                                 snapShot.forEach(doc => {
-                                    const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
-                                    const time = doc.data().bank.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                    // const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                    // const time = doc.data().bank.match(/[0-9][0-9][.][0-9][0-9]/g, '');
                                     const timestamp = new Date(doc.data().timestamp.toMillis());
                                     let orderTime = twoDigit(timestamp.getHours()) + '.' + twoDigit(timestamp.getMinutes());
-                                    if (bank != null) {
-                                        if (['CM', 'COD'].indexOf(bank[0]) == -1) {
-                                            // console.log(doc.data().timestamp)
-                                            orders.push({
-                                                id: doc.id,
-                                                ...doc.data(),
-                                                bank: bank[0],
-                                                time: time[0],
-                                                orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
-                                                orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate
-                                            })
+
+                                    // console.log(doc.data().timestamp)
+                                    for (var i = 0; i < doc.data().banks.length; i++) {
+                                        const bank = doc.data().banks[i].name.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                        const time = doc.data().banks[i].time.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                        if (bank != null) {
+                                            if (['CM', 'COD'].indexOf(bank[0]) == -1) {
+                                                orders.push({
+                                                    id: doc.id,
+                                                    // ...doc.data(),
+                                                    bank: bank[0],
+                                                    time: time[0],
+                                                    orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                                    orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate,
+                                                    price: doc.data().banks[i].price,
+                                                    page: doc.data().page,
+                                                    name: doc.data().name,
+                                                    tel: doc.data().tel
+                                                })
+                                            }
                                         }
                                     }
+                                    // orders.push({
+                                    //     id: doc.id,
+                                    //     ...doc.data(),
+                                    //     bank: bank[0],
+                                    //     time: time[0],
+                                    //     orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                    //     orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate
+                                    // })
                                 })
                                 r.expr(orders)
                                     .orderBy('bank', 'orderDate', 'time')
@@ -892,6 +917,32 @@ exports.movePage = (req, res) => {
             res.json(orders)
         })
 }
+// exports.upbanks = (req, res) => {
+//     db.collection('orders')
+//         // .where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
+//         .get()
+//         .then(snapShot => {
+//             // let orders = []
+//             snapShot.forEach(doc => {
+//                 if (doc.data().bank) {
+//                     if (doc.data().bank.indexOf('=') == -1) {
+//                         console.log(doc.id, doc.data())
+//                         db.collection('orders').doc(doc.id).update({
+//                             banks: [
+//                                 {
+//                                     name: doc.data().bank,//.match(/[a-zA-Z]+/g, '') == null ? doc.data().bank : doc.data().bank.match(/[a-zA-Z]+/g, '')[0],
+//                                     time: '00.00',//doc.data().bank.match(/\d\.\d/g) == -1 ? (doc.data().bank.match(/\d{2}\.\d{2}/g) == null ? '00.00' : doc.data().bank.match(/\d{2}\.\d{2}/g)[0]) : '00.00',
+//                                     price: doc.data().price
+//                                 }
+//                             ],
+//                             bank: doc.data().bank + '=' + formatMoney(doc.data().price, 0)
+//                         })
+//                     }
+//                 }
+//             })
+//             res.json(true)
+//         })
+// }
 exports.counterPage = (req, res) => {
     if (req.query.page) {
         const page = req.query.page.toUpperCase();

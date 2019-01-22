@@ -235,7 +235,7 @@ exports.test = (req, res) => {
     let data = Object.assign(...txt.split('#').filter(f => f != "")
         .map(m => {
             if (m.split(':').length == 2) {
-                const dontReplces = ["name", "fb", "bank", "addr"];
+                const dontReplces = ["name", "fb", "addr"];
                 let key = m.split(':')[0].toLowerCase();
                 switch (key) {
                     case 'n': key = 'name'; break;
@@ -248,7 +248,7 @@ exports.test = (req, res) => {
                     // case 'l': key = 'fb'; break;
                     // case 'z': key = 'page'; break;
                     // case 'd': key = 'delivery'; break;
-                    case 'cutoffdate': key = 'cutoffDate'; break;
+                    // case 'cutoffdate': key = 'cutoffDate'; break;
                     default: key;
                 }
                 let value = m.split(':')[1];
@@ -304,29 +304,29 @@ exports.test = (req, res) => {
                             if (arr[a].split('=').length == 2) {
                                 const bank1 = arr[a].split('=')[0].toUpperCase();
                                 let price = Number(arr[a].split('=')[1].replace(/\D/g, ''));
-                                let bank = '';
+                                let name = '';
                                 let time = '00.00';
                                 if (bank1.match(/[a-zA-Z]+/g, '') == null) {
-                                    bank = 'ธนาคาร';
+                                    name = 'ธนาคาร';
                                     time = 'undefined';
                                 }
                                 if (bank1.match(/\d{2}\.\d{2}/g) == null && ['COD', 'CM'].indexOf(bank1) == -1) {
-                                    bank = bank1.match(/[a-zA-Z]+/g, '')[0];
+                                    name = bank1.match(/[a-zA-Z]+/g, '')[0];
                                     time = 'เวลาโอน';
                                     price = 'undefined';
                                 }
                                 if (time != 'undefined' && price != 'undefined') {
-                                    bank = bank1.match(/[a-zA-Z]+/g, '')[0];
+                                    name = bank1.match(/[a-zA-Z]+/g, '')[0];
                                     time = ['COD', 'CM'].indexOf(bank1) == -1 ? bank1.match(/\d{2}\.\d{2}/g)[0] : time;
                                 }
                                 banks.push({
-                                    bank,
+                                    name,
                                     time,
                                     price
                                 })
                             } else {
                                 banks.push({
-                                    bank: 'ธนาคาร',
+                                    name: 'ธนาคาร',
                                     price: 'undefined'
                                 })
                             }
@@ -340,7 +340,10 @@ exports.test = (req, res) => {
             }
         })
     );
-    data.price = data.banks.map(b => b.price).reduce((le, ri) => le + ri)
+    data.price = data.banks ? data.banks.map(b => b.price).reduce((le, ri) => Number(le) + Number(ri)) || 0 : 0
+    data.bank = data.banks ? data.banks.map(bank => {
+        return bank.name.indexOf('COD') > -1 && ['A', 'K', 'C'].indexOf(data.name.substr(0, 1)) == -1 ? `${bank.name}undefined` : bank.name + (bank.time == '00.00' ? '' : bank.time) + '=' + bank.price
+    }).reduce((le, ri) => le + ',' + ri) : 'undefined';
     // data = data.map(m => {
     //     return {
     //         ...m,
