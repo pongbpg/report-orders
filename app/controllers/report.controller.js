@@ -407,6 +407,7 @@ exports.dailyCost = (req, res) => {
                                                     cost: m2('reduction').sum('cost'),
                                                     priceFb: m2('reduction').filter({ type: 'fb' }).sum('price'),
                                                     priceLine: m2('reduction').filter({ type: 'line' }).sum('price'),
+                                                    priceCm: m2('reduction').filter({ type: 'cm' }).sum('price'),
                                                     price: m2('reduction').sum('price'),
                                                 }
                                             })
@@ -438,6 +439,7 @@ exports.dailyCost = (req, res) => {
                                                 cost: 0,
                                                 priceFb: 0,
                                                 priceLine: 0,
+                                                priceCm: 0,
                                                 price: 0,
                                             })
                                         })
