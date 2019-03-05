@@ -83,6 +83,7 @@ exports.dailySayHi = (req, res) => {
         await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
                 admins.push({ id: doc.id, ...doc.data() })
+                admins.push({ id: '@' + doc.id, ...doc.data() })
             })
         })
         await db.collection('sayhis')
