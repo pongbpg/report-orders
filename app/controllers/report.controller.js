@@ -268,13 +268,12 @@ exports.comAdmin = (req, res) => {
                                         }
                                     }).merge(m => {
                                         return {
-                                            rate: r.branch(m('sumPage').ge(1000000), 0.04,
-                                                m('sumPage').ge(700000), 0.035,
+                                            rate: r.branch(m('sumPage').ge(700000), 0.035,
                                                 m('sumPage').ge(500000), 0.03,
                                                 m('sumPage').ge(400000), 0.025,
-                                                m('sumPage').ge(350000), 0.0225,
+                                                // m('sumPage').ge(350000), 0.0225,
                                                 m('sumPage').ge(300000), 0.02,
-                                                m('sumPage').ge(250000), 0.015,
+                                                // m('sumPage').ge(250000), 0.015,
                                                 m('sumPage').ge(200000), 0.0125,
                                                 0
                                             )
@@ -917,6 +916,26 @@ exports.movePage = (req, res) => {
                 // db.collection('orders').doc(doc.id).update({ admin: 'tas' })
             })
             res.json(orders)
+        })
+}
+
+exports.crp = (req, res) => {
+    const fs = require('fs');
+    let rawdata = fs.readFileSync('./crp.json');
+    let obj = JSON.parse(rawdata).filter(f => f.product.filter(f2 => ['LG', 'SP', 'MN', 'AS'].indexOf(f2.code) > -1));
+    var r = req.r;
+    r.expr(obj)
+        .pluck('id', 'name', 'page', 'tel', 'fb', 'admin')
+        .group('tel')
+        .ungroup()
+        .map(m => {
+            return m('reduction')(0)
+                .merge({
+                    tel: r.expr('T.').add(m('reduction')(0)('tel'))
+                })
+        })
+        .then(result => {
+            res.json(result)
         })
 }
 // exports.upbanks = (req, res) => {
