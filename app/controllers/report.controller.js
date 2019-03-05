@@ -217,26 +217,26 @@ exports.dailySayHi = (req, res) => {
 }
 exports.comAdmin = (req, res) => {
     async function comAdmin() {
-        let pages = [];
-        let admins = [];
+        // let pages = [];
+        // let admins = [];
         var r = req.r;
-        await db.collection('pages').get().then(snapShot => {
-            snapShot.forEach(doc => {
-                admins.push({ id: doc.id, ...doc.data() })
-            })
-        })
+        // await db.collection('pages').get().then(snapShot => {
+        //     snapShot.forEach(doc => {
+        //         admins.push({ id: doc.id, ...doc.data() })
+        //     })
+        // })
         await db.collection('emails').doc(req.query.uid)
             .get()
             .then(auth => {
-                if (auth.exists) {
-                    const role = auth.data().role;
-                    if (role == 'owner') {
-                        pages = admins.map(m => m.id)
-                        // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
-                        //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
-                    } else {
-                        pages = auth.data().pages || [];
-                    }
+                if (auth.data().role == 'owner') {
+                    // const role = auth.data().role;
+                    // if (role == 'owner') {
+                    //     pages = admins.map(m => m.id)
+                    //     // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
+                    //     //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
+                    // } else {
+                    //     pages = auth.data().pages || [];
+                    // }
                     // console.log(admins)
                     db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
@@ -316,9 +316,10 @@ exports.dailyCost = (req, res) => {
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
-                admins.push({ ...doc.data(), page: doc.id })
+                // admins.push({ ...doc.data(), page: doc.id })
+                pages.push({ ...doc.data(), page: doc.id })
             })
-            pages = admins.filter(f => f.page.indexOf('@') == -1)
+            // pages = admins.filter(f => f.page.indexOf('@') == -1)
         })
         // await db.collection('products').get().then(snapShot => {
         //     snapShot.forEach(doc => {
