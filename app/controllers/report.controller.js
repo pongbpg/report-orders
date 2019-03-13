@@ -5,7 +5,7 @@ moment.locale('th');
 exports.delivery = (req, res) => {
     db.collection('orders')
         .where('cutoffDate', '==', req.query.startDate)
-        // .where('cutoff', '==', true)
+        .where('country', '==', req.query.country)
         .orderBy('name', 'asc')
         .get()
         .then(snapShot => {
@@ -915,19 +915,7 @@ exports.infoCustomer = (req, res) => {
                     res.send(wbout);
                 })
         })
-}
-exports.movePage = (req, res) => {
-    db.collection('orders').where('userId', '==', 'U45b67ab5094188b650a0ef2c07773e42')
-        // .where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
-        .get()
-        .then(snapShot => {
-            let orders = []
-            snapShot.forEach(doc => {
-                orders.push({ id: doc.id, ...doc.data() })
-                // db.collection('orders').doc(doc.id).update({ admin: 'tas' })
-            })
-            res.json(orders)
-        })
+
 }
 
 exports.crp = (req, res) => {
