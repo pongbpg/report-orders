@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySale" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="118"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="START_DATE" class="java.lang.String"/>
 	<parameter name="END_DATE" class="java.lang.String"/>
+	<parameter name="RATE_AMOUNT" class="java.lang.String"/>
+	<parameter name="RATE_DATE" class="java.lang.String"/>
 	<field name="page" class="java.lang.String"/>
 	<field name="orderDate" class="java.lang.String"/>
 	<field name="priceFb" class="java.lang.Double"/>
@@ -536,7 +538,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="30">
+		<band height="45">
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="802" height="30" uuid="e3507520-dcb6-4889-8c1d-2d1a37749611"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
@@ -547,6 +549,13 @@
     ? $P{START_DATE}
     :$P{START_DATE}+" ถึง "+$P{END_DATE}
 )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="30" width="802" height="15" uuid="b12a47db-a734-48e0-9547-411d32198662"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font fontName="TH SarabunPSK" size="10" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Exchange Rate "+$P{RATE_AMOUNT}+" บาท/1 USD.\nที่มา: ธนาคารแห่งประเทศไทย ณ วันที่ "+$P{RATE_DATE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

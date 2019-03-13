@@ -1,4 +1,5 @@
 const moment = require('moment');
+const request = require("request");
 const db = require('../../config/firebase').topslim;
 const admin = require('firebase-admin');
 moment.locale('th');
@@ -317,11 +318,19 @@ exports.comAdmin = (req, res) => {
 
 }
 exports.dailyCost = (req, res) => {
+    console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
+    var optionsBOT = {
+        method: 'GET',
+        url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
+        qs: { start_period: moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'), end_period: req.query.endDate },
+        headers: { accept: 'application/json', 'x-ibm-client-id': '870190f3-cac0-49ae-9220-058741681a02' }
+    };
     async function getDailyCost() {
         let pages = [];
         let admins = [];
         // let products = [];
         let costs = [];
+        let dataBOT = {};
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
@@ -330,11 +339,15 @@ exports.dailyCost = (req, res) => {
             })
             // pages = admins.filter(f => f.page.indexOf('@') == -1)
         })
-        // await db.collection('products').get().then(snapShot => {
-        //     snapShot.forEach(doc => {
-        //         products.push({ id: doc.id, ...doc.data() })
-        //     })
-        // })
+        await request(optionsBOT, function (error, response, body) {
+            if (error) {
+                return console.error('Failed: %s', error.message);
+            }
+            const rates = JSON.parse(body).result;
+            dataBOT = rates.data.data_detail[0];
+            // res.json(data)
+        });
+
         await db.collection('costs')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
@@ -368,6 +381,7 @@ exports.dailyCost = (req, res) => {
                         let orders = []
                         snapShot.forEach(doc => {
                             // if (doc.data().bank.indexOf('CM') == -1)
+                            const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
                             orders.push({
                                 id: doc.id, ...doc.data(),
                                 orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
@@ -377,9 +391,10 @@ exports.dailyCost = (req, res) => {
                                 product: doc.data().product.map(m => {
                                     return {
                                         ...m,
-                                        cost: m.cost * m.amount//products.find(f => f.id == m.code).cost * m.amount
+                                        cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
                                     }
                                 }),
+                                price: doc.data().price * rate,
                                 page: doc.data().page.replace('@', '')
                             })
                         })
@@ -471,6 +486,8 @@ exports.dailyCost = (req, res) => {
                                     OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                     START_DATE: moment(req.query.startDate).format('LL'),
                                     END_DATE: moment(req.query.endDate).format('LL'),
+                                    RATE_AMOUNT: dataBOT.rate.substr(0,5),
+                                    RATE_DATE: moment(dataBOT.period).format('LL')
                                 });
                             })
 
