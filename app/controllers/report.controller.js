@@ -486,7 +486,7 @@ exports.dailyCost = (req, res) => {
                                     OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                     START_DATE: moment(req.query.startDate).format('LL'),
                                     END_DATE: moment(req.query.endDate).format('LL'),
-                                    RATE_AMOUNT: dataBOT.rate.substr(0,5),
+                                    RATE_AMOUNT: Number(dataBOT.rate).toString(),
                                     RATE_DATE: moment(dataBOT.period).format('LL')
                                 });
                             })
@@ -874,7 +874,10 @@ exports.cod = (req, res) => {
 exports.infoCustomer = (req, res) => {
     var r = req.r;
     db.collection('orders')
-        .limit(100)
+        // .orderBy('orderDate', 'desc')
+        // .limit(10)
+        .where('orderDate', '>=', '20190101')
+        .where('orderDate', '<=', '20190331')
         .get()
         .then(snapShot => {
             let orders = []
@@ -900,7 +903,8 @@ exports.infoCustomer = (req, res) => {
                         reduction: m('reduction').group('tel').ungroup()
                             .map(m2 => {
                                 return {
-                                    phone: r.expr("'", m2('group')),
+                                    // phone: r.expr("'").add(m2('group')),
+                                    phone: m2('group'),
                                     value: m2('reduction').sum('price'),
                                     social: m2('reduction')(0)('fb'),
                                     zip: m2('reduction')(0)('postcode'),
