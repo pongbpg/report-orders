@@ -16,6 +16,8 @@
 	<field name="costSale" class="java.lang.Double"/>
 	<field name="costCm" class="java.lang.Double"/>
 	<field name="cost" class="java.lang.Double"/>
+	<field name="typeId" class="java.lang.String"/>
+	<field name="typeName" class="java.lang.String"/>
 	<variable name="SUM_AMOUNTSALE" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{amountSale}]]></variableExpression>
 	</variable>
@@ -34,6 +36,123 @@
 	<variable name="SUM_COST" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{cost}]]></variableExpression>
 	</variable>
+	<variable name="SUM_AMOUNTSALE_1" class="java.lang.Integer" resetType="Group" resetGroup="grp_typeId" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountSale}]]></variableExpression>
+	</variable>
+	<variable name="SUM_AMOUNTCM_1" class="java.lang.Integer" resetType="Group" resetGroup="grp_typeId" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountCm}]]></variableExpression>
+	</variable>
+	<variable name="SUM_AMOUNT_1" class="java.lang.Integer" resetType="Group" resetGroup="grp_typeId" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COSTSALE_1" class="java.lang.Double" resetType="Group" resetGroup="grp_typeId" calculation="Sum">
+		<variableExpression><![CDATA[$F{costSale}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COSTCM_1" class="java.lang.Double" resetType="Group" resetGroup="grp_typeId" calculation="Sum">
+		<variableExpression><![CDATA[$F{costCm}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COST_1" class="java.lang.Double" resetType="Group" resetGroup="grp_typeId" calculation="Sum">
+		<variableExpression><![CDATA[$F{cost}]]></variableExpression>
+	</variable>
+	<group name="grp_typeId">
+		<groupExpression><![CDATA[$F{typeId}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<printWhenExpression><![CDATA[$F{typeId}!=""]]></printWhenExpression>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="225" height="20" backcolor="#CCFFCC" uuid="07ca0230-ec70-4cc1-b612-d92f27b43984"/>
+					<box leftPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{typeId}+" : "+$F{typeName}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="225" y="0" width="50" height="20" backcolor="#CCFFCC" uuid="6ce680e3-e3c6-4842-8fce-30ab2a03417c"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_AMOUNTSALE_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="275" y="0" width="50" height="20" backcolor="#CCFFCC" uuid="85e61126-7c15-424a-9dd9-c744b70969f4"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_AMOUNTCM_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="325" y="0" width="50" height="20" backcolor="#CCFFCC" uuid="51d23073-a87b-429a-b4f5-87d43c83ca30"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_AMOUNT_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="375" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="d7c817b1-6e51-4e96-a4af-f553dde6b299"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_COSTSALE_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="435" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="ec1466ee-53f6-4693-837e-e7b102ee2863"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_COSTCM_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0">
+					<reportElement mode="Opaque" x="495" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="d3ca0e6c-0031-4821-b648-37fb04db90ac"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_COST_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

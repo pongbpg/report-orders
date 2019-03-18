@@ -318,98 +318,98 @@ exports.comAdmin = (req, res) => {
 
 }
 exports.itemAdmin = (req, res) => {
-    async function itemAdmin() {
-        let pages = [];
-        var r = req.r;
+    // async function itemAdmin() {
+    //     let pages = [];
+    //     var r = req.r;
 
-        await db.collection('pages').get().then(snapShot => {
-            // console.log(coms)
-            snapShot.forEach(doc => {
-                const com = coms.find(f => f.id == doc.data().comId);
-                pages.push({ id: doc.id, ...doc.data() })
-            })
-            // console.log(pages)
-        })
+    //     await db.collection('pages').get().then(snapShot => {
+    //         // console.log(coms)
+    //         snapShot.forEach(doc => {
+    //             const com = coms.find(f => f.id == doc.data().comId);
+    //             pages.push({ id: doc.id, ...doc.data() })
+    //         })
+    //         // console.log(pages)
+    //     })
 
 
-        await db.collection('emails').doc(req.query.uid)
-            .get()
-            .then(auth => {
-                if (auth.data().role == 'owner') {
-                    db.collection('orders')
-                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-                        .get()
-                        .then(snapShot => {
-                            let orders = []
-                            snapShot.forEach(doc => {
-                                if (doc.data().bank.indexOf('CM') == -1)
-                                    orders.push({
-                                        id: doc.id, ...doc.data(),
-                                        page: doc.data().page.replace('@', ''),
-                                        edit: doc.data().edit == null ? false : doc.data().edit
-                                    })
-                            })
-                            r.expr(orders)
-                                .group(g => {
-                                    return g.pluck('userId', 'page')
-                                })
-                                .ungroup()
-                                .map(m => {
-                                    return m('group').pluck('page').merge({
-                                        admin: m('reduction')(0)('admin'),
-                                        price: m('reduction').filter({ edit: false }).sum('price'),
-                                        price2: m('reduction').filter({ edit: true }).sum('price'),
-                                        sumPage: m('reduction').sum('price')
-                                    })
-                                })
-                                // .do(d => {
-                                //     return d
-                                //         .merge(m => {
-                                //             return {
-                                //                 sumPage: d.filter({ page: m('page') }).sum('sumPage'),
-                                //                 rates: r.expr(pages).filter(f => {
-                                //                     return f('id').eq(m('page'))
-                                //                 })(0)('coms').default([]),
-                                //                 comId: r.expr(pages).filter(f => {
-                                //                     return f('id').eq(m('page'))
-                                //                 })(0)('comId').default(0)
-                                //             }
-                                //         })
-                                //         .merge(m => {
-                                //             return {
-                                //                 rate: m('rates').filter(f => {
-                                //                     return f('min').le(m('sumPage'))
-                                //                         .and(f('max').ge(m('sumPage')))
-                                //                 })(0)('percent').default(0)
-                                //             }
-                                //         })
-                                //         .merge(m => {
-                                //             return {
-                                //                 com: m('rate').mul(m('price')),
-                                //                 com2: m('rate').mul(m('price2'))
-                                //             }
-                                //         })
-                                //         .without('rates')
-                                // })
-                                // .orderBy('admin', r.desc('com'))
-                                .run()
-                                .then(result => {
-                                    res.json(result)
-                                    // res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
-                                    //     OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                    //     START_DATE: moment(req.query.startDate).format('LL'),
-                                    //     END_DATE: moment(req.query.endDate).format('LL'),
-                                    // });
-                                })
-                        })
-                } else {
-                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
-                }
-            })
-    }
+    //     await db.collection('emails').doc(req.query.uid)
+    //         .get()
+    //         .then(auth => {
+    //             if (auth.data().role == 'owner') {
+    //                 db.collection('orders')
+    //                     .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+    //                     .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+    //                     .get()
+    //                     .then(snapShot => {
+    //                         let orders = []
+    //                         snapShot.forEach(doc => {
+    //                             if (doc.data().bank.indexOf('CM') == -1)
+    //                                 orders.push({
+    //                                     id: doc.id, ...doc.data(),
+    //                                     page: doc.data().page.replace('@', ''),
+    //                                     edit: doc.data().edit == null ? false : doc.data().edit
+    //                                 })
+    //                         })
+    //                         r.expr(orders)
+    //                             .group(g => {
+    //                                 return g.pluck('userId', 'page')
+    //                             })
+    //                             .ungroup()
+    //                             .map(m => {
+    //                                 return m('group').pluck('page').merge({
+    //                                     admin: m('reduction')(0)('admin'),
+    //                                     price: m('reduction').filter({ edit: false }).sum('price'),
+    //                                     price2: m('reduction').filter({ edit: true }).sum('price'),
+    //                                     sumPage: m('reduction').sum('price')
+    //                                 })
+    //                             })
+    //                             // .do(d => {
+    //                             //     return d
+    //                             //         .merge(m => {
+    //                             //             return {
+    //                             //                 sumPage: d.filter({ page: m('page') }).sum('sumPage'),
+    //                             //                 rates: r.expr(pages).filter(f => {
+    //                             //                     return f('id').eq(m('page'))
+    //                             //                 })(0)('coms').default([]),
+    //                             //                 comId: r.expr(pages).filter(f => {
+    //                             //                     return f('id').eq(m('page'))
+    //                             //                 })(0)('comId').default(0)
+    //                             //             }
+    //                             //         })
+    //                             //         .merge(m => {
+    //                             //             return {
+    //                             //                 rate: m('rates').filter(f => {
+    //                             //                     return f('min').le(m('sumPage'))
+    //                             //                         .and(f('max').ge(m('sumPage')))
+    //                             //                 })(0)('percent').default(0)
+    //                             //             }
+    //                             //         })
+    //                             //         .merge(m => {
+    //                             //             return {
+    //                             //                 com: m('rate').mul(m('price')),
+    //                             //                 com2: m('rate').mul(m('price2'))
+    //                             //             }
+    //                             //         })
+    //                             //         .without('rates')
+    //                             // })
+    //                             // .orderBy('admin', r.desc('com'))
+    //                             .run()
+    //                             .then(result => {
+    //                                 res.json(result)
+    //                                 // res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
+    //                                 //     OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+    //                                 //     START_DATE: moment(req.query.startDate).format('LL'),
+    //                                 //     END_DATE: moment(req.query.endDate).format('LL'),
+    //                                 // });
+    //                             })
+    //                     })
+    //             } else {
+    //                 res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+    //             }
+    //         })
+    // }
 
-    itemAdmin();
+    // itemAdmin();
 
 
 }
@@ -761,10 +761,12 @@ exports.dailyProduct = (req, res) => {
                         costSale: m('reduction').filter({ claim: false }).sum('cost'),
                         costCm: m('reduction').filter({ claim: true }).sum('cost'),
                         cost: m('reduction').sum('cost'),
-                        name: m('reduction')(0)('name')
+                        name: m('reduction')(0)('name'),
+                        typeId: m('reduction')(0)('typeId'),
+                        typeName: m('reduction')(0)('typeName')
                     }
                 })
-                .orderBy('code')
+                .orderBy('typeId', 'code')
                 .run()
                 .then(datas => {
                     // res.json(datas)
@@ -1055,6 +1057,33 @@ exports.crp = (req, res) => {
             res.json(result)
         })
 }
+
+// exports.updateType = (req, res) => {
+//     const fs = require('fs');
+//     let rawdata2 = fs.readFileSync('./types.json');
+//     const types = JSON.parse(rawdata2)
+//     db.collection('orders')
+//         .where('orderDate', '>=', '20181201')
+//         .where('orderDate', '<=', '20181231')
+//         .get()
+//         .then(snapShot => {
+//             let xx = [];
+//             snapShot.forEach(doc => {
+//                 let product = doc.data().product.map(p => {
+//                     const type = types.find(f => f.id == p.code);
+//                     return {
+//                         ...p,
+//                         typeId: type.typeId,
+//                         typeName: type.typeName
+//                     }
+//                 })
+//                 doc.ref.update({ product })
+//                 xx.push({ id: doc.id, product })
+//             })
+//             res.json(xx)
+//         })
+// }
+
 // exports.upbanks = (req, res) => {
 //     db.collection('orders')
 //         // .where('userId', '==', 'U4378f6e7db46a7033d10792be291830b')
