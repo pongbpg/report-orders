@@ -764,7 +764,7 @@ exports.dailyProduct = (req, res) => {
                         name: m('reduction')(0)('name')
                     }
                 })
-                .orderBy(r.desc('code'))
+                .orderBy('code')
                 .run()
                 .then(datas => {
                     // res.json(datas)
