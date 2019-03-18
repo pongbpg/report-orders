@@ -317,6 +317,102 @@ exports.comAdmin = (req, res) => {
 
 
 }
+exports.itemAdmin = (req, res) => {
+    async function itemAdmin() {
+        let pages = [];
+        var r = req.r;
+
+        await db.collection('pages').get().then(snapShot => {
+            // console.log(coms)
+            snapShot.forEach(doc => {
+                const com = coms.find(f => f.id == doc.data().comId);
+                pages.push({ id: doc.id, ...doc.data() })
+            })
+            // console.log(pages)
+        })
+
+
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.data().role == 'owner') {
+                    db.collection('orders')
+                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .get()
+                        .then(snapShot => {
+                            let orders = []
+                            snapShot.forEach(doc => {
+                                if (doc.data().bank.indexOf('CM') == -1)
+                                    orders.push({
+                                        id: doc.id, ...doc.data(),
+                                        page: doc.data().page.replace('@', ''),
+                                        edit: doc.data().edit == null ? false : doc.data().edit
+                                    })
+                            })
+                            r.expr(orders)
+                                .group(g => {
+                                    return g.pluck('userId', 'page')
+                                })
+                                .ungroup()
+                                .map(m => {
+                                    return m('group').pluck('page').merge({
+                                        admin: m('reduction')(0)('admin'),
+                                        price: m('reduction').filter({ edit: false }).sum('price'),
+                                        price2: m('reduction').filter({ edit: true }).sum('price'),
+                                        sumPage: m('reduction').sum('price')
+                                    })
+                                })
+                                // .do(d => {
+                                //     return d
+                                //         .merge(m => {
+                                //             return {
+                                //                 sumPage: d.filter({ page: m('page') }).sum('sumPage'),
+                                //                 rates: r.expr(pages).filter(f => {
+                                //                     return f('id').eq(m('page'))
+                                //                 })(0)('coms').default([]),
+                                //                 comId: r.expr(pages).filter(f => {
+                                //                     return f('id').eq(m('page'))
+                                //                 })(0)('comId').default(0)
+                                //             }
+                                //         })
+                                //         .merge(m => {
+                                //             return {
+                                //                 rate: m('rates').filter(f => {
+                                //                     return f('min').le(m('sumPage'))
+                                //                         .and(f('max').ge(m('sumPage')))
+                                //                 })(0)('percent').default(0)
+                                //             }
+                                //         })
+                                //         .merge(m => {
+                                //             return {
+                                //                 com: m('rate').mul(m('price')),
+                                //                 com2: m('rate').mul(m('price2'))
+                                //             }
+                                //         })
+                                //         .without('rates')
+                                // })
+                                // .orderBy('admin', r.desc('com'))
+                                .run()
+                                .then(result => {
+                                    res.json(result)
+                                    // res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
+                                    //     OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    //     START_DATE: moment(req.query.startDate).format('LL'),
+                                    //     END_DATE: moment(req.query.endDate).format('LL'),
+                                    // });
+                                })
+                        })
+                } else {
+                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                }
+            })
+    }
+
+    itemAdmin();
+
+
+}
 exports.dailyCost = (req, res) => {
     console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
     var optionsBOT = {
@@ -482,6 +578,7 @@ exports.dailyCost = (req, res) => {
                             .run()
                             .then(result => {
                                 // res.json(result)
+                                console.log(dataBOT.rate)
                                 res.ireport("dailyCost.jasper", req.query.file || "pdf", result, {
                                     OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                     START_DATE: moment(req.query.startDate).format('LL'),
@@ -667,7 +764,7 @@ exports.dailyProduct = (req, res) => {
                         name: m('reduction')(0)('name')
                     }
                 })
-                .orderBy(r.desc('amount'))
+                .orderBy(r.desc('code'))
                 .run()
                 .then(datas => {
                     // res.json(datas)
