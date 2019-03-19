@@ -111,7 +111,12 @@ exports.dailySayHi = (req, res) => {
                         // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
                         //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
                     } else {
-                        pages = auth.data().pages || [];
+                        auth.data().pages.forEach(page => {
+                            // console.log(page)
+                            pages.push(page)
+                            pages.push('@' + page)
+                        })
+                        // console.log(pages)
                     }
                     // console.log(admins)
                     db.collection('orders')
