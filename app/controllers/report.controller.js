@@ -318,98 +318,80 @@ exports.comAdmin = (req, res) => {
 
 }
 exports.itemAdmin = (req, res) => {
-    // async function itemAdmin() {
-    //     let pages = [];
-    //     var r = req.r;
+    async function itemAdmin() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.data().role == 'owner') {
+                    db.collection('orders')
+                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .get()
+                        .then(snapShot => {
+                            let orders = []
+                            snapShot.forEach(doc => {
+                                if (doc.data().bank.indexOf('CM') == -1)
+                                    orders.push({
+                                        id: doc.id, ...doc.data(),
+                                        page: doc.data().page.replace('@', ''),
+                                        edit: doc.data().edit == null ? false : doc.data().edit
+                                    })
+                            })
+                            // const fs = require('fs');
+                            // let rawdata = fs.readFileSync('./item.json');
+                            let obj = [];
+                            // JSON.parse(rawdata)
+                            orders.map(m => {
+                                m.product.map(m2 => {
+                                    obj.push({
+                                        ...m2,
+                                        admin: m.admin,
+                                        userId: m.userId,
+                                        edit: m.edit,
+                                        page: m.page
+                                    })
+                                })
+                            })
+                            // obj = obj.sort((a, b) => {
+                            //     const x = a.userId + a.typeId + a.code
+                            //     const y = b.userId + b.typeId + b.code
+                            //     return x > y ? 1 : -1;
+                            // })
+                            r.expr(obj)
+                                .group(g => {
+                                    return g.pluck('page', 'userId', 'code')
+                                })
+                                .ungroup()
+                                .map(m => {
+                                    return m('group').merge(m2 => {
+                                        return {
+                                            amount1: m('reduction').filter({ edit: false }).sum('amount'),
+                                            amount2: m('reduction').filter({ edit: true }).sum('amount'),
+                                            admin: m('reduction')(0)('admin'),
+                                            typeId: m('reduction')(0)('typeId'),
+                                            typeName: m('reduction')(0)('typeName'),
+                                            pName: m('reduction')(0)('name'),
+                                        }
+                                    })
+                                })
+                                .orderBy('page', 'userId', 'typeId', 'code')
+                                .then(result => {
+                                    // res.json(result)
+                                    res.ireport("itemAdmin.jasper", req.query.file || "pdf", result, {
+                                        OUTPUT_NAME: 'itemAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        START_DATE: moment(req.query.startDate).format('LL'),
+                                        END_DATE: moment(req.query.endDate).format('LL'),
+                                    });
+                                })
+                        })
+                } else {
+                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                }
+            })
+    }
 
-    //     await db.collection('pages').get().then(snapShot => {
-    //         // console.log(coms)
-    //         snapShot.forEach(doc => {
-    //             const com = coms.find(f => f.id == doc.data().comId);
-    //             pages.push({ id: doc.id, ...doc.data() })
-    //         })
-    //         // console.log(pages)
-    //     })
-
-
-    //     await db.collection('emails').doc(req.query.uid)
-    //         .get()
-    //         .then(auth => {
-    //             if (auth.data().role == 'owner') {
-    //                 db.collection('orders')
-    //                     .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-    //                     .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-    //                     .get()
-    //                     .then(snapShot => {
-    //                         let orders = []
-    //                         snapShot.forEach(doc => {
-    //                             if (doc.data().bank.indexOf('CM') == -1)
-    //                                 orders.push({
-    //                                     id: doc.id, ...doc.data(),
-    //                                     page: doc.data().page.replace('@', ''),
-    //                                     edit: doc.data().edit == null ? false : doc.data().edit
-    //                                 })
-    //                         })
-    //                         r.expr(orders)
-    //                             .group(g => {
-    //                                 return g.pluck('userId', 'page')
-    //                             })
-    //                             .ungroup()
-    //                             .map(m => {
-    //                                 return m('group').pluck('page').merge({
-    //                                     admin: m('reduction')(0)('admin'),
-    //                                     price: m('reduction').filter({ edit: false }).sum('price'),
-    //                                     price2: m('reduction').filter({ edit: true }).sum('price'),
-    //                                     sumPage: m('reduction').sum('price')
-    //                                 })
-    //                             })
-    //                             // .do(d => {
-    //                             //     return d
-    //                             //         .merge(m => {
-    //                             //             return {
-    //                             //                 sumPage: d.filter({ page: m('page') }).sum('sumPage'),
-    //                             //                 rates: r.expr(pages).filter(f => {
-    //                             //                     return f('id').eq(m('page'))
-    //                             //                 })(0)('coms').default([]),
-    //                             //                 comId: r.expr(pages).filter(f => {
-    //                             //                     return f('id').eq(m('page'))
-    //                             //                 })(0)('comId').default(0)
-    //                             //             }
-    //                             //         })
-    //                             //         .merge(m => {
-    //                             //             return {
-    //                             //                 rate: m('rates').filter(f => {
-    //                             //                     return f('min').le(m('sumPage'))
-    //                             //                         .and(f('max').ge(m('sumPage')))
-    //                             //                 })(0)('percent').default(0)
-    //                             //             }
-    //                             //         })
-    //                             //         .merge(m => {
-    //                             //             return {
-    //                             //                 com: m('rate').mul(m('price')),
-    //                             //                 com2: m('rate').mul(m('price2'))
-    //                             //             }
-    //                             //         })
-    //                             //         .without('rates')
-    //                             // })
-    //                             // .orderBy('admin', r.desc('com'))
-    //                             .run()
-    //                             .then(result => {
-    //                                 res.json(result)
-    //                                 // res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
-    //                                 //     OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-    //                                 //     START_DATE: moment(req.query.startDate).format('LL'),
-    //                                 //     END_DATE: moment(req.query.endDate).format('LL'),
-    //                                 // });
-    //                             })
-    //                     })
-    //             } else {
-    //                 res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
-    //             }
-    //         })
-    // }
-
-    // itemAdmin();
+    itemAdmin();
 
 
 }
