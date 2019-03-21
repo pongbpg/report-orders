@@ -18,26 +18,64 @@ exports.delivery = (req, res) => {
             snapShot.forEach(doc => {
                 orderx.push({ id: doc.id, ...doc.data() })
             })
-            orderx.sort((a, b) => {
-                const aName = a.name.substr(0, 1) + a.id;
-                const bName = b.name.substr(0, 1) + b.id;
-                return aName > bName ? 1 : -1;
-            }).map(order => {
-                // const data = doc.data();
-                const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
-                if (index % 2 == 0) {
-                    obj.col1 = text
-                } else {
-                    obj.col2 = text
-                }
-                if (obj.col2 || (index + 1) == orderx.length) {
-                    orders.push(obj)
-                    obj = {};
-                }
-                index++;
-            })
-            // res.json(orders)
-            res.ireport("delivery.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
+            if (req.query.file != 'flash') {
+                orderx.sort((a, b) => {
+                    const aName = a.name.substr(0, 1) + a.id;
+                    const bName = b.name.substr(0, 1) + b.id;
+                    return aName > bName ? 1 : -1;
+                }).map(order => {
+                    // const data = doc.data();
+                    const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
+                    if (index % 2 == 0) {
+                        obj.col1 = text
+                    } else {
+                        obj.col2 = text
+                    }
+                    if (obj.col2 || (index + 1) == orderx.length) {
+                        orders.push(obj)
+                        obj = {};
+                    }
+                    index++;
+                })
+                // res.json(orders)
+                res.ireport("delivery.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
+
+            } else {
+                orderx = orderx.map(order => {
+                    const pc = order.addr.match(/[0-9]{5}/g);
+                    let postcode = '';
+                    if (pc != null) {
+                        postcode = pc[pc.length - 1]
+                    }
+                    return {
+                        Customer_order_number: order.id,
+                        Consignee_name: order.name,
+                        Address: order.addr.replace(/\n/g, ' '),
+                        Postal_code: postcode,
+                        Phone_number: order.tel,
+                        Weight_kg: 1,
+                        COD: order.bank.indexOf('COD') > -1 ? order.price : ''
+                    }
+                })
+
+                // res.json(orderx)
+                const XLSX = require('xlsx');
+                // /* create workbook & set props*/
+                const wb = { SheetNames: [], Sheets: {} };
+
+                // // /* create file 'in memory' */
+                // for (var prop in result) {
+                var ws = XLSX.utils.json_to_sheet(orderx);
+                XLSX.utils.book_append_sheet(wb, ws, );
+                // }
+                // // res.json(ws);
+                // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+                var filename = 'FLASH_' + req.query.startDate + '.xlsx';
+                res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                res.type('application/octet-stream');
+                res.send(wbout);
+            }
         })
 
 }
@@ -926,7 +964,14 @@ exports.dailyStatement = (req, res) => {
 
 
 }
-
+exports.postcode = (req, res) => {
+    const fs = require('fs');
+    const rawdata = fs.readFileSync('./postcode.json');
+    const postcodes = JSON.parse(rawdata)
+    if (postcodes.indexOf(postcode) == -1) {
+        value = `${value + ' ' + emoji(0x1000A6)}รหัสไปรษณีย์ไม่ถูกต้องundefined`
+    }
+}
 exports.excel = (req, res) => {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../report-orders/app/files/stock20181031.xlsx');
