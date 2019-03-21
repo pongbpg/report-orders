@@ -47,14 +47,16 @@ exports.delivery = (req, res) => {
                     if (pc != null) {
                         postcode = pc[pc.length - 1]
                     }
-                    return {
-                        Customer_order_number: order.id,
-                        Consignee_name: order.name,
-                        Address: order.addr.replace(/\n/g, ' '),
-                        Postal_code: postcode,
-                        Phone_number: order.tel,
-                        Weight_kg: 1,
-                        COD: order.bank.indexOf('COD') > -1 ? order.price : ''
+                    if (order.name.substr(0, 1) == 'F') {
+                        return {
+                            Customer_order_number: order.id,
+                            Consignee_name: order.name,
+                            Address: order.addr.replace(/\n/g, ' '),
+                            Postal_code: postcode,
+                            Phone_number: order.tel,
+                            Weight_kg: 1,
+                            COD: order.bank.indexOf('COD') > -1 ? order.price : ''
+                        }
                     }
                 })
 
@@ -66,7 +68,7 @@ exports.delivery = (req, res) => {
                 // // /* create file 'in memory' */
                 // for (var prop in result) {
                 var ws = XLSX.utils.json_to_sheet(orderx);
-                XLSX.utils.book_append_sheet(wb, ws, );
+                XLSX.utils.book_append_sheet(wb, ws);
                 // }
                 // // res.json(ws);
                 // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
