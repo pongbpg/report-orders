@@ -54,8 +54,15 @@ exports.delivery = (req, res) => {
                             Address: order.addr.replace(/\n/g, ' '),
                             Postal_code: postcode,
                             Phone_number: order.tel,
+                            Phone_number2: '',
+                            COD: order.bank.indexOf('COD') > -1 ? order.price : '',
                             Weight_kg: 1,
-                            COD: order.bank.indexOf('COD') > -1 ? order.price : ''
+                            Length: '',
+                            Width: '',
+                            Height: '',
+                            Remark1: '',
+                            Remark2: '',
+                            Remark3: ''
                         }
                     }
                 }).filter(f => f != null)
@@ -68,11 +75,17 @@ exports.delivery = (req, res) => {
                 // // /* create file 'in memory' */
                 // for (var prop in result) {
                 var ws = XLSX.utils.json_to_sheet(orderx);
-                XLSX.utils.book_append_sheet(wb, ws);
+                ws['B1'].v = '*Consignee_name';
+                ws['C1'].v = '*Address';
+                ws['D1'].v = '*Postal_code';
+                ws['E1'].v = '*Phone_number';
+                ws['H1'].v = '*Weight_kg';
+
+                // wb.Sheets['Order Template']=ws;
+                XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
                 // }
                 // // res.json(ws);
-                // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
                 var filename = 'FLASH_' + req.query.startDate + '.xlsx';
                 res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
                 res.type('application/octet-stream');
