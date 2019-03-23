@@ -58,7 +58,7 @@ exports.delivery = (req, res) => {
                             COD: order.bank.indexOf('COD') > -1 ? order.price : ''
                         }
                     }
-                })
+                }).filter(f => f != null)
 
                 // res.json(orderx)
                 const XLSX = require('xlsx');
