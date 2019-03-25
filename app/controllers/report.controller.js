@@ -61,9 +61,9 @@ exports.delivery = (req, res) => {
                             Length: '',
                             Width: '',
                             Height: '',
-                            Remark1: '',
-                            Remark2: '',
-                            Remark3: ''
+                            Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
+                            Remark2: order.price,
+                            Remark3: order.page
                         }
                     }
                 }).filter(f => f != null)
