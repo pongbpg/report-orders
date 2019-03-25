@@ -24,7 +24,7 @@ exports.delivery = (req, res) => {
                 return aName > bName ? 1 : -1;
             })
             if (req.query.file != 'flash') {
-                orderx = ordersx.map(order => {
+                orderx = orderx.map(order => {
                     // const data = doc.data();
                     const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
                     if (index % 2 == 0) {
