@@ -455,7 +455,7 @@ exports.itemAdmin = (req, res) => {
 
 }
 exports.dailyCost = (req, res) => {
-    console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
+    // console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
     var optionsBOT = {
         method: 'GET',
         url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
@@ -480,9 +480,15 @@ exports.dailyCost = (req, res) => {
             if (error) {
                 return console.error('Failed: %s', error.message);
             }
-            const rates = JSON.parse(body).result;
-            dataBOT = rates.data.data_detail[0];
-            // res.json(data)
+            const rates = JSON.parse(body);
+            if (rates.result) {
+                dataBOT = rates.result.data.data_detail[0];
+            } else {
+                dataBOT = {
+                    rate: 32,
+                    period: req.query.endDate
+                }
+            }
         });
 
         await db.collection('costs')
