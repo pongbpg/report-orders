@@ -929,7 +929,7 @@ exports.dailyStatement = (req, res) => {
                                         const bank = doc.data().banks[i].name.toUpperCase().match(/[a-zA-Z]+/g, '');
                                         const time = doc.data().banks[i].time.match(/[0-9][0-9][.][0-9][0-9]/g, '');
                                         if (bank != null) {
-                                            if (['CM', 'COD'].indexOf(bank[0]) == -1) {
+                                            if (['CM'].indexOf(bank[0]) == -1) {
                                                 orders.push({
                                                     id: doc.id,
                                                     // ...doc.data(),
