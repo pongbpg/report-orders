@@ -525,12 +525,25 @@ exports.dailyCost = (req, res) => {
                         snapShot.forEach(doc => {
                             // if (doc.data().bank.indexOf('CM') == -1)
                             const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
+                            const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
+                            const dChannel = doc.get('channel');
+                            let type = '';
+                            if (typePage == 'line') {
+                                type = 'line';
+                                if (dChannel) {
+                                    if (dChannel == 'F') {
+                                        type = 'fb';
+                                    }
+                                }
+                            } else {
+                                type = 'fb'
+                            }
                             orders.push({
                                 id: doc.id, ...doc.data(),
                                 orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
                                 // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
-                                type: doc.data().bank.indexOf('CM') > -1 ? 'cm' :
-                                    (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
+                                type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
+                                // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
                                 product: doc.data().product.map(m => {
                                     return {
                                         ...m,
@@ -987,38 +1000,38 @@ exports.dailyStatement = (req, res) => {
 
 }
 exports.dailyChannel = (req, res) => {
-    // var optionsBOT = {
-    //     method: 'GET',
-    //     url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
-    //     qs: { start_period: moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'), end_period: req.query.endDate },
-    //     headers: { accept: 'application/json', 'x-ibm-client-id': '870190f3-cac0-49ae-9220-058741681a02' }
-    // };
+    var optionsBOT = {
+        method: 'GET',
+        url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
+        qs: { start_period: moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'), end_period: req.query.endDate },
+        headers: { accept: 'application/json', 'x-ibm-client-id': '870190f3-cac0-49ae-9220-058741681a02' }
+    };
     async function getDailyChannel() {
         let pages = [];
         // let admins = [];
         // let products = [];
         let costs = [];
-        // let dataBOT = {};
+        let dataBOT = {};
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
                 pages.push({ ...doc.data(), page: doc.id })
             })
         })
-        // await request(optionsBOT, function (error, response, body) {
-        //     if (error) {
-        //         return console.error('Failed: %s', error.message);
-        //     }
-        //     const rates = JSON.parse(body);
-        //     if (rates.result) {
-        //         dataBOT = rates.result.data.data_detail[0];
-        //     } else {
-        //         dataBOT = {
-        //             rate: 32,
-        //             period: req.query.endDate
-        //         }
-        //     }
-        // });
+        await request(optionsBOT, function (error, response, body) {
+            if (error) {
+                return console.error('Failed: %s', error.message);
+            }
+            const rates = JSON.parse(body);
+            if (rates.result) {
+                dataBOT = rates.result.data.data_detail[0];
+            } else {
+                dataBOT = {
+                    rate: 32,
+                    period: req.query.endDate
+                }
+            }
+        });
 
         await db.collection('costs')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
@@ -1053,7 +1066,7 @@ exports.dailyChannel = (req, res) => {
                     .then(snapShot => {
                         let orders = []
                         snapShot.forEach(doc => {
-                            const rate = 1;// doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
+                            const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
                             const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
                             const dChannel = doc.get('channel');
                             let channel = '';
@@ -1193,8 +1206,8 @@ exports.dailyChannel = (req, res) => {
                                     OUTPUT_NAME: 'dailyChannel' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                     START_DATE: moment(req.query.startDate).format('LL'),
                                     END_DATE: moment(req.query.endDate).format('LL'),
-                                    // RATE_AMOUNT: Number(dataBOT.rate).toString(),
-                                    // RATE_DATE: moment(dataBOT.period).format('LL')
+                                    RATE_AMOUNT: Number(dataBOT.rate).toString(),
+                                    RATE_DATE: moment(dataBOT.period).format('LL')
                                 });
                             })
 
