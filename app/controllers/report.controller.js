@@ -1189,8 +1189,8 @@ exports.dailyChannel = (req, res) => {
                             .then(result => {
                                 // res.json(result)
                                 //         console.log(dataBOT.rate)
-                                res.ireport("dailyCost2.jasper", req.query.file || "pdf", result, {
-                                    OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                res.ireport("dailyChannel.jasper", req.query.file || "pdf", result, {
+                                    OUTPUT_NAME: 'dailyChannel' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                     START_DATE: moment(req.query.startDate).format('LL'),
                                     END_DATE: moment(req.query.endDate).format('LL'),
                                     // RATE_AMOUNT: Number(dataBOT.rate).toString(),
