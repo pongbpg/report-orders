@@ -183,7 +183,8 @@ exports.dailySayHi = (req, res) => {
                                 if (doc.data().bank.indexOf('CM') == -1)
                                     orders.push({
                                         id: doc.id, ...doc.data(),
-                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
+                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                        return: doc.data().return ? true : false
                                     })
                             })
                             r.expr(orders).filter(f => {
@@ -199,9 +200,11 @@ exports.dailySayHi = (req, res) => {
                                 .map(m => {
                                     return m('group').merge(m2 => {
                                         return {
-                                            count: m('reduction').count(),
-                                            price: m('reduction').sum('price'),
-                                            promote: m('reduction').sum('promote'),
+                                            count: m('reduction').filter({ return: false }).count(),
+                                            price: m('reduction').filter({ return: false }).sum('price'),
+                                            countReturn: m('reduction').filter({ return: true }).count(),
+                                            priceReturn: m('reduction').filter({ return: true }).sum('price'),
+                                            // promote: m('reduction').sum('promote'),
                                             interest: m('reduction').sum('interest')
                                         }
                                     }).merge(r.branch(m('group')('page').match('@').eq(null), {
@@ -221,14 +224,20 @@ exports.dailySayHi = (req, res) => {
                                         return {
                                             priceFb: m('reduction').filter({ fb: true }).sum('price'),
                                             countFb: m('reduction').filter({ fb: true }).sum('count'),
+                                            priceFbRt: m('reduction').filter({ fb: true }).sum('priceReturn'),
+                                            countFbRt: m('reduction').filter({ fb: true }).sum('countReturn'),
                                             // promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
                                             // interestFb: m('reduction').filter({ fb: true }).sum('interest'),
                                             priceLine: m('reduction').filter({ fb: false }).sum('price'),
                                             countLine: m('reduction').filter({ fb: false }).sum('count'),
+                                            priceLineRt: m('reduction').filter({ fb: false }).sum('priceReturn'),
+                                            countLineRt: m('reduction').filter({ fb: false }).sum('countReturn'),
                                             // promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
                                             // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                                             priceAll: m('reduction').sum('price'),
                                             countAll: m('reduction').sum('count'),
+                                            priceRt: m('reduction').sum('priceReturn'),
+                                            countRt: m('reduction').sum('countReturn'),
                                             interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
                                             interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
                                             team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
@@ -240,6 +249,7 @@ exports.dailySayHi = (req, res) => {
                                     return d.merge(m => {
                                         return {
                                             priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
+                                            priceXRt: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceReturn'),
                                             countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
                                         }
                                     })
@@ -302,6 +312,7 @@ exports.comAdmin = (req, res) => {
                     db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .where('return', '==', false)
                         .get()
                         .then(snapShot => {
                             let orders = []
@@ -386,6 +397,7 @@ exports.itemAdmin = (req, res) => {
                     db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .where('return', '==', false)
                         .get()
                         .then(snapShot => {
                             let orders = []
@@ -519,6 +531,7 @@ exports.dailyCost = (req, res) => {
                 db.collection('orders')
                     .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                     .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                    .where('return', '==', false)
                     .get()
                     .then(snapShot => {
                         let orders = []
@@ -787,6 +800,7 @@ exports.dailyProduct = (req, res) => {
     db.collection('orders')
         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+        .where('return', '==', false)
         .get()
         .then(snapShot => {
             const pages = [req.query.page, '@' + req.query.page]
@@ -850,6 +864,7 @@ exports.dailyBank = (req, res) => {
                         db.collection('orders')
                             .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                             .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .where('return', '==', false)
                             .get()
                             .then(snapShot => {
                                 let orders = []
@@ -928,6 +943,7 @@ exports.dailyStatement = (req, res) => {
                         db.collection('orders')
                             .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                             .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .where('return', '==', false)
                             .get()
                             .then(snapShot => {
                                 let orders = []
@@ -1061,7 +1077,7 @@ exports.dailyChannel = (req, res) => {
                 db.collection('orders')
                     .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                     .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-                    // .limit(10)
+                    .where('return', '==', false)
                     .get()
                     .then(snapShot => {
                         let orders = []
@@ -1228,6 +1244,7 @@ exports.postcode = (req, res) => {
         value = `${value + ' ' + emoji(0x1000A6)}รหัสไปรษณีย์ไม่ถูกต้องundefined`
     }
 }
+
 exports.excel = (req, res) => {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../report-orders/app/files/stock20181031.xlsx');
