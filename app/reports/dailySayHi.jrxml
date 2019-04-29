@@ -729,7 +729,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{priceXRt}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEFB_1_1_RT}+$V{GRP_SUM_PRICELINE_1_1_RT}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
 					<reportElement mode="Opaque" x="672" y="0" width="50" height="20" backcolor="#CCFFCC" uuid="da265a43-d653-4fd2-88c5-a7276ed42143"/>
