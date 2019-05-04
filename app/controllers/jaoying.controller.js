@@ -161,7 +161,7 @@ exports.cutoffSale = (req, res) => {
                 .map(m => {
                     return m('group').merge(m2 => {
                         return {
-                            // count: m('reduction').count(),
+                            count: m('reduction').count(),
                             price: m('reduction').sum('price'),
                             amount: m('reduction').merge(m3 => {
                                 return {
@@ -190,7 +190,7 @@ exports.cutoffSale = (req, res) => {
                             // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                             priceAll: m('reduction').sum('price'),
                             amountAll: m('reduction').sum('amount'),
-                            // countAll: m('reduction').sum('count'),
+                            countAll: m('reduction').sum('count'),
                             // interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
                             // interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
                             // team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
@@ -202,7 +202,7 @@ exports.cutoffSale = (req, res) => {
                     return d.merge(m => {
                         return {
                             priceX: d.filter({ orderDate: m('orderDate') }).sum('priceAll'),
-                            // countAdmin: d.filter({ orderDate: m('orderDate') }).group('admin').ungroup().count()
+                            countAdmin: d.filter({ orderDate: m('orderDate') }).group('admin').ungroup().count()
                         }
                     })
                 })
