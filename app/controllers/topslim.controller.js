@@ -1337,7 +1337,60 @@ exports.infoCustomer = (req, res) => {
         })
 
 }
-
+exports.errorPrice = (req, res) => {
+    db.collection('orders')
+        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+        .where('return', '==', false)
+        .get()
+        .then(snapShot => {
+            let orders = []
+            snapShot.forEach(doc => {
+                const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
+                const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
+                const dChannel = doc.get('channel');
+                let channel = '';
+                let type = '';
+                if (typePage == 'line') {
+                    type = 'line';
+                    channel = 'line-old'
+                    if (dChannel) {
+                        if (dChannel == 'N') {
+                            channel = 'line-new'
+                        } else if (dChannel == 'F') {
+                            type = 'fb';
+                            channel = 'line-fb';
+                        }
+                    }
+                } else {
+                    type = 'fb'
+                    channel = 'fb-old'
+                    if (dChannel) {
+                        if (dChannel == 'N') {
+                            channel = 'fb-new'
+                        }
+                    }
+                }
+                orders.push({
+                    id: doc.id, ...doc.data(),
+                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                    // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
+                    type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
+                    // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
+                    product: doc.data().product.map(m => {
+                        return {
+                            ...m,
+                            cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
+                        }
+                    }),
+                    price: doc.data().price * rate,
+                    page: doc.data().page.replace('@', ''),
+                    channel
+                })
+            })
+            res.json(orders.filter(f => isNaN(f.price)))
+        })
+}
 exports.crp = (req, res) => {
     const fs = require('fs');
     let rawdata = fs.readFileSync('./crp.json');
