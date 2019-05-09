@@ -5,7 +5,7 @@ module.exports = function (app) {
     // app.get('/dailySayHi', ctrl.dailySayHi);
     app.get('/cutoffSale', ctrl.cutoffSale);
     // app.get('/dailyProduct', ctrl.dailyProduct);
-    // app.get('/dailyBank', ctrl.dailyBank);
+    app.get('/dailyBank', ctrl.dailyBank);
     app.get('/dailyStatement', ctrl.dailyStatement);
     // app.get('/dailyCost', ctrl.dailyCost);
     // app.get('/com/admin', ctrl.comAdmin);

@@ -227,6 +227,74 @@ exports.cutoffSale = (req, res) => {
                 })
         })
 }
+exports.dailyBank = (req, res) => {
+    async function getDailySale() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    db.collection('orders')
+                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .get()
+                        .then(snapShot => {
+                            let orders = []
+                            snapShot.forEach(doc => {
+                                const bank = doc.data().bank.match(/[a-zA-Z]+/g, '')[0];
+                                orders.push({
+                                    bank,
+                                    price: doc.data().price,
+                                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
+                                })
+                            })
+                            r.expr(orders)
+                                .group(g => {
+                                    return g.pluck('bank', 'orderDate')
+                                })
+                                .ungroup()
+                                .map(m => {
+                                    return m('group').merge(m2 => {
+                                        return {
+                                            countAll: m('reduction').count(),
+                                            priceAll: m('reduction').sum('price')
+                                        }
+                                    })
+                                    // .merge(r.branch(m('group')('bank').eq('COD'), {
+                                    //     bank: 'COD'
+                                    // }, {
+                                    //         bank: m('group')('bank')
+                                    //     }))
+                                })
+                                .orderBy('orderDate', r.desc('priceAll'))
+                                .run()
+                                .then(result => {
+                                    const datas = result.map(m => {
+                                        const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                        return {
+                                            ...m,
+                                            orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll')
+                                        }
+                                    })
+
+                                    res.ireport("dailyBank.jrxml", req.query.file || "pdf", datas, {
+                                        OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        START_DATE: moment(req.query.startDate).format('LL'),
+                                        END_DATE: moment(req.query.endDate).format('LL'),
+                                    });
+                                    // res.json(result)
+                                })
+                        })
+                } else {
+                    res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                }
+            })
+    }
+
+    getDailySale();
+
+
+}
 exports.test = (req, res) => {
     // res.json(decodeURI(req.body.txt))
     const txt = decodeURI(req.body.txt);
