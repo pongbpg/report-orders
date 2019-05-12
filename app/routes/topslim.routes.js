@@ -12,4 +12,5 @@ module.exports = function (app) {
     app.get('/com/admin', ctrl.comAdmin);
     app.get('/item/admin', ctrl.itemAdmin);
     app.get('/error/price', ctrl.errorPrice);
+    app.get('/infoCustomer',ctrl.infoCustomer);
 }

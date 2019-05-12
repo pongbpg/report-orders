@@ -1273,16 +1273,15 @@ exports.cod = (req, res) => {
 exports.infoCustomer = (req, res) => {
     var r = req.r;
     db.collection('orders')
-        // .orderBy('orderDate', 'desc')
-        // .limit(10)
-        .where('orderDate', '>=', '20190101')
-        .where('orderDate', '<=', '20190331')
+        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+        .where('return', '==', false)
+        .where('country', '==', 'TH')
         .get()
         .then(snapShot => {
             let orders = []
             snapShot.forEach(doc => {
                 if (doc.data().bank.indexOf('CM') == -1)
-                    // db.collection('orders').doc(doc.id).update({ product2: admin.firestore.FieldValue.delete() })
                     orders.push({
                         id: doc.id,
                         ...doc.data(),
@@ -1290,8 +1289,8 @@ exports.infoCustomer = (req, res) => {
                         source: doc.data().page.indexOf('@') > -1 ? 'LINE' : 'FACEBOOK',
                         postcode: doc.data().addr.match(/\d{5}/g) == null ? '' : doc.data().addr.match(/\d{5}/g)[0]
                     })
-                // )
             })
+            // res.json(orders)
             r.expr(orders)
                 .group(g => {
                     return g.pluck('page')
@@ -1308,7 +1307,19 @@ exports.infoCustomer = (req, res) => {
                                     social: m2('reduction')(0)('fb'),
                                     zip: m2('reduction')(0)('postcode'),
                                     name: m2('reduction')(0)('name'),
-                                    source: m2('reduction')(0)('source')
+                                    source: m2('reduction')(0)('source'),
+                                    count: m2('reduction').count(),
+                                    product: m2('reduction').map(pd => {
+                                        return pd('product')
+                                    }).reduce((le, ri) => {
+                                        return le.add(ri)
+                                    }).group('code').sum('amount').ungroup().orderBy(r.desc('reduction'))
+                                        .map(pd => {
+                                            return pd('group').add('=', pd('reduction').coerceTo('string'))
+                                        })
+                                        .reduce((le, ri) => {
+                                            return le.add(',', ri)
+                                        })
                                 }
                             })
                             .orderBy(r.desc('value'))
