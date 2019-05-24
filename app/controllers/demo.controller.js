@@ -34,14 +34,13 @@ exports.delivery = (req, res) => {
                         //     .reduce((le, ri) => { return le.add(',').add(ri) }),
                         list: m('reduction').pluck('id', 'product', 'bank', 'price')
                             .map(m2 => {
-                                return m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n')
-                                    .add(m2('product').map(m3 => { return m3('code').add(':', m3('name'), ' ', m3('amount').coerceTo('string'), 'ตัว') })
-                                        .reduce((le, ri) => {
-                                            return le.add(',\n', ri)
-                                        })
-                                    )
+                                // m2('id').add(' ', m2('bank'), ' ', m2('price').coerceTo('string'), '฿\n') .add()
+                                return m2('product').map(m3 => { return m3('code').add(':', m3('name'), ' ', m3('amount').coerceTo('string'), 'ตัว') })
+                                    .reduce((le, ri) => {
+                                        return le.add(',\n', ri)
+                                    })
                             })
-                            .reduce((le, ri) => { return le.add('\n').add(ri) }),
+                            .reduce((le, ri) => { return le.add(', ').add(ri) }),
                         // price: m('reduction').getField('price')
                         //     .reduce((le, ri) => { return le.coerceTo('string').add(',').add(ri.coerceTo('string')) }),
                     }
@@ -52,7 +51,7 @@ exports.delivery = (req, res) => {
                     // res.json(result)
                     result.map(order => {
 
-                        const text = `${index + 1}. ${order.name} (${order.amount})\nโทร.${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}${req.query.detail == 'show' ? '\n' + order.list : ''}`;
+                        const text = `${index + 1}. ${order.name} โทร.${order.tel} (${order.amount})\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}${req.query.detail == 'show' ? '\n' + order.list : ''}`;
                         // console.log(index,text)
                         if (index % 2 == 0) {
                             obj.col1 = text
@@ -83,29 +82,39 @@ exports.dailyStatement = (req, res) => {
                 if (auth.exists) {
 
                     db.collection('orders')
-                        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        .where('cutoffDate', '==', req.query.cutoffDate)
+                        // .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                        // .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
                         .get()
                         .then(snapShot => {
                             let orders = []
                             snapShot.forEach(doc => {
-                                const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
-                                const time = doc.data().bank.match(/[0-9][0-9][.][0-9][0-9]/g, '');
                                 const timestamp = new Date(doc.data().timestamp.toMillis());
                                 let orderTime = twoDigit(timestamp.getHours()) + '.' + twoDigit(timestamp.getMinutes());
-                                if (bank != null) {
-                                    if (['CM', 'COD'].indexOf(bank[0]) == -1) {
-                                        // console.log(doc.data().timestamp)
-                                        orders.push({
-                                            id: doc.id,
-                                            ...doc.data(),
-                                            bank: bank[0],
-                                            time: time[0],
-                                            orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
-                                            orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate
-                                        })
+
+                                for (var i = 0; i < doc.data().banks.length; i++) {
+                                    const bank = doc.data().banks[i].name.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                    const time = doc.data().banks[i].time.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                    if (bank != null) {
+                                        if (['CM'].indexOf(bank[0]) == -1) {
+                                            orders.push({
+                                                id: doc.id,
+                                                // ...doc.data(),
+                                                bank: bank[0],
+                                                time: time[0],
+                                                orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                                orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate,
+                                                price: doc.data().banks[i].price,
+                                                admin: doc.data().admin,
+                                                fb: doc.data().fb,
+                                                tel: doc.data().tel,
+                                                product: doc.data().product.map(p => p.code + ':' + p.name + '=' + p.amount)
+                                                    .reduce((le, ri) => le + '\n' + ri)
+                                            })
+                                        }
                                     }
                                 }
+
                             })
                             var expr = r.expr(orders)
                                 .orderBy('bank', 'orderDate', 'time');
@@ -113,7 +122,7 @@ exports.dailyStatement = (req, res) => {
                                 expr = r.expr(orders)
                                     .orderBy('bank', 'id')
                             }
-                            expr.pluck('bank', 'orderDate', 'time', 'fb', 'price', 'id', 'name', 'admin', 'tel', 'orderTime')
+                            expr.pluck('bank', 'orderDate', 'time', 'fb', 'price', 'id', 'name', 'admin', 'tel', 'orderTime', 'product')
                                 .run()
                                 .then(result => {
                                     const datas = result.map(m => {
@@ -124,10 +133,10 @@ exports.dailyStatement = (req, res) => {
                                         }
                                     })
 
-                                    res.ireport("dailyStatement2.jrxml", req.query.file || "pdf", datas, {
-                                        OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                        START_DATE: moment(req.query.startDate).format('LL'),
-                                        END_DATE: moment(req.query.endDate).format('LL'),
+                                    res.ireport("demo/dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                        OUTPUT_NAME: 'dailyStatement' + req.query.cutoffDate,
+                                        START_DATE: moment(req.query.cutoffDate).format('LL'),
+                                        END_DATE: moment(req.query.cutoffDate).format('LL'),
                                     });
                                     // res.json(result)
                                 })
@@ -141,6 +150,63 @@ exports.dailyStatement = (req, res) => {
     getDailyStatement();
 
 
+}
+exports.dailyProduct = (req, res) => {
+    var r = req.r;
+    let orders = [];
+    db.collection('orders')
+        .where('cutoffDate', '==', req.query.cutoffDate)
+        .get()
+        .then(snapShot => {
+            // const pages = [req.query.page, '@' + req.query.page]
+            snapShot.forEach(doc => {
+                // if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
+                orders.push({ id: doc.id, ...doc.data() })
+                // }
+            })
+            r.expr(orders)
+                .merge(m => {
+                    return {
+                        product: m('product').merge(m3 => {
+                            return {
+                                claim: r.branch(m('bank').match('CM').eq(null), false, true),
+                                cost: m3('cost').mul(m3('amount'))
+                            }
+                        })
+                    }
+                })
+                .getField('product')
+                .reduce((le, ri) => {
+                    return le.add(ri)
+                }).default([])
+                .group('code')
+                .ungroup()
+                .map(m => {
+                    return {
+                        code: m('group'),
+                        amountSale: m('reduction').filter({ claim: false }).sum('amount'),
+                        amountCm: m('reduction').filter({ claim: true }).sum('amount'),
+                        amount: m('reduction').sum('amount'),
+                        costSale: m('reduction').filter({ claim: false }).sum('cost'),
+                        costCm: m('reduction').filter({ claim: true }).sum('cost'),
+                        cost: m('reduction').sum('cost'),
+                        name: m('reduction')(0)('name'),
+                        typeId: '',//m('reduction')(0)('typeId'),
+                        typeName: ''//m('reduction')(0)('typeName')
+                    }
+                })
+                .orderBy('typeId', 'code')
+                .run()
+                .then(datas => {
+                    // res.json(datas)
+                    res.ireport("demo/dailyProduct.jasper", req.query.file || "pdf", datas, {
+                        PAGE: (req.query.page == 'ALL' ? 'ทั้งหมด' : req.query.page),
+                        OUTPUT_NAME: 'dailySale' + req.query.cutoffDate,
+                        START_DATE: moment(req.query.cutoffDate).format('LL'),
+                        END_DATE: moment(req.query.cutoffDate).format('LL'),
+                    });
+                })
+        })
 }
 exports.cutoffSale = (req, res) => {
     var r = req.r;
@@ -295,183 +361,7 @@ exports.dailyBank = (req, res) => {
 
 
 }
-exports.test = (req, res) => {
-    // res.json(decodeURI(req.body.txt))
-    const txt = decodeURI(req.body.txt);
-    let orders = [];
-    let banks = [];
-    let data = Object.assign(...txt.split('#').filter(f => f != "")
-        .map(m => {
-            if (m.split(':').length == 2) {
-                const dontReplces = ["name", "fb", "addr"];
-                let key = m.split(':')[0].toLowerCase();
-                switch (key) {
-                    case 'n': key = 'name'; break;
-                    case 't': key = 'tel'; break;
-                    case 'a': key = 'addr'; break;
-                    case 'o': key = 'product'; break;
-                    case 'b': key = 'banks'; break;
-                    // case 'p': key = 'price'; break;
-                    case 'f': key = 'fb'; break;
-                    // case 'l': key = 'fb'; break;
-                    // case 'z': key = 'page'; break;
-                    // case 'd': key = 'delivery'; break;
-                    // case 'cutoffdate': key = 'cutoffDate'; break;
-                    default: key;
-                }
-                let value = m.split(':')[1];
-                if (!dontReplces.includes(key)) value = value.replace(/\s/g, '');
-                if (key !== 'addr' && key !== 'fb') value = value.replace(/\n/g, '').toUpperCase();
-                if (key == 'tel') {
-                    value = value.replace(/\D/g, ''); //เหลือแต่ตัวเลข
-                    if (value.length != 10) {
-                        value = 'undefined'
-                    }
-                }
-                if (key !== 'price' && key !== 'delivery') {
-                    value = value.trim();
-                    if (key == 'product') {
-                        const str = value;
-                        // let orders = [];
-                        let arr = str.split(',');
-                        for (var a in arr) {
-                            if (arr[a].split('=').length == 2) {
-                                const code = arr[a].split('=')[0].toUpperCase();
-                                const amount = Number(arr[a].split('=')[1].replace(/\D/g, ''));
-                                const orderIndex = orders.findIndex(f => f.code == code);
-                                if (orderIndex > -1 && amount > 0) {
-                                    orders[orderIndex]['amount'] = orders[orderIndex]['amount'] + amount
-                                } else {
-                                    orders.push({
-                                        code,
-                                        amount,
-                                        name: ''
-                                    })
-                                }
-                            } else {
-                                const orderIndex = orders.findIndex(f => f.code == 'รหัสสินค้า');
-                                if (orderIndex > -1) {
 
-                                } else {
-                                    orders.push({
-                                        code: 'รหัสสินค้า',
-                                        amount: 'undefined'
-                                    })
-                                }
-                            }
-                        }
-                        value = orders
-                    } else if (key == 'name') {
-                        if (value.length < 2) {
-                            value = 'undefined';
-                        }
-                    } else if (key == 'banks') {
-                        const str = value;
-                        let arr = str.split(',');
-                        for (var a in arr) {
-                            if (arr[a].split('=').length == 2) {
-                                const bank1 = arr[a].split('=')[0].toUpperCase();
-                                let price = Number(arr[a].split('=')[1].replace(/\D/g, ''));
-                                let name = '';
-                                let time = '00.00';
-                                if (bank1.match(/[a-zA-Z]+/g, '') == null) {
-                                    name = 'ธนาคาร';
-                                    time = 'undefined';
-                                }
-                                if (bank1.match(/\d{2}\.\d{2}/g) == null && ['COD', 'CM'].indexOf(bank1) == -1) {
-                                    name = bank1.match(/[a-zA-Z]+/g, '')[0];
-                                    time = 'เวลาโอน';
-                                    price = 'undefined';
-                                }
-                                if (time != 'undefined' && price != 'undefined') {
-                                    name = bank1.match(/[a-zA-Z]+/g, '')[0];
-                                    time = ['COD', 'CM'].indexOf(bank1) == -1 ? bank1.match(/\d{2}\.\d{2}/g)[0] : time;
-                                }
-                                banks.push({
-                                    name,
-                                    time,
-                                    price
-                                })
-                            } else {
-                                banks.push({
-                                    name: 'ธนาคาร',
-                                    price: 'undefined'
-                                })
-                            }
-                        }
-                        value = banks
-                    }
-                } else {
-                    value = Number(value.replace(/\D/g, ''));
-                }
-                return { [key]: value };
-            }
-        })
-    );
-    data.price = data.banks ? data.banks.map(b => b.price).reduce((le, ri) => Number(le) + Number(ri)) || 0 : 0
-    data.bank = data.banks ? data.banks.map(bank => {
-        return bank.name.indexOf('COD') > -1 && ['A', 'K', 'C'].indexOf(data.name.substr(0, 1)) == -1 ? `${bank.name}undefined` : bank.name + (bank.time == '00.00' ? '' : bank.time) + '=' + bank.price
-    }).reduce((le, ri) => le + ',' + ri) : 'undefined';
-    // data = data.map(m => {
-    //     return {
-    //         ...m,
-    //         price: m.banks//.map(b => b.price).reduce((le, ri) => le + ri)
-    //     }
-    // })
-    res.json(data)
-    // const refs = orders.map(order => db.collection('products').doc(order.code));
-    // db.getAll(...refs)
-    //     .then(snapShot => {
-    //         let products = [];
-    //         snapShot.forEach(doc => {
-    //             if (doc.exists)
-    //                 products.push({ id: doc.id, ...doc.data() })
-    //         })
-    //         for (var order in data.product) {
-    //             const code = data.product[order]['code'];
-    //             const amount = data.product[order]['amount'];
-    //             const product = products.find(f => f.id === data.product[order]['code'])
-    //             if (product) {
-    //                 if (product.amount >= amount) {
-    //                     data.product[order]['name'] = product.name;
-    //                 } else {
-    //                     data.product[order]['code'] = code + `เหลือเพียง${product.amount}ชิ้น`;
-    //                     data.product[order]['amount'] = 'undefined';
-    //                 }
-    //             } else {
-    //                 data.product[order]['code'] = ' รหัส' + code + 'ไม่มีในรายการสินค้า';
-    //                 data.product[order]['amount'] = 'undefined';
-    //             }
-    //         }
-    //         res.json(data)
-    //     })
-}
-exports.test2 = (req, res) => {
-    const r = req.r;
-    db.collection('orders')
-        .where('cutoffDate', '==', '20190104')
-        .where('tel', '==', '0881883434')
-        .get()
-        .then(snapShot => {
-            let orders = [];
-            snapShot.forEach(doc => {
-                orders.push({ id: doc.id, ...doc.data() })
-            })
-            const len = orders.length - 1;
-            const data = 'ชื่อ: ' + orders[len].name +
-                '\nโทร: ' + orders[len].tel +
-                '\nที่อยู่: ' + orders[len].addr +
-                '\nFB: ' + orders[len].fb +
-                '\nรายการสั่งซื้อ' + orders.map((order, i) => {
-                    return '\n#' + (i + 1) + ' ' + order.id +
-                        order.product.map(product => {
-                            return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'
-                        }) + '\n' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'
-                }) +
-                '\nยอดรวม: ' + formatMoney(orders.map(order => order.price).reduce((le, ri) => le + ri), 0) + ' บาท'
-            res.json(data)
-        })
-}
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
         decimalCount = Math.abs(decimalCount);
