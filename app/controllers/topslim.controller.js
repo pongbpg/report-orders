@@ -281,7 +281,7 @@ exports.dailySayHi = (req, res) => {
                                         }
                                     })
 
-                                    res.ireport("dailySayHi.jrxml", req.query.file || "pdf", pages, {
+                                    res.ireport((req.query.v ? 'topslim/' : '') + "dailySayHi.jrxml", req.query.file || "pdf", pages, {
                                         OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
