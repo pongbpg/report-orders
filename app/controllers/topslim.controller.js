@@ -133,14 +133,23 @@ exports.dailySayHi = (req, res) => {
         let pages = [];
         let admins = [];
         let sayhis = [];
+        let costs = [];
         let sayhiPages = [];
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
                 admins.push({ id: doc.id, ...doc.data() })
-                admins.push({ id: '@' + doc.id, ...doc.data() })
+                admins.push({ ...doc.data(), id: '@' + doc.id })
             })
         })
+        await db.collection('costs')
+            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+            .get().then(snapShot => {
+                snapShot.forEach(doc => {
+                    costs.push({ id: doc.id, ...doc.data() })
+                })
+            })
         await db.collection('sayhis')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
@@ -187,16 +196,19 @@ exports.dailySayHi = (req, res) => {
                                         return: doc.data().return ? true : false
                                     })
                             })
-                            r.expr(orders).filter(f => {
-                                return r.expr(pages).contains(f('page'))
-                            }).filter(f => {
-                                return r.branch(r.expr(role).eq('owner'),
-                                    true,
-                                    r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
-                                )
-                            }).group(g => {
-                                return g.pluck('page', 'orderDate', 'admin')
-                            }).ungroup()
+                            r.expr(orders)
+                                .filter(f => {
+                                    return r.expr(pages).contains(f('page'))
+                                })
+                                .filter(f => {
+                                    return r.branch(r.expr(role).eq('owner'),
+                                        true,
+                                        r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                                    )
+                                })
+                                .group(g => {
+                                    return g.pluck('page', 'orderDate', 'admin')
+                                }).ungroup()
                                 .map(m => {
                                     return m('group').merge(m2 => {
                                         return {
@@ -204,6 +216,7 @@ exports.dailySayHi = (req, res) => {
                                             price: m('reduction').filter({ return: false }).sum('price'),
                                             countReturn: m('reduction').filter({ return: true }).count(),
                                             priceReturn: m('reduction').filter({ return: true }).sum('price'),
+                                            freight: m('reduction').sum('totalFreight'),
                                             // promote: m('reduction').sum('promote'),
                                             interest: m('reduction').sum('interest')
                                         }
@@ -226,28 +239,29 @@ exports.dailySayHi = (req, res) => {
                                             countFb: m('reduction').filter({ fb: true }).sum('count'),
                                             priceFbRt: m('reduction').filter({ fb: true }).sum('priceReturn'),
                                             countFbRt: m('reduction').filter({ fb: true }).sum('countReturn'),
-                                            // promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
-                                            // interestFb: m('reduction').filter({ fb: true }).sum('interest'),
                                             priceLine: m('reduction').filter({ fb: false }).sum('price'),
                                             countLine: m('reduction').filter({ fb: false }).sum('count'),
                                             priceLineRt: m('reduction').filter({ fb: false }).sum('priceReturn'),
                                             countLineRt: m('reduction').filter({ fb: false }).sum('countReturn'),
-                                            // promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
-                                            // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                                             priceAll: m('reduction').sum('price'),
                                             countAll: m('reduction').sum('count'),
                                             priceRt: m('reduction').sum('priceReturn'),
                                             countRt: m('reduction').sum('countReturn'),
+                                            freight: m('reduction').sum('freight'),
                                             interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
                                             interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
                                             team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
-                                            // cc: r.expr(sayhis)
+
                                         }
                                     })
                                 })
                                 .do(d => {
                                     return d.merge(m => {
                                         return {
+                                            // delivery: r.expr(costs).filter(f => {
+                                            //     return f('page').eq(m('page'))
+                                            //         .and(f('date').eq(m('orderDate')))
+                                            // }).sum('delivery'),
                                             priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
                                             priceXRt: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceReturn'),
                                             countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
@@ -274,6 +288,7 @@ exports.dailySayHi = (req, res) => {
                                     });
                                     // res.json(result)
                                 })
+
                         })
                 } else {
                     res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
