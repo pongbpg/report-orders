@@ -1274,7 +1274,7 @@ exports.receipts = (req, res) => {
                         // console.log(doc.id)
                         orders.push(initData(doc))
                     })
-                    orders = orders.sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
+                    orders = orders.filter(f => ['CM', 'COD'].indexOf(f.bank) == -1).sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
 
                 })
         }
