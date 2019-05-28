@@ -1280,12 +1280,19 @@ exports.receipts = (req, res) => {
         function initData(doc) {
             const plen = doc.data().product.length;
             let order = {
-                id: doc.id, ...doc.data(),
+                id: doc.id,// ...doc.data(),
+                name:doc.data().name,
+                tel:doc.data().tel,
+                addr:doc.data().addr,
+                price:doc.data().price,
                 orderNo: doc.data().orderDate + fourDigit(doc.data().orderNo),
                 orderDate: moment(doc.data().orderDate).format('DD/MM/YYYY'),
                 product: doc.data().product.map((p, i) => {
                     return {
-                        ...p,
+                        amount: p.amount,
+                        code: p.code,
+                        name: p.name,
+                        sale: p.sale || 0,
                         no: i + 1
                     }
                 }),
