@@ -1271,6 +1271,7 @@ exports.receipts = (req, res) => {
                 .get()
                 .then(snapShot => {
                     snapShot.forEach(doc => {
+                        console.log(doc.id)
                         orders.push(initData(doc))
                     })
                     orders = orders.sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
@@ -1281,10 +1282,10 @@ exports.receipts = (req, res) => {
             const plen = doc.data().product.length;
             let order = {
                 id: doc.id,// ...doc.data(),
-                name:doc.data().name,
-                tel:doc.data().tel,
-                addr:doc.data().addr,
-                price:doc.data().price,
+                name: doc.data().name,
+                tel: doc.data().tel,
+                addr: doc.data().addr,
+                price: doc.data().price,
                 orderNo: doc.data().orderDate + fourDigit(doc.data().orderNo),
                 orderDate: moment(doc.data().orderDate).format('DD/MM/YYYY'),
                 product: doc.data().product.map((p, i) => {
@@ -1306,11 +1307,11 @@ exports.receipts = (req, res) => {
             return order;
         }
 
-        res.json(orders)
-        // res.ireport("topslim/receipt.jasper", req.query.file || "pdf", orders, {
-        //     OUTPUT_NAME: 'receipts' + filename,
-        //     IS_COPY: req.query.copy.toUpperCase() || "Y"
-        // });
+        // res.json(orders)
+        res.ireport("topslim/receipt.jasper", req.query.file || "pdf", orders, {
+            OUTPUT_NAME: 'receipts' + filename,
+            IS_COPY: req.query.copy.toUpperCase() || "Y"
+        });
     }
     getReceipt();
 
