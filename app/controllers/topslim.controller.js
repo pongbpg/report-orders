@@ -1271,7 +1271,7 @@ exports.receipts = (req, res) => {
                 .get()
                 .then(snapShot => {
                     snapShot.forEach(doc => {
-                        console.log(doc.id)
+                        // console.log(doc.id)
                         orders.push(initData(doc))
                     })
                     orders = orders.sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
