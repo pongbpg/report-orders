@@ -1267,7 +1267,7 @@ exports.receipts = (req, res) => {
                 .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
                 .where('return', '==', false)
                 .where('country', '==', 'TH')
-                .limit(2)
+                // .limit(2)
                 .get()
                 .then(snapShot => {
                     snapShot.forEach(doc => {
