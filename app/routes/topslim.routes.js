@@ -13,4 +13,6 @@ module.exports = function (app) {
     app.get('/item/admin', ctrl.itemAdmin);
     app.get('/error/price', ctrl.errorPrice);
     app.get('/infoCustomer',ctrl.infoCustomer);
+    app.get('/receipts',ctrl.receipts);
+
 }

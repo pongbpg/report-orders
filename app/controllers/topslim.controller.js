@@ -1246,6 +1246,69 @@ exports.dailyChannel = (req, res) => {
     }
     getDailyChannel();
 }
+exports.receipts = (req, res) => {
+    let filename = '';
+    let orders = [];
+    async function getReceipt() {
+        if (req.query.id) {
+            filename = req.query.id;
+            await db.collection('orders')
+                .doc(req.query.id)
+                .get()
+                .then(doc => {
+                    if (doc.exists) {
+                        orders.push(initData(doc))
+                    }
+                })
+        } else {
+            filename = req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, '');
+            await db.collection('orders')
+                .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                .where('return', '==', false)
+                .where('country', '==', 'TH')
+                .limit(2)
+                .get()
+                .then(snapShot => {
+                    snapShot.forEach(doc => {
+                        orders.push(initData(doc))
+                    })
+                    orders = orders.sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
+
+                })
+        }
+        function initData(doc) {
+            const plen = doc.data().product.length;
+            let order = {
+                id: doc.id, ...doc.data(),
+                orderNo: doc.data().orderDate + fourDigit(doc.data().orderNo),
+                orderDate: moment(doc.data().orderDate).format('DD/MM/YYYY'),
+                product: doc.data().product.map((p, i) => {
+                    return {
+                        ...p,
+                        no: i + 1
+                    }
+                }),
+                remark: doc.data().fb + ' (' + doc.data().page + ') ' + doc.data().bank
+            }
+            if (plen <= 10) {
+                for (let i = plen; i <= 10; i++) {
+                    order.product.push({ no: "", amount: 0, code: "", name: "", sale: 0 })
+                }
+            }
+            return order;
+        }
+
+        // res.json(orders)
+        res.ireport("topslim/receipt.jasper", req.query.file || "pdf", orders, {
+            OUTPUT_NAME: 'receipts' + filename,
+            IS_COPY: req.query.copy.toUpperCase() || "Y"
+        });
+    }
+    getReceipt();
+
+}
+
 exports.postcode = (req, res) => {
     const fs = require('fs');
     const rawdata = fs.readFileSync('./postcode.json');
@@ -1553,7 +1616,7 @@ const twoDigit = (n) => {
 }
 const fourDigit = (n) => {
     if (n < 10) {
-        return '0' + n.toString();
+        return '000' + n.toString();
     } else if (n < 100) {
         return '00' + n.toString();
     } else if (n < 1000) {
