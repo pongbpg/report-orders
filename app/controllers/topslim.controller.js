@@ -1299,11 +1299,11 @@ exports.receipts = (req, res) => {
             return order;
         }
 
-        // res.json(orders)
-        res.ireport("topslim/receipt.jasper", req.query.file || "pdf", orders, {
-            OUTPUT_NAME: 'receipts' + filename,
-            IS_COPY: req.query.copy.toUpperCase() || "Y"
-        });
+        res.json(orders)
+        // res.ireport("topslim/receipt.jasper", req.query.file || "pdf", orders, {
+        //     OUTPUT_NAME: 'receipts' + filename,
+        //     IS_COPY: req.query.copy.toUpperCase() || "Y"
+        // });
     }
     getReceipt();
 
