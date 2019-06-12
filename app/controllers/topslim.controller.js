@@ -830,6 +830,7 @@ exports.dailyProduct = (req, res) => {
                         product: m('product').merge(m3 => {
                             return {
                                 claim: r.branch(m('bank').match('CM').eq(null), false, true),
+                                cod: r.branch(m('bank').match('COD').eq(null), false, true),
                                 cost: m3('cost').mul(m3('amount'))
                             }
                         })
@@ -844,10 +845,12 @@ exports.dailyProduct = (req, res) => {
                 .map(m => {
                     return {
                         code: m('group'),
-                        amountSale: m('reduction').filter({ claim: false }).sum('amount'),
+                        amountSale: m('reduction').filter({ claim: false, cod: false }).sum('amount'),
+                        amountCod: m('reduction').filter({ cod: true }).sum('amount'),
                         amountCm: m('reduction').filter({ claim: true }).sum('amount'),
                         amount: m('reduction').sum('amount'),
-                        costSale: m('reduction').filter({ claim: false }).sum('cost'),
+                        costSale: m('reduction').filter({ claim: false, cod: false }).sum('cost'),
+                        costCod: m('reduction').filter({ cod: true }).sum('cost'),
                         costCm: m('reduction').filter({ claim: true }).sum('cost'),
                         cost: m('reduction').sum('cost'),
                         name: m('reduction')(0)('name'),
@@ -859,9 +862,9 @@ exports.dailyProduct = (req, res) => {
                 .run()
                 .then(datas => {
                     // res.json(datas)
-                    res.ireport("dailyProduct.jasper", req.query.file || "pdf", datas, {
+                    res.ireport("topslim/dailyProduct.jasper", req.query.file || "pdf", datas, {
                         PAGE: (req.query.page == 'ALL' ? 'ทั้งหมด' : req.query.page),
-                        OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                        OUTPUT_NAME: 'dailyProduct' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                         START_DATE: moment(req.query.startDate).format('LL'),
                         END_DATE: moment(req.query.endDate).format('LL'),
                     });
@@ -1310,7 +1313,7 @@ exports.receipts = (req, res) => {
         // res.json(orders)
         res.ireport("topslim/receipt.jasper", req.query.file || "pdf", orders, {
             OUTPUT_NAME: 'receipts' + filename,
-            IS_COPY: req.query.copy|| "Y"
+            IS_COPY: req.query.copy || "Y"
         });
     }
     getReceipt();
