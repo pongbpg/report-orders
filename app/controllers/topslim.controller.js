@@ -142,14 +142,14 @@ exports.dailySayHi = (req, res) => {
                 admins.push({ ...doc.data(), id: '@' + doc.id })
             })
         })
-        await db.collection('costs')
-            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
-            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
-            .get().then(snapShot => {
-                snapShot.forEach(doc => {
-                    costs.push({ id: doc.id, ...doc.data() })
-                })
-            })
+        // await db.collection('costs')
+        //     .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+        //     .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+        //     .get().then(snapShot => {
+        //         snapShot.forEach(doc => {
+        //             costs.push({ id: doc.id, ...doc.data() })
+        //         })
+        //     })
         await db.collection('sayhis')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
