@@ -49,22 +49,26 @@ exports.delivery = (req, res) => {
                         postcode = pc[pc.length - 1]
                     }
                     if (order.name.substr(0, 1) == 'F') {
-                        return {
-                            Customer_order_number: order.id,
-                            Consignee_name: order.name,
-                            Address: order.addr.replace(/\n/g, ' '),
-                            Postal_code: postcode,
-                            Phone_number: order.tel,
-                            Phone_number2: '',
-                            COD: order.bank.indexOf('COD') > -1 ? order.price : '',
-                            Weight_kg: 1,
-                            Length: '',
-                            Width: '',
-                            Height: '',
-                            Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
-                            Remark2: order.price,
-                            Remark3: order.page
-                        }
+                        if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                            || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                            || req.query.payment == 'ALL'
+                        )
+                            return {
+                                Customer_order_number: order.id,
+                                Consignee_name: order.name,
+                                Address: order.addr.replace(/\n/g, ' '),
+                                Postal_code: postcode,
+                                Phone_number: order.tel,
+                                Phone_number2: '',
+                                COD: order.bank.indexOf('COD') > -1 ? order.price : '',
+                                Weight_kg: 1,
+                                Length: '',
+                                Width: '',
+                                Height: '',
+                                Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
+                                Remark2: order.price,
+                                Remark3: order.page
+                            }
                     }
                 }).filter(f => f != null)
 
@@ -1025,6 +1029,75 @@ exports.dailyStatement = (req, res) => {
     }
 
     getDailyStatement();
+
+
+}
+exports.dailyStatementProduct = (req, res) => {
+    async function getDailyStatementProduct() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    if (['owner', 'stock'].indexOf(auth.data().role) > -1) {
+                        db.collection('orders')
+                            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .where('return', '==', false)
+                            .get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    if (doc.data().banks[0].name.indexOf('SCB') > -1)
+                                        orders.push({
+                                            // id:doc.id,
+                                            // date: doc.data().banks[0].date,
+                                            orderDate: doc.data().orderDate,
+                                            products: doc.data().product
+                                        })
+                                })
+                                r.expr(orders)
+                                    .group('orderDate')
+                                    .ungroup()
+                                    .map(m => {
+                                        return {
+                                            orderDate: m('group'),
+                                            products: m('reduction').getField('products')
+                                                .reduce((le, ri) => {
+                                                    return le.add(ri)
+                                                })
+                                                .group('code')
+                                                .sum('amount')
+                                                .ungroup()
+                                        }
+                                    })
+                                    .orderBy('orderDate')
+                                    .run()
+                                    .then(result => {
+                                        // const datas = result.map(m => {
+                                        //     const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                        //     return {
+                                        //         ...m,
+                                        //         orderDate: moment(orderDate).format('ll')
+                                        //     }
+                                        // })
+
+                                        // res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                        //     OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        //     START_DATE: moment(req.query.startDate).format('LL'),
+                                        //     END_DATE: moment(req.query.endDate).format('LL'),
+                                        // });
+                                        res.json(result)
+                                    })
+                            })
+                    } else {
+                        res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                    }
+                }
+            })
+    }
+
+    getDailyStatementProduct();
 
 
 }
