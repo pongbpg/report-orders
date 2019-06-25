@@ -11,4 +11,5 @@ module.exports = function (app) {
     // app.get('/com/admin', ctrl.comAdmin);
     // app.post('/test', ctrl.test);
     // app.get('/counter', ctrl.counterPage);
+    app.get('/receipts',ctrl.receipts);
 }

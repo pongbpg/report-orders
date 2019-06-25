@@ -295,6 +295,97 @@ exports.dailyBank = (req, res) => {
 
 
 }
+exports.receipts = (req, res) => {
+    let filename = '';
+    let orders = [];
+    async function getReceipt() {
+        if (req.query.id) {
+            filename = req.query.id;
+            await db.collection('orders')
+                .doc(req.query.id)
+                .get()
+                .then(doc => {
+                    if (doc.exists) {
+                        orders.push(initData(doc))
+                    }
+                })
+        } else {
+            filename = req.query.cutoffDate.replace(/-/g, '');
+            const qBank = req.query.bank.toUpperCase();
+            const lBank = qBank.length;
+            await db.collection('orders')
+                .where('cutoffDate', '==', req.query.cutoffDate.replace(/-/g, ''))
+                // .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                // .where('return', '==', false)
+                // .where('country', '==', 'TH')
+                // .limit(2)
+                .get()
+                .then(snapShot => {
+
+                    snapShot.forEach(doc => {
+                        orders.push(initData(doc))
+                    })
+                    let orderNo = [];
+                    orders = orders.filter(f => {
+                        const cond = f.bank.substr(0, lBank) == qBank;
+                        return cond
+                    }).map(m => {
+                        // console.log(orderNo[m.orderDate])
+                        if (typeof orderNo[m.orderDate] === 'undefined') {
+                            orderNo[m.orderDate] = 1;
+                        } else {
+                            orderNo[m.orderDate] = orderNo[m.orderDate] + 1;
+                        }
+
+                        return {
+                            ...m,
+                            orderNo: 'INV' + m.orderDate + '-' + (fourDigit(orderNo[m.orderDate]))
+                        }
+                    })
+                        .sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
+
+                })
+        }
+        function initData(doc) {
+            const plen = doc.data().product.length;
+            let order = {
+                id: doc.id,// ...doc.data(),
+                name: doc.data().name,
+                tel: doc.data().tel,
+                addr: doc.data().addr,
+                price: doc.data().price,
+                // orderNo: doc.data().orderDate + fourDigit(doc.data().orderNo),
+                orderDate: moment(doc.data().orderDate).format('DD/MM/YYYY'),
+                thaiDate: moment(doc.data().orderDate).format('ll'),
+                product: doc.data().product.map((p, i) => {
+                    return {
+                        amount: p.amount,
+                        code: p.code,
+                        name: p.name,
+                        sale: p.sale || 0,
+                        no: i + 1
+                    }
+                }),
+                remark: doc.data().fb + '/' + doc.data().bank,
+                bank: doc.data().bank
+            }
+            if (plen <= 10) {
+                for (let i = plen; i <= 10; i++) {
+                    order.product.push({ no: "", amount: 0, code: "", name: "", sale: 0 })
+                }
+            }
+            return order;
+        }
+
+        // res.json(orders)
+        res.ireport("jaoying/receipt.jasper", req.query.file || "pdf", orders, {
+            OUTPUT_NAME: 'receipts' + filename,
+            IS_COPY: req.query.copy || "Y"
+        });
+    }
+    getReceipt();
+
+}
 exports.test = (req, res) => {
     // res.json(decodeURI(req.body.txt))
     const txt = decodeURI(req.body.txt);
@@ -499,6 +590,17 @@ const twoDigit = (n) => {
         //     return '00' + n.toString();
         // } else if (n < 1000) {
         //     return '0' + n.toString()
+    } else {
+        return n.toString();
+    }
+}
+const fourDigit = (n) => {
+    if (n < 10) {
+        return '000' + n.toString();
+    } else if (n < 100) {
+        return '00' + n.toString();
+    } else if (n < 1000) {
+        return '0' + n.toString()
     } else {
         return n.toString();
     }
