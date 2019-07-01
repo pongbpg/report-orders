@@ -197,7 +197,13 @@ exports.dailySayHi = (req, res) => {
                                     orders.push({
                                         id: doc.id, ...doc.data(),
                                         orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                        return: doc.data().return ? true : false
+                                        return: doc.data().return ? true : false,
+                                        totalFreight: doc.get('expressName')
+                                            ? (doc.get('expressName') == 'FLASH'
+                                                ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                                : doc.get('totalFreight')
+                                            )
+                                            : 0
                                     })
                             })
                             r.expr(orders)
@@ -220,7 +226,7 @@ exports.dailySayHi = (req, res) => {
                                             price: m('reduction').filter({ return: false }).sum('price'),
                                             countReturn: m('reduction').filter({ return: true }).count(),
                                             priceReturn: m('reduction').filter({ return: true }).sum('price'),
-                                            freight: m('reduction').sum('totalFreight'),
+                                            freight: m('reduction').sum('totalFreight').add(m('reduction').filter({ return: true }).count().mul(12.5)),
                                             // promote: m('reduction').sum('promote'),
                                             interest: m('reduction').sum('interest')
                                         }
@@ -285,7 +291,7 @@ exports.dailySayHi = (req, res) => {
                                         }
                                     })
 
-                                    res.ireport((req.query.v ? 'topslim/' : '') + "dailySayHi.jrxml", req.query.file || "pdf", pages, {
+                                    res.ireport("topslim/dailySayHi.jrxml", req.query.file || "pdf", pages, {
                                         OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
