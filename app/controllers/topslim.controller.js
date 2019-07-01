@@ -337,17 +337,24 @@ exports.comAdmin = (req, res) => {
                     db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-                        .where('return', '==', false)
+                        // .where('return', '==', false)
                         .get()
                         .then(snapShot => {
                             let orders = []
                             snapShot.forEach(doc => {
-                                if (doc.data().bank.indexOf('CM') == -1)
-                                    orders.push({
-                                        id: doc.id, ...doc.data(),
-                                        page: doc.data().page.replace('@', ''),
-                                        edit: doc.data().edit == null ? false : doc.data().edit
-                                    })
+                                // if (doc.data().bank.indexOf('CM') == -1)
+                                orders.push({
+                                    id: doc.id, ...doc.data(),
+                                    page: doc.data().page.replace('@', ''),
+                                    edit: doc.data().edit == null ? false : doc.data().edit,
+                                    return: doc.data().return ? true : false,
+                                    totalFreight: doc.get('expressName')
+                                        ? (doc.get('expressName') == 'FLASH'
+                                            ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                            : doc.get('totalFreight')
+                                        )
+                                        : 0
+                                })
                             })
                             r.expr(orders)
                                 .group(g => {
@@ -357,9 +364,24 @@ exports.comAdmin = (req, res) => {
                                 .map(m => {
                                     return m('group').pluck('page').merge({
                                         admin: m('reduction')(0)('admin'),
-                                        price: m('reduction').filter({ edit: false }).sum('price'),
-                                        price2: m('reduction').filter({ edit: true }).sum('price'),
-                                        sumPage: m('reduction').sum('price')
+                                        price: m('reduction').filter({ edit: false, return: false }).sum('price').sub(
+                                            m('reduction').filter({ edit: false }).sum('totalFreight')
+                                                .add(
+                                                    m('reduction').filter({ edit: false, return: true }).count().mul(12.5)
+                                                )
+                                        ),
+                                        price2: m('reduction').filter({ edit: true, return: false }).sum('price').sub(
+                                            m('reduction').filter({ edit: true }).sum('totalFreight')
+                                                .add(
+                                                    m('reduction').filter({ edit: true, return: true }).count().mul(12.5)
+                                                )
+                                        ),
+                                        sumPage: m('reduction').filter({ return: false }).sum('price').sub(
+                                            m('reduction').sum('totalFreight')
+                                                .add(
+                                                    m('reduction').filter({ return: true }).count().mul(12.5)
+                                                )
+                                        )
                                     })
                                 })
                                 .do(d => {
@@ -670,7 +692,7 @@ exports.dailyCost = (req, res) => {
                                                 priceLine: 0,
                                                 priceCm: 0,
                                                 price: 0,
-                                                delivery:0
+                                                delivery: 0
                                             })
                                         })
                                 })
