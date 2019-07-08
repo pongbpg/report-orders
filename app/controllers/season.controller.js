@@ -133,6 +133,7 @@ exports.dailySayHi = (req, res) => {
         let pages = [];
         let admins = [];
         let sayhis = [];
+        let costs = [];
         let sayhiPages = [];
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
@@ -141,6 +142,14 @@ exports.dailySayHi = (req, res) => {
                 admins.push({ ...doc.data(), id: '@' + doc.id })
             })
         })
+        // await db.collection('costs')
+        //     .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+        //     .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+        //     .get().then(snapShot => {
+        //         snapShot.forEach(doc => {
+        //             costs.push({ id: doc.id, ...doc.data() })
+        //         })
+        //     })
         await db.collection('sayhis')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
@@ -180,23 +189,32 @@ exports.dailySayHi = (req, res) => {
                         .then(snapShot => {
                             let orders = []
                             snapShot.forEach(doc => {
-                                if (doc.data().bank.indexOf('CM') == -1)
-                                    orders.push({
-                                        id: doc.id, ...doc.data(),
-                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                        return: doc.data().return ? true : false
-                                    })
+                                // if (doc.data().bank.indexOf('CM') == -1)
+                                orders.push({
+                                    id: doc.id, ...doc.data(),
+                                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                    return: doc.data().return ? true : false,
+                                    totalFreight: doc.get('expressName')
+                                        ? (doc.get('expressName') == 'FLASH'
+                                            ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                            : doc.get('totalFreight')
+                                        )
+                                        : 0
+                                })
                             })
-                            r.expr(orders).filter(f => {
-                                return r.expr(pages).contains(f('page'))
-                            }).filter(f => {
-                                return r.branch(r.expr(role).eq('owner'),
-                                    true,
-                                    r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
-                                )
-                            }).group(g => {
-                                return g.pluck('page', 'orderDate', 'admin')
-                            }).ungroup()
+                            r.expr(orders)
+                                .filter(f => {
+                                    return r.expr(pages).contains(f('page'))
+                                })
+                                .filter(f => {
+                                    return r.branch(r.expr(role).eq('owner'),
+                                        true,
+                                        r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                                    )
+                                })
+                                .group(g => {
+                                    return g.pluck('page', 'orderDate', 'admin')
+                                }).ungroup()
                                 .map(m => {
                                     return m('group').merge(m2 => {
                                         return {
@@ -204,6 +222,7 @@ exports.dailySayHi = (req, res) => {
                                             price: m('reduction').filter({ return: false }).sum('price'),
                                             countReturn: m('reduction').filter({ return: true }).count(),
                                             priceReturn: m('reduction').filter({ return: true }).sum('price'),
+                                            freight: m('reduction').sum('totalFreight').add(m('reduction').filter({ return: true }).count().mul(12.5)),
                                             // promote: m('reduction').sum('promote'),
                                             interest: m('reduction').sum('interest')
                                         }
@@ -226,28 +245,29 @@ exports.dailySayHi = (req, res) => {
                                             countFb: m('reduction').filter({ fb: true }).sum('count'),
                                             priceFbRt: m('reduction').filter({ fb: true }).sum('priceReturn'),
                                             countFbRt: m('reduction').filter({ fb: true }).sum('countReturn'),
-                                            // promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
-                                            // interestFb: m('reduction').filter({ fb: true }).sum('interest'),
                                             priceLine: m('reduction').filter({ fb: false }).sum('price'),
                                             countLine: m('reduction').filter({ fb: false }).sum('count'),
                                             priceLineRt: m('reduction').filter({ fb: false }).sum('priceReturn'),
                                             countLineRt: m('reduction').filter({ fb: false }).sum('countReturn'),
-                                            // promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
-                                            // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
                                             priceAll: m('reduction').sum('price'),
                                             countAll: m('reduction').sum('count'),
                                             priceRt: m('reduction').sum('priceReturn'),
                                             countRt: m('reduction').sum('countReturn'),
+                                            freight: m('reduction').sum('freight'),
                                             interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
                                             interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
                                             team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
-                                            // cc: r.expr(sayhis)
+
                                         }
                                     })
                                 })
                                 .do(d => {
                                     return d.merge(m => {
                                         return {
+                                            // delivery: r.expr(costs).filter(f => {
+                                            //     return f('page').eq(m('page'))
+                                            //         .and(f('date').eq(m('orderDate')))
+                                            // }).sum('delivery'),
                                             priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
                                             priceXRt: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceReturn'),
                                             countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
@@ -267,13 +287,14 @@ exports.dailySayHi = (req, res) => {
                                         }
                                     })
 
-                                    res.ireport("dailySayHi.jrxml", req.query.file || "pdf", pages, {
+                                    res.ireport("topslim/dailySayHi.jrxml", req.query.file || "pdf", pages, {
                                         OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
                                     });
                                     // res.json(result)
                                 })
+
                         })
                 } else {
                     res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
@@ -285,6 +306,375 @@ exports.dailySayHi = (req, res) => {
 
 
 }
+exports.dailyCost = (req, res) => {
+    // console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
+    var optionsBOT = {
+        method: 'GET',
+        url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
+        qs: { start_period: moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'), end_period: req.query.endDate },
+        headers: { accept: 'application/json', 'x-ibm-client-id': '870190f3-cac0-49ae-9220-058741681a02' }
+    };
+    async function getDailyCost() {
+        let pages = [];
+        let admins = [];
+        // let products = [];
+        let costs = [];
+        let dataBOT = {};
+        var r = req.r;
+        await db.collection('pages').get().then(snapShot => {
+            snapShot.forEach(doc => {
+                // admins.push({ ...doc.data(), page: doc.id })
+                pages.push({ ...doc.data(), page: doc.id })
+            })
+            // pages = admins.filter(f => f.page.indexOf('@') == -1)
+        })
+        await request(optionsBOT, function (error, response, body) {
+            if (error) {
+                return console.error('Failed: %s', error.message);
+            }
+            const rates = JSON.parse(body);
+            if (rates.result) {
+                dataBOT = rates.result.data.data_detail[0];
+            } else {
+                dataBOT = {
+                    rate: 32,
+                    period: req.query.endDate
+                }
+            }
+        });
+
+        await db.collection('costs')
+            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+            .get().then(snapShot => {
+                snapShot.forEach(doc => {
+                    costs.push({ id: doc.id, ...doc.data() })
+                })
+            })
+        await db.collection('emails').doc(req.query.uid).get().then(auth => {
+            if (auth.data().role == 'owner') {
+                const dates = enumerateDaysBetweenDates(req.query.startDate, req.query.endDate);
+                const results = [];
+                for (let d = 0; d < dates.length; d++) {
+                    for (let p = 0; p < pages.length; p++) {
+                        const cost = costs.find(f => f.id == dates[d] + pages[p].page)
+                        results.push({
+                            date: dates[d],
+                            ...pages[p],
+                            orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
+                            adsFb: cost ? cost.fb : 0,
+                            adsLine: cost ? cost.line : 0,
+                            // delivery: cost ? cost.delivery : 0
+
+                        })
+                    }
+                }
+                db.collection('orders')
+                    .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                    .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                    // .where('return', '==', false)
+                    .get()
+                    .then(snapShot => {
+                        let orders = []
+                        snapShot.forEach(doc => {
+                            // if (doc.data().bank.indexOf('CM') == -1)
+                            const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
+                            const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
+                            const dChannel = doc.get('channel');
+                            let type = '';
+                            if (typePage == 'line') {
+                                type = 'line';
+                                if (dChannel) {
+                                    if (dChannel == 'F') {
+                                        type = 'fb';
+                                    }
+                                }
+                            } else {
+                                type = 'fb'
+                            }
+                            orders.push({
+                                id: doc.id, ...doc.data(),
+                                orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
+                                type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
+                                // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
+                                product: doc.data().product.map(m => {
+                                    return {
+                                        ...m,
+                                        cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
+                                    }
+                                }),
+                                price: doc.data().price * rate,
+                                page: doc.data().page.replace('@', ''),
+                                return: doc.data().return ? true : false,
+                                delivery: doc.get('expressName')
+                                    ? (doc.get('expressName') == 'FLASH'
+                                        ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                        : doc.get('totalFreight')
+                                    )
+                                    : 0
+                            })
+                        })
+
+                        r.expr({
+                            orders,
+                            results
+                        })
+                            .merge(m => {
+                                return {
+                                    orders: m('orders').group(g => {
+                                        return g.pluck('page', 'type', 'return', 'orderDate')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    price: m2('reduction').sum('price'),
+                                                    cost: m2('reduction').map(m4 => {
+                                                        return { cost: m4('product').sum('cost') }
+                                                    }).sum('cost'),
+                                                    delivery: m2('reduction').sum('delivery')
+                                                }
+                                            })
+                                        })
+                                        .group(g => {
+                                            return g.pluck('page', 'orderDate')
+                                        })
+                                        .ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    costFb: m2('reduction').filter({ type: 'fb', return: false }).sum('cost'),
+                                                    costLine: m2('reduction').filter({ type: 'line', return: false }).sum('cost'),
+                                                    costCm: m2('reduction').filter({ type: 'cm', return: false }).sum('cost'),
+                                                    cost: m2('reduction').filter({ return: false }).sum('cost'),
+                                                    priceFb: m2('reduction').filter({ type: 'fb', return: false }).sum('price'),
+                                                    priceLine: m2('reduction').filter({ type: 'line', return: false }).sum('price'),
+                                                    priceCm: m2('reduction').filter({ type: 'cm', return: false }).sum('price'),
+                                                    price: m2('reduction').filter({ return: false }).sum('price'),
+                                                    delivery: m2('reduction').sum('delivery').add(m2('reduction').filter({ return: true }).count().mul(12.5)),
+                                                }
+                                            })
+                                        }),
+
+                                    results: m('results').group(g => {
+                                        return g.pluck('team', 'page', 'orderDate')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    adsFb: m2('reduction').sum('adsFb'),
+                                                    adsLine: m2('reduction').sum('adsLine'),
+                                                    // delivery: m2('reduction').sum('delivery'),
+                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))//.add(m2('reduction').sum('delivery'))
+                                                }
+                                            })
+                                        })
+                                }
+                            })
+                            .do(d => {
+                                return d('results').merge(m => {
+                                    return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
+                                        .merge(m2 => {
+                                            var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
+                                            return r.branch(x.count().ge(1), x(0), {
+                                                costFb: 0,
+                                                costLine: 0,
+                                                costCm: 0,
+                                                cost: 0,
+                                                priceFb: 0,
+                                                priceLine: 0,
+                                                priceCm: 0,
+                                                price: 0,
+                                                delivery: 0
+                                            })
+                                        })
+                                })
+                            })
+                            .merge(m => {
+                                return {
+                                    balance: m('price').sub(m('cost')).sub(m('ads'))
+                                }
+                            })
+                            .orderBy('orderDate', 'team', r.desc('balance'))
+                            .run()
+                            .then(result => {
+                                // res.json(result)
+                                // console.log(dataBOT.rate)
+                                res.ireport("dailyCost.jasper", req.query.file || "pdf", result, {
+                                    OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    START_DATE: moment(req.query.startDate).format('LL'),
+                                    END_DATE: moment(req.query.endDate).format('LL'),
+                                    RATE_AMOUNT: Number(dataBOT.rate).toString(),
+                                    RATE_DATE: moment(dataBOT.period).format('LL')
+                                });
+                            })
+
+                    })
+
+            } else {
+                res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+            }
+        })
+    }
+    getDailyCost();
+}
+// exports.dailySayHi = (req, res) => {
+//     async function getDailySayHi() {
+//         let pages = [];
+//         let admins = [];
+//         let sayhis = [];
+//         let sayhiPages = [];
+//         var r = req.r;
+//         await db.collection('pages').get().then(snapShot => {
+//             snapShot.forEach(doc => {
+//                 admins.push({ id: doc.id, ...doc.data() })
+//                 admins.push({ ...doc.data(), id: '@' + doc.id })
+//             })
+//         })
+//         await db.collection('sayhis')
+//             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+//             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+//             .get().then(snapShot => {
+//                 snapShot.forEach(doc => {
+//                     sayhis.push({
+//                         id: doc.id,
+//                         ...doc.data(),
+//                         date: (req.query.sum == 'all' ? 'SUM' : doc.data().date) + doc.data().page
+//                     })
+//                     sayhiPages.push((req.query.sum == 'all' ? 'SUM' + doc.data().page : doc.id))
+//                     sayhiPages.push((req.query.sum == 'all' ? 'SUM' : doc.data().date) + '@' + doc.data().page)
+//                 })
+//             })
+//         await db.collection('emails').doc(req.query.uid)
+//             .get()
+//             .then(auth => {
+//                 if (auth.exists) {
+//                     const role = auth.data().role;
+//                     if (role == 'owner') {
+//                         pages = admins.map(m => m.id)
+//                         // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
+//                         //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
+//                     } else {
+//                         auth.data().pages.forEach(page => {
+//                             // console.log(page)
+//                             pages.push(page)
+//                             pages.push('@' + page)
+//                         })
+//                         // console.log(pages)
+//                     }
+//                     // console.log(admins)
+//                     db.collection('orders')
+//                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+//                         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+//                         .get()
+//                         .then(snapShot => {
+//                             let orders = []
+//                             snapShot.forEach(doc => {
+//                                 if (doc.data().bank.indexOf('CM') == -1)
+//                                     orders.push({
+//                                         id: doc.id, ...doc.data(),
+//                                         orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+//                                         return: doc.data().return ? true : false
+//                                     })
+//                             })
+//                             r.expr(orders).filter(f => {
+//                                 return r.expr(pages).contains(f('page'))
+//                             }).filter(f => {
+//                                 return r.branch(r.expr(role).eq('owner'),
+//                                     true,
+//                                     r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+//                                 )
+//                             }).group(g => {
+//                                 return g.pluck('page', 'orderDate', 'admin')
+//                             }).ungroup()
+//                                 .map(m => {
+//                                     return m('group').merge(m2 => {
+//                                         return {
+//                                             count: m('reduction').filter({ return: false }).count(),
+//                                             price: m('reduction').filter({ return: false }).sum('price'),
+//                                             countReturn: m('reduction').filter({ return: true }).count(),
+//                                             priceReturn: m('reduction').filter({ return: true }).sum('price'),
+//                                             // promote: m('reduction').sum('promote'),
+//                                             interest: m('reduction').sum('interest')
+//                                         }
+//                                     }).merge(r.branch(m('group')('page').match('@').eq(null), {
+//                                         fb: true,
+//                                         page: m('group')('page')
+//                                     }, {
+//                                             fb: false,
+//                                             page: m('group')('page').split('@')(1)
+//                                         }))
+//                                 })
+//                                 .group(g => {
+//                                     return g.pluck('page', 'orderDate', 'admin')
+//                                 })
+//                                 .ungroup()
+//                                 .map(m => {
+//                                     return m('group').merge(m2 => {
+//                                         return {
+//                                             priceFb: m('reduction').filter({ fb: true }).sum('price'),
+//                                             countFb: m('reduction').filter({ fb: true }).sum('count'),
+//                                             priceFbRt: m('reduction').filter({ fb: true }).sum('priceReturn'),
+//                                             countFbRt: m('reduction').filter({ fb: true }).sum('countReturn'),
+//                                             // promoteFb: m('reduction').filter({ fb: true }).sum('promote'),
+//                                             // interestFb: m('reduction').filter({ fb: true }).sum('interest'),
+//                                             priceLine: m('reduction').filter({ fb: false }).sum('price'),
+//                                             countLine: m('reduction').filter({ fb: false }).sum('count'),
+//                                             priceLineRt: m('reduction').filter({ fb: false }).sum('priceReturn'),
+//                                             countLineRt: m('reduction').filter({ fb: false }).sum('countReturn'),
+//                                             // promoteLine: m('reduction').filter({ fb: false }).sum('promote'),
+//                                             // interestLine: m('reduction').filter({ fb: false }).sum('interest'),
+//                                             priceAll: m('reduction').sum('price'),
+//                                             countAll: m('reduction').sum('count'),
+//                                             priceRt: m('reduction').sum('priceReturn'),
+//                                             countRt: m('reduction').sum('countReturn'),
+//                                             interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
+//                                             interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
+//                                             team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
+//                                             // cc: r.expr(sayhis)
+//                                         }
+//                                     })
+//                                 })
+//                                 .do(d => {
+//                                     return d.merge(m => {
+//                                         return {
+//                                             priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
+//                                             priceXRt: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceReturn'),
+//                                             countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
+//                                         }
+//                                     })
+//                                 })
+//                                 .orderBy('orderDate', 'team', r.desc('priceX'), 'page', r.desc('priceAll'))
+//                                 .run()
+//                                 .then(result => {
+//                                     const pages = result.map(m => {
+//                                         const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+//                                         // console.log(m.page)
+//                                         return {
+//                                             ...m,
+//                                             orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll'),
+//                                             page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
+//                                         }
+//                                     })
+
+//                                     res.ireport("dailySayHi.jrxml", req.query.file || "pdf", pages, {
+//                                         OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+//                                         START_DATE: moment(req.query.startDate).format('LL'),
+//                                         END_DATE: moment(req.query.endDate).format('LL'),
+//                                     });
+//                                     // res.json(result)
+//                                 })
+//                         })
+//                 } else {
+//                     res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+//                 }
+//             })
+//     }
+
+//     getDailySayHi();
+
+
+// }
 exports.comAdmin = (req, res) => {
     async function comAdmin() {
         let pages = [];
@@ -466,210 +856,210 @@ exports.itemAdmin = (req, res) => {
 
 
 }
-exports.dailyCost = (req, res) => {
-    // console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
-    var optionsBOT = {
-        method: 'GET',
-        url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
-        qs: { start_period: moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'), end_period: req.query.endDate },
-        headers: { accept: 'application/json', 'x-ibm-client-id': '870190f3-cac0-49ae-9220-058741681a02' }
-    };
-    async function getDailyCost() {
-        let pages = [];
-        let admins = [];
-        // let products = [];
-        let costs = [];
-        let dataBOT = {};
-        var r = req.r;
-        await db.collection('pages').get().then(snapShot => {
-            snapShot.forEach(doc => {
-                // admins.push({ ...doc.data(), page: doc.id })
-                pages.push({ ...doc.data(), page: doc.id })
-            })
-            // pages = admins.filter(f => f.page.indexOf('@') == -1)
-        })
-        await request(optionsBOT, function (error, response, body) {
-            if (error) {
-                return console.error('Failed: %s', error.message);
-            }
-            const rates = JSON.parse(body);
-            if (rates.result) {
-                dataBOT = rates.result.data.data_detail[0];
-            } else {
-                dataBOT = {
-                    rate: 32,
-                    period: req.query.endDate
-                }
-            }
-        });
+// exports.dailyCost = (req, res) => {
+//     // console.log(moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'))
+//     var optionsBOT = {
+//         method: 'GET',
+//         url: 'https://apigw1.bot.or.th/bot/public/Stat-ReferenceRate/v2/DAILY_REF_RATE/',
+//         qs: { start_period: moment(req.query.startDate).subtract(1, "days").format('YYYY-MM-DD'), end_period: req.query.endDate },
+//         headers: { accept: 'application/json', 'x-ibm-client-id': '870190f3-cac0-49ae-9220-058741681a02' }
+//     };
+//     async function getDailyCost() {
+//         let pages = [];
+//         let admins = [];
+//         // let products = [];
+//         let costs = [];
+//         let dataBOT = {};
+//         var r = req.r;
+//         await db.collection('pages').get().then(snapShot => {
+//             snapShot.forEach(doc => {
+//                 // admins.push({ ...doc.data(), page: doc.id })
+//                 pages.push({ ...doc.data(), page: doc.id })
+//             })
+//             // pages = admins.filter(f => f.page.indexOf('@') == -1)
+//         })
+//         await request(optionsBOT, function (error, response, body) {
+//             if (error) {
+//                 return console.error('Failed: %s', error.message);
+//             }
+//             const rates = JSON.parse(body);
+//             if (rates.result) {
+//                 dataBOT = rates.result.data.data_detail[0];
+//             } else {
+//                 dataBOT = {
+//                     rate: 32,
+//                     period: req.query.endDate
+//                 }
+//             }
+//         });
 
-        await db.collection('costs')
-            .where('date', '>=', req.query.startDate.replace(/-/g, ''))
-            .where('date', '<=', req.query.endDate.replace(/-/g, ''))
-            .get().then(snapShot => {
-                snapShot.forEach(doc => {
-                    costs.push({ id: doc.id, ...doc.data() })
-                })
-            })
-        await db.collection('emails').doc(req.query.uid).get().then(auth => {
-            if (auth.data().role == 'owner') {
-                const dates = enumerateDaysBetweenDates(req.query.startDate, req.query.endDate);
-                const results = [];
-                for (let d = 0; d < dates.length; d++) {
-                    for (let p = 0; p < pages.length; p++) {
-                        const cost = costs.find(f => f.id == dates[d] + pages[p].page)
-                        results.push({
-                            date: dates[d],
-                            ...pages[p],
-                            orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
-                            adsFb: cost ? cost.fb : 0,
-                            adsLine: cost ? cost.line : 0,
-                            delivery: cost ? cost.delivery : 0
-                        })
-                    }
-                }
-                db.collection('orders')
-                    .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-                    .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-                    .where('return', '==', false)
-                    .get()
-                    .then(snapShot => {
-                        let orders = []
-                        snapShot.forEach(doc => {
-                            // if (doc.data().bank.indexOf('CM') == -1)
-                            const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
-                            const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
-                            const dChannel = doc.get('channel');
-                            let type = '';
-                            if (typePage == 'line') {
-                                type = 'line';
-                                if (dChannel) {
-                                    if (dChannel == 'F') {
-                                        type = 'fb';
-                                    }
-                                }
-                            } else {
-                                type = 'fb'
-                            }
-                            orders.push({
-                                id: doc.id, ...doc.data(),
-                                orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
-                                type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
-                                // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
-                                product: doc.data().product.map(m => {
-                                    return {
-                                        ...m,
-                                        cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
-                                    }
-                                }),
-                                price: doc.data().price * rate,
-                                page: doc.data().page.replace('@', '')
-                            })
-                        })
+//         await db.collection('costs')
+//             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
+//             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
+//             .get().then(snapShot => {
+//                 snapShot.forEach(doc => {
+//                     costs.push({ id: doc.id, ...doc.data() })
+//                 })
+//             })
+//         await db.collection('emails').doc(req.query.uid).get().then(auth => {
+//             if (auth.data().role == 'owner') {
+//                 const dates = enumerateDaysBetweenDates(req.query.startDate, req.query.endDate);
+//                 const results = [];
+//                 for (let d = 0; d < dates.length; d++) {
+//                     for (let p = 0; p < pages.length; p++) {
+//                         const cost = costs.find(f => f.id == dates[d] + pages[p].page)
+//                         results.push({
+//                             date: dates[d],
+//                             ...pages[p],
+//                             orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
+//                             adsFb: cost ? cost.fb : 0,
+//                             adsLine: cost ? cost.line : 0,
+//                             delivery: cost ? cost.delivery : 0
+//                         })
+//                     }
+//                 }
+//                 db.collection('orders')
+//                     .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+//                     .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+//                     .where('return', '==', false)
+//                     .get()
+//                     .then(snapShot => {
+//                         let orders = []
+//                         snapShot.forEach(doc => {
+//                             // if (doc.data().bank.indexOf('CM') == -1)
+//                             const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
+//                             const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
+//                             const dChannel = doc.get('channel');
+//                             let type = '';
+//                             if (typePage == 'line') {
+//                                 type = 'line';
+//                                 if (dChannel) {
+//                                     if (dChannel == 'F') {
+//                                         type = 'fb';
+//                                     }
+//                                 }
+//                             } else {
+//                                 type = 'fb'
+//                             }
+//                             orders.push({
+//                                 id: doc.id, ...doc.data(),
+//                                 orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+//                                 // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
+//                                 type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
+//                                 // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
+//                                 product: doc.data().product.map(m => {
+//                                     return {
+//                                         ...m,
+//                                         cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
+//                                     }
+//                                 }),
+//                                 price: doc.data().price * rate,
+//                                 page: doc.data().page.replace('@', '')
+//                             })
+//                         })
 
-                        r.expr({
-                            orders,
-                            results
-                        })
-                            .merge(m => {
-                                return {
-                                    orders: m('orders').group(g => {
-                                        return g.pluck('page', 'type', 'orderDate')
-                                    }).ungroup()
-                                        .map(m2 => {
-                                            return m2('group').merge(m3 => {
-                                                return {
-                                                    price: m2('reduction').sum('price'),
-                                                    cost: m2('reduction').map(m4 => {
-                                                        return { cost: m4('product').sum('cost') }
-                                                    }).sum('cost'),
-                                                    // amountOrder: m2('reduction').count()
-                                                }
-                                            })
-                                        })
-                                        .group(g => {
-                                            return g.pluck('page', 'orderDate')
-                                        })
-                                        .ungroup()
-                                        .map(m2 => {
-                                            return m2('group').merge(m3 => {
-                                                return {
-                                                    costFb: m2('reduction').filter({ type: 'fb' }).sum('cost'),
-                                                    costLine: m2('reduction').filter({ type: 'line' }).sum('cost'),
-                                                    costCm: m2('reduction').filter({ type: 'cm' }).sum('cost'),
-                                                    cost: m2('reduction').sum('cost'),
-                                                    priceFb: m2('reduction').filter({ type: 'fb' }).sum('price'),
-                                                    priceLine: m2('reduction').filter({ type: 'line' }).sum('price'),
-                                                    priceCm: m2('reduction').filter({ type: 'cm' }).sum('price'),
-                                                    price: m2('reduction').sum('price'),
-                                                }
-                                            })
-                                        }),
-                                    results: m('results').group(g => {
-                                        return g.pluck('team', 'page', 'orderDate')
-                                    }).ungroup()
-                                        .map(m2 => {
-                                            return m2('group').merge(m3 => {
-                                                return {
-                                                    adsFb: m2('reduction').sum('adsFb'),
-                                                    adsLine: m2('reduction').sum('adsLine'),
-                                                    delivery: m2('reduction').sum('delivery'),
-                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine')).add(m2('reduction').sum('delivery'))
-                                                }
-                                            })
-                                        })
-                                }
-                            })
-                            .do(d => {
-                                return d('results').merge(m => {
-                                    return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
-                                        .merge(m2 => {
-                                            var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
-                                            return r.branch(x.count().ge(1), x(0), {
-                                                costFb: 0,
-                                                costLine: 0,
-                                                costCm: 0,
-                                                cost: 0,
-                                                priceFb: 0,
-                                                priceLine: 0,
-                                                priceCm: 0,
-                                                price: 0,
-                                            })
-                                        })
-                                })
-                                // .reduce((le, ri) => {
-                                //     return le.add(ri)
-                                // }).default([])
-                            })
-                            .merge(m => {
-                                return {
-                                    balance: m('price').sub(m('cost')).sub(m('ads'))
-                                }
-                            })
-                            .orderBy('orderDate', 'team', r.desc('balance'))
-                            .run()
-                            .then(result => {
-                                // res.json(result)
-                                console.log(dataBOT.rate)
-                                res.ireport("dailyCost.jasper", req.query.file || "pdf", result, {
-                                    OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                    START_DATE: moment(req.query.startDate).format('LL'),
-                                    END_DATE: moment(req.query.endDate).format('LL'),
-                                    RATE_AMOUNT: Number(dataBOT.rate).toString(),
-                                    RATE_DATE: moment(dataBOT.period).format('LL')
-                                });
-                            })
+//                         r.expr({
+//                             orders,
+//                             results
+//                         })
+//                             .merge(m => {
+//                                 return {
+//                                     orders: m('orders').group(g => {
+//                                         return g.pluck('page', 'type', 'orderDate')
+//                                     }).ungroup()
+//                                         .map(m2 => {
+//                                             return m2('group').merge(m3 => {
+//                                                 return {
+//                                                     price: m2('reduction').sum('price'),
+//                                                     cost: m2('reduction').map(m4 => {
+//                                                         return { cost: m4('product').sum('cost') }
+//                                                     }).sum('cost'),
+//                                                     // amountOrder: m2('reduction').count()
+//                                                 }
+//                                             })
+//                                         })
+//                                         .group(g => {
+//                                             return g.pluck('page', 'orderDate')
+//                                         })
+//                                         .ungroup()
+//                                         .map(m2 => {
+//                                             return m2('group').merge(m3 => {
+//                                                 return {
+//                                                     costFb: m2('reduction').filter({ type: 'fb' }).sum('cost'),
+//                                                     costLine: m2('reduction').filter({ type: 'line' }).sum('cost'),
+//                                                     costCm: m2('reduction').filter({ type: 'cm' }).sum('cost'),
+//                                                     cost: m2('reduction').sum('cost'),
+//                                                     priceFb: m2('reduction').filter({ type: 'fb' }).sum('price'),
+//                                                     priceLine: m2('reduction').filter({ type: 'line' }).sum('price'),
+//                                                     priceCm: m2('reduction').filter({ type: 'cm' }).sum('price'),
+//                                                     price: m2('reduction').sum('price'),
+//                                                 }
+//                                             })
+//                                         }),
+//                                     results: m('results').group(g => {
+//                                         return g.pluck('team', 'page', 'orderDate')
+//                                     }).ungroup()
+//                                         .map(m2 => {
+//                                             return m2('group').merge(m3 => {
+//                                                 return {
+//                                                     adsFb: m2('reduction').sum('adsFb'),
+//                                                     adsLine: m2('reduction').sum('adsLine'),
+//                                                     delivery: m2('reduction').sum('delivery'),
+//                                                     ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine')).add(m2('reduction').sum('delivery'))
+//                                                 }
+//                                             })
+//                                         })
+//                                 }
+//                             })
+//                             .do(d => {
+//                                 return d('results').merge(m => {
+//                                     return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
+//                                         .merge(m2 => {
+//                                             var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
+//                                             return r.branch(x.count().ge(1), x(0), {
+//                                                 costFb: 0,
+//                                                 costLine: 0,
+//                                                 costCm: 0,
+//                                                 cost: 0,
+//                                                 priceFb: 0,
+//                                                 priceLine: 0,
+//                                                 priceCm: 0,
+//                                                 price: 0,
+//                                             })
+//                                         })
+//                                 })
+//                                 // .reduce((le, ri) => {
+//                                 //     return le.add(ri)
+//                                 // }).default([])
+//                             })
+//                             .merge(m => {
+//                                 return {
+//                                     balance: m('price').sub(m('cost')).sub(m('ads'))
+//                                 }
+//                             })
+//                             .orderBy('orderDate', 'team', r.desc('balance'))
+//                             .run()
+//                             .then(result => {
+//                                 // res.json(result)
+//                                 console.log(dataBOT.rate)
+//                                 res.ireport("dailyCost.jasper", req.query.file || "pdf", result, {
+//                                     OUTPUT_NAME: 'dailyCost' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+//                                     START_DATE: moment(req.query.startDate).format('LL'),
+//                                     END_DATE: moment(req.query.endDate).format('LL'),
+//                                     RATE_AMOUNT: Number(dataBOT.rate).toString(),
+//                                     RATE_DATE: moment(dataBOT.period).format('LL')
+//                                 });
+//                             })
 
-                    })
+//                     })
 
-            } else {
-                res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
-            }
-        })
-    }
-    getDailyCost();
-}
+//             } else {
+//                 res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+//             }
+//         })
+//     }
+//     getDailyCost();
+// }
 exports.dailySale = (req, res) => {
     async function getDailySale() {
         let pages = [];
