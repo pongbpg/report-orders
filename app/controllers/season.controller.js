@@ -133,7 +133,6 @@ exports.dailySayHi = (req, res) => {
         let pages = [];
         let admins = [];
         let sayhis = [];
-        let costs = [];
         let sayhiPages = [];
         var r = req.r;
         await db.collection('pages').get().then(snapShot => {
@@ -142,14 +141,6 @@ exports.dailySayHi = (req, res) => {
                 admins.push({ ...doc.data(), id: '@' + doc.id })
             })
         })
-        // await db.collection('costs')
-        //     .where('date', '>=', req.query.startDate.replace(/-/g, ''))
-        //     .where('date', '<=', req.query.endDate.replace(/-/g, ''))
-        //     .get().then(snapShot => {
-        //         snapShot.forEach(doc => {
-        //             costs.push({ id: doc.id, ...doc.data() })
-        //         })
-        //     })
         await db.collection('sayhis')
             .where('date', '>=', req.query.startDate.replace(/-/g, ''))
             .where('date', '<=', req.query.endDate.replace(/-/g, ''))
@@ -169,19 +160,6 @@ exports.dailySayHi = (req, res) => {
             .then(auth => {
                 if (auth.exists) {
                     const role = auth.data().role;
-                    if (role == 'owner') {
-                        pages = admins.map(m => m.id)
-                        // pages = ["@DB", "@SCR01", "@TCT01", "@TD01", "@TD02", "@TS01", "@TS02", "@TS03", "@TST", "@TPF01", "@TO01",
-                        //     "DB", "SCR01", "SSN01", "TCT01", "TD01", "TD02", "TS01", "TS02", "TS03", "TST", "TPF01", "TO01"];
-                    } else {
-                        auth.data().pages.forEach(page => {
-                            // console.log(page)
-                            pages.push(page)
-                            pages.push('@' + page)
-                        })
-                        // console.log(pages)
-                    }
-                    // console.log(admins)
                     db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
@@ -189,29 +167,31 @@ exports.dailySayHi = (req, res) => {
                         .then(snapShot => {
                             let orders = []
                             snapShot.forEach(doc => {
-                                // if (doc.data().bank.indexOf('CM') == -1)
-                                orders.push({
-                                    id: doc.id, ...doc.data(),
-                                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                    return: doc.data().return ? true : false,
-                                    totalFreight: doc.get('expressName')
-                                        ? (doc.get('expressName') == 'FLASH'
-                                            ? doc.get('freight') + (doc.get('codFee') * 1.07)
-                                            : doc.get('totalFreight')
-                                        )
-                                        : 0
-                                })
+                                const page = auth.data().pages.indexOf(doc.data().page.replace('@', '')) > -1;
+                                const admin = auth.data().adminId == doc.data().userId;
+                                if (role == 'owner' || page || admin)
+                                    orders.push({
+                                        id: doc.id, ...doc.data(),
+                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                        return: doc.data().return ? true : false,
+                                        totalFreight: doc.get('expressName')
+                                            ? (doc.get('expressName') == 'FLASH'
+                                                ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                                : doc.get('totalFreight')
+                                            )
+                                            : 0
+                                    })
                             })
                             r.expr(orders)
-                                .filter(f => {
-                                    return r.expr(pages).contains(f('page'))
-                                })
-                                .filter(f => {
-                                    return r.branch(r.expr(role).eq('owner'),
-                                        true,
-                                        r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
-                                    )
-                                })
+                                // .filter(f => {
+                                //     return r.expr(pages).contains(f('page'))
+                                // })
+                                // .filter(f => {
+                                //     return r.branch(r.expr(role).eq('owner'),
+                                //         true,
+                                //         r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                                //     )
+                                // })
                                 .group(g => {
                                     return g.pluck('page', 'orderDate', 'admin')
                                 }).ungroup()
