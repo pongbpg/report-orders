@@ -193,8 +193,7 @@ exports.dailySayHi = (req, res) => {
                                             ? (doc.get('expressName') == 'FLASH'
                                                 ? doc.get('freight') + (doc.get('codFee') * 1.07)
                                                 : doc.get('totalFreight')
-                                            )
-                                            : 0
+                                            ) : 0
                                     })
                             })
                             r.expr(orders)
@@ -303,6 +302,7 @@ exports.dailySayHi = (req, res) => {
 }
 exports.comAdmin = (req, res) => {
     async function comAdmin() {
+        let admins = [];
         let pages = [];
         let coms = [];
         var r = req.r;
@@ -311,15 +311,22 @@ exports.comAdmin = (req, res) => {
                 coms.push({ id: doc.id, ...doc.data() })
             })
         })
-        await db.collection('pages').get().then(snapShot => {
+        await db.collection('admins').get().then(snapShot => {
             // console.log(coms)
             snapShot.forEach(doc => {
                 const com = coms.find(f => f.id == doc.data().comId);
-                pages.push({ id: doc.id, ...doc.data(), coms: com ? com.rates : [] })
+                admins.push({ adminId: doc.id, coms: com ? com.rates : [] })
             })
             // console.log(pages)
         })
-
+        await db.collection('pages').get().then(snapShot => {
+            // console.log(coms)
+            snapShot.forEach(doc => {
+                // const com = coms.find(f => f.id == doc.data().comId);
+                pages.push({ pageId: doc.id, ...doc.data() })
+            })
+            // console.log(pages)
+        })
 
         await db.collection('emails').doc(req.query.uid)
             .get()
@@ -334,17 +341,21 @@ exports.comAdmin = (req, res) => {
                             let orders = []
                             snapShot.forEach(doc => {
                                 // if (doc.data().bank.indexOf('CM') == -1)
+                                const page = doc.data().page.replace('@', '');
+                                const userId = doc.data().edit == true
+                                    ? pages.find(f => f.pageId == page).adminId
+                                    : doc.data().userId
                                 orders.push({
                                     id: doc.id, ...doc.data(),
-                                    page: doc.data().page.replace('@', ''),
+                                    page,
                                     edit: doc.data().edit == null ? false : doc.data().edit,
                                     return: doc.data().return ? true : false,
                                     totalFreight: doc.get('expressName')
                                         ? (doc.get('expressName') == 'FLASH'
                                             ? doc.get('freight') + (doc.get('codFee') * 1.07)
                                             : doc.get('totalFreight')
-                                        )
-                                        : 0
+                                        ) : 0,
+                                    userId
                                 })
                             })
                             r.expr(orders)
@@ -353,7 +364,7 @@ exports.comAdmin = (req, res) => {
                                 })
                                 .ungroup()
                                 .map(m => {
-                                    return m('group').pluck('page').merge({
+                                    return m('group').merge({
                                         admin: m('reduction')(0)('admin'),
                                         price: m('reduction').filter({ edit: false, return: false }).sum('price').sub(
                                             m('reduction').filter({ edit: false }).sum('totalFreight')
@@ -376,35 +387,70 @@ exports.comAdmin = (req, res) => {
                                     })
                                 })
                                 .do(d => {
-                                    return d
-                                        .merge(m => {
-                                            return {
-                                                sumPage: d.filter({ page: m('page') }).sum('sumPage'),
-                                                rates: r.expr(pages).filter(f => {
-                                                    return f('id').eq(m('page'))
-                                                })(0)('coms').default([]),
-                                                comId: r.expr(pages).filter(f => {
-                                                    return f('id').eq(m('page'))
-                                                })(0)('comId').default(0)
-                                            }
-                                        })
-                                        .merge(m => {
-                                            return {
-                                                rate: m('rates').filter(f => {
-                                                    return f('min').le(m('sumPage'))
-                                                        .and(f('max').ge(m('sumPage')))
-                                                })(0)('percent').default(0)
-                                            }
-                                        })
+                                    return d.merge(m => {
+                                        return {
+                                            sumPage: d.filter({ page: m('page') }).sum('sumPage'),
+                                            sumAdmin: d.filter({ userId: m('userId') }).sum('price').add(
+                                                d.filter({ userId: m('userId') }).sum('price2')
+                                            ),
+                                        }
+                                    }).merge(m => {
+                                        return {
+                                            rates: r.expr(admins).filter(f => {
+                                                return f('adminId').eq(m('userId'))
+                                            })(0)('coms').default([])
+                                        }
+                                    }).merge(m => {
+                                        return {
+                                            rate: m('rates').filter(f => {
+                                                return f('min').le(m('sumAdmin'))
+                                                    .and(f('max').ge(m('sumAdmin')))
+                                            })(0)('percent').default(0)
+                                        }
+                                    }).without('rates')
                                         .merge(m => {
                                             return {
                                                 com: m('rate').mul(m('price')),
-                                                com2: m('rate').mul(m('price2'))
+                                                com2: m('rate').mul(m('price2')),
                                             }
                                         })
-                                        .without('rates')
+                                        .merge(m => {
+                                            return {
+                                                sumCom: m('com').add(m('com2')),
+                                                sumPrice: m('price').add(m('price2')),
+                                            }
+                                        })
                                 })
-                                .orderBy('admin', r.desc('com'))
+                                // .do(d => {
+                                //     return d
+                                //         .merge(m => {
+                                //             return {
+                                //                 sumPage: d.filter({ page: m('page') }).sum('sumPage'),
+                                //                 rates: r.expr(admins).filter(f => {
+                                //                     return f('adminId').eq(m('userId'))
+                                //                 })(0)('coms').default([]),
+                                //                 comId: r.expr(admins).filter(f => {
+                                //                     return f('adminId').eq(m('userId'))
+                                //                 })(0)('comId').default(0)
+                                //             }
+                                //         })
+                                // .merge(m => {
+                                //     return {
+                                //         rate: m('rates').filter(f => {
+                                //             return f('min').le(m('sumPage'))
+                                //                 .and(f('max').ge(m('sumPage')))
+                                //         })(0)('percent').default(0)
+                                //     }
+                                // })
+                                // .merge(m => {
+                                //     return {
+                                //         com: m('rate').mul(m('price')),
+                                //         com2: m('rate').mul(m('price2'))
+                                //     }
+                                // })
+                                // .without('rates')
+                                // })
+                                .orderBy(r.desc('sumAdmin'),r.desc('sumPrice'))
                                 .run()
                                 .then(result => {
                                     // res.json(result)
@@ -1080,7 +1126,7 @@ exports.dailyStatementProduct = (req, res) => {
                                             // id:doc.id,
                                             // date: doc.data().banks[0].date,
                                             orderDate: doc.data().orderDate,
-                                            products: doc.data().product
+                                            products: doc.data().product.filter(f => f.code.indexOf('MN') > -1 || f.code.indexOf('LG') > -1)
                                         })
                                 })
                                 r.expr(orders)
@@ -1442,22 +1488,6 @@ exports.excel = (req, res) => {
     }
     callback();
     res.json(true)
-}
-exports.cod = (req, res) => {
-    db.collection('orders')
-        .where('orderDate', '>=', '20181201')
-        .where('orderDate', '<=', '20181231')
-        .where('bank', '==', 'COD')
-        .get()
-        .then(snapShot => {
-            let cost = 0;
-            snapShot.forEach(doc => {
-                // if (doc.data().bank.indexOf('COD') > -1) {
-                cost += 70;
-                // }
-            })
-            res.json(cost)
-        })
 }
 exports.infoCustomer = (req, res) => {
     var r = req.r;
