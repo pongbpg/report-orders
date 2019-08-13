@@ -9,7 +9,7 @@ module.exports = function (app) {
     app.get('/dailyStatement', ctrl.dailyStatement);
     app.get('/dailyCost', ctrl.dailyCost);
     app.get('/dailyChannel', ctrl.dailyChannel);
-    app.get('/com/admin', ctrl.comAdmin);
+    app.get('/com/:cost', ctrl.comAdmin);
     app.get('/item/admin', ctrl.itemAdmin);
     // app.get('/test', ctrl.updateRt);
 }
