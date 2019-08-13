@@ -306,6 +306,7 @@ exports.comAdmin = (req, res) => {
         let pages = [];
         let coms = [];
         var r = req.r;
+        const reqCom = req.params.cost;
         await db.collection('coms').get().then(snapShot => {
             snapShot.forEach(doc => {
                 coms.push({ id: doc.id, ...doc.data() })
@@ -358,7 +359,7 @@ exports.comAdmin = (req, res) => {
                                     userId
                                 })
                             })
-                            r.expr(orders)
+                            let query = r.expr(orders)
                                 .group(g => {
                                     return g.pluck('userId', 'page')
                                 })
@@ -421,43 +422,25 @@ exports.comAdmin = (req, res) => {
                                             }
                                         })
                                 })
-                                // .do(d => {
-                                //     return d
-                                //         .merge(m => {
-                                //             return {
-                                //                 sumPage: d.filter({ page: m('page') }).sum('sumPage'),
-                                //                 rates: r.expr(admins).filter(f => {
-                                //                     return f('adminId').eq(m('userId'))
-                                //                 })(0)('coms').default([]),
-                                //                 comId: r.expr(admins).filter(f => {
-                                //                     return f('adminId').eq(m('userId'))
-                                //                 })(0)('comId').default(0)
-                                //             }
-                                //         })
-                                // .merge(m => {
-                                //     return {
-                                //         rate: m('rates').filter(f => {
-                                //             return f('min').le(m('sumPage'))
-                                //                 .and(f('max').ge(m('sumPage')))
-                                //         })(0)('percent').default(0)
-                                //     }
-                                // })
-                                // .merge(m => {
-                                //     return {
-                                //         com: m('rate').mul(m('price')),
-                                //         com2: m('rate').mul(m('price2'))
-                                //     }
-                                // })
-                                // .without('rates')
-                                // })
-                                .orderBy(r.desc('sumAdmin'),r.desc('sumPrice'))
-                                .run()
+                            // .orderBy(r.desc('sumAdmin'), r.desc('sumPrice'))
+                            // .orderBy(r.desc('sumPage'), r.desc('price'))
+                            query = reqCom == 'page' ? query.orderBy(r.desc('sumPage'), r.desc('price'))
+                                : query.orderBy(r.desc('sumAdmin'), r.desc('sumPrice'))
+                            query.run()
                                 .then(result => {
                                     // res.json(result)
+                                    result = result.map(m => {
+                                        return {
+                                            ...m,
+                                            admin: reqCom == 'page' ? m.page : m.admin,
+                                            page: reqCom == 'page' ? m.admin : m.page
+                                        }
+                                    })
                                     res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
                                         OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                         START_DATE: moment(req.query.startDate).format('LL'),
                                         END_DATE: moment(req.query.endDate).format('LL'),
+                                        COST: reqCom
                                     });
                                 })
                         })
@@ -565,7 +548,7 @@ exports.dailyCost = (req, res) => {
         let costs = [];
         let dataBOT = {};
         var r = req.r;
-        await db.collection('pages').get().then(snapShot => {
+        await db.collection('pages').where('active', '==', true).get().then(snapShot => {
             snapShot.forEach(doc => {
                 // admins.push({ ...doc.data(), page: doc.id })
                 pages.push({ ...doc.data(), page: doc.id })
@@ -1126,7 +1109,13 @@ exports.dailyStatementProduct = (req, res) => {
                                             // id:doc.id,
                                             // date: doc.data().banks[0].date,
                                             orderDate: doc.data().orderDate,
-                                            products: doc.data().product.filter(f => f.code.indexOf('MN') > -1 || f.code.indexOf('LG') > -1)
+                                            products: doc.data().product
+                                                .filter(f => f.code.indexOf('MN') > -1
+                                                    || f.code.indexOf('LG') > -1
+                                                    || f.code.indexOf('SP') > -1
+                                                ),
+                                            costs: doc.data().costs,
+                                            price: doc.data().price
                                         })
                                 })
                                 r.expr(orders)
@@ -1141,7 +1130,9 @@ exports.dailyStatementProduct = (req, res) => {
                                                 })
                                                 .group('code')
                                                 .sum('amount')
-                                                .ungroup()
+                                                .ungroup(),
+                                            costs: m('reduction').sum('costs'),
+                                            price: m('reduction').sum('price')
                                         }
                                     })
                                     .orderBy('orderDate')
@@ -1188,7 +1179,7 @@ exports.dailyChannel = (req, res) => {
         let costs = [];
         let dataBOT = {};
         var r = req.r;
-        await db.collection('pages').get().then(snapShot => {
+        await db.collection('pages').where('active', '==', true).get().then(snapShot => {
             snapShot.forEach(doc => {
                 pages.push({ ...doc.data(), page: doc.id })
             })
