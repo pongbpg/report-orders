@@ -390,8 +390,8 @@ exports.receipts = (req, res) => {
                 remark: doc.data().fb + '/' + doc.data().bank,
                 bank: doc.data().bank
             }
-            if (plen <= 15) {
-                for (let i = plen; i <= 15; i++) {
+            if (plen <= 12) {
+                for (let i = plen; i <= 12; i++) {
                     order.product.push({ no: "", amount: 0, code: "", name: "", sale: 0 })
                 }
             }
