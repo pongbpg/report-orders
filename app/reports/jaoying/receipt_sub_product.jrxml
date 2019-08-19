@@ -204,7 +204,11 @@
 				<textElement textAlignment="Right" verticalAlignment="Bottom" markup="none">
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[0]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(
+    $P{PRICE}>=$V{SUM_SALE}
+    ?0:$V{SUM_SALE}-$P{PRICE}
+)
+]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
