@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receipt" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="201"/>
+	<property name="ireport.y" value="101"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="IS_COPY" class="java.lang.String"/>
@@ -53,7 +53,7 @@
 					<textElement verticalAlignment="Top">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{id}+"\n"+$F{orderNo}+"\n"+$F{orderDate}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{orderNo}+"\n"+$F{orderDate}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement stretchType="RelativeToBandHeight" x="276" y="0" width="131" height="73" uuid="f6e28a25-24a4-46f1-bfda-99791349f613"/>
@@ -66,7 +66,6 @@
 						<font fontName="TH SarabunPSK" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[เลขที่สั่งซื้อ/ Ord No.
-เลขที่ใบกำกับภาษี/ Inv No.
 วันที่/ Date
 
 
@@ -135,7 +134,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ใบเสร็จรับเงิน / ใบกำกับภาษี]]></text>
+				<text><![CDATA[ใบเสร็จรับเงิน]]></text>
 			</staticText>
 			<textField>
 				<reportElement stretchType="RelativeToBandHeight" x="424" y="50" width="131" height="25" uuid="9ff4b530-3be0-42fd-a99d-073dea65a195"/>
@@ -238,14 +237,14 @@ Amount]]></text>
 					<subreportParameterExpression><![CDATA[$V{exVat}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[new iJsonDS($F{product})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/topslim/receipt_sub_product.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/jaoying/receipt_sub_product.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="50"/>
+		<band height="30"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="50"/>
+		<band height="30"/>
 	</pageFooter>
 </jasperReport>

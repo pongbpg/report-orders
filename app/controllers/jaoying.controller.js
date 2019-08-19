@@ -339,7 +339,7 @@ exports.receipts = (req, res) => {
 
                         return {
                             ...m,
-                            orderNo: 'INV' + m.orderDate + '-' + (fourDigit(orderNo[m.orderDate]))
+                            orderNo: m.id.substr(0, 8) + '-' + (fourDigit(orderNo[m.orderDate]))
                         }
                     })
                         .sort((a, b) => a.orderNo > b.orderNo ? 1 : -1)
@@ -348,6 +348,27 @@ exports.receipts = (req, res) => {
         }
         function initData(doc) {
             const plen = doc.data().product.length;
+            const itemName = (name) => {
+                if (name.indexOf('เสื้อ') > -1) {
+                    return 'เสื้อยืดคละแบบ'
+                } else if (name.toLowerCase().indexOf('set') > -1) {
+                    return 'ชุดเซท'
+                } else if (name.indexOf('เดรส') > -1) {
+                    return 'เดรสคละแบบ'
+                } else if (name.indexOf('กางเกง') > -1) {
+                    return 'กางเกง'
+                } else if (name.indexOf('หมวก') > -1) {
+                    return 'หมวก'
+                } else if (name.indexOf('กระเป๋า') > -1) {
+                    return 'กระเป๋าแฟชั่น'
+                } else if (name.indexOf('ผ้าพันคอ') > -1) {
+                    return 'ผ้าคลุมไหล่'
+                } else if (['นาฬิกา', 'กำไร', 'รองเท้า'].map(m => name.indexOf(m) > -1).filter(f => f === true).length > 0) {
+                    return 'แอคเซทเซอรี่'
+                } else {
+                    return name
+                }
+            }
             let order = {
                 id: doc.id,// ...doc.data(),
                 name: doc.data().name,
@@ -361,16 +382,16 @@ exports.receipts = (req, res) => {
                     return {
                         amount: p.amount,
                         code: p.code,
-                        name: p.name,
-                        sale: p.sale || 0,
+                        name: itemName(p.name) + ' ' + p.code,
+                        sale: p.price || 0,
                         no: i + 1
                     }
                 }),
                 remark: doc.data().fb + '/' + doc.data().bank,
                 bank: doc.data().bank
             }
-            if (plen <= 10) {
-                for (let i = plen; i <= 10; i++) {
+            if (plen <= 15) {
+                for (let i = plen; i <= 15; i++) {
                     order.product.push({ no: "", amount: 0, code: "", name: "", sale: 0 })
                 }
             }
