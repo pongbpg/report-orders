@@ -591,6 +591,7 @@ exports.dailyCost = (req, res) => {
                             orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
                             adsFb: cost ? cost.fb : 0,
                             adsLine: cost ? cost.line : 0,
+                            other: cost ? cost.other : 0,
                             // delivery: cost ? cost.delivery : 0
 
                         })
@@ -692,6 +693,7 @@ exports.dailyCost = (req, res) => {
                                                     adsFb: m2('reduction').sum('adsFb'),
                                                     adsLine: m2('reduction').sum('adsLine'),
                                                     // delivery: m2('reduction').sum('delivery'),
+                                                    other: m2('reduction').sum('other'),
                                                     ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))//.add(m2('reduction').sum('delivery'))
                                                 }
                                             })
@@ -700,7 +702,7 @@ exports.dailyCost = (req, res) => {
                             })
                             .do(d => {
                                 return d('results').merge(m => {
-                                    return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
+                                    return m.pluck('adsFb', 'adsLine', 'other', 'ads', 'team', 'orderDate', 'page')
                                         .merge(m2 => {
                                             var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
                                             return r.branch(x.count().ge(1), x(0), {
@@ -719,7 +721,7 @@ exports.dailyCost = (req, res) => {
                             })
                             .merge(m => {
                                 return {
-                                    balance: m('price').sub(m('cost')).sub(m('ads'))
+                                    balance: m('price').sub(m('cost')).sub(m('ads')).sub(m('other')).sub(m('delivery'))
                                 }
                             })
                             .orderBy('orderDate', 'team', r.desc('balance'))
