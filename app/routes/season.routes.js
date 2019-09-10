@@ -11,5 +11,6 @@ module.exports = function (app) {
     app.get('/dailyChannel', ctrl.dailyChannel);
     app.get('/com/:cost', ctrl.comAdmin);
     app.get('/item/admin', ctrl.itemAdmin);
+    app.get('/infoCustomer', ctrl.infoCustomer);
     // app.get('/test', ctrl.updateRt);
 }
