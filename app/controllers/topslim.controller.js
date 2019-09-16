@@ -224,9 +224,9 @@ exports.dailySayHi = (req, res) => {
                                         fb: true,
                                         page: m('group')('page')
                                     }, {
-                                            fb: false,
-                                            page: m('group')('page').split('@')(1)
-                                        }))
+                                        fb: false,
+                                        page: m('group')('page').split('@')(1)
+                                    }))
                                 })
                                 .group(g => {
                                     return g.pluck('page', 'orderDate', 'admin')
@@ -428,7 +428,6 @@ exports.comAdmin = (req, res) => {
                                 : query.orderBy(r.desc('sumAdmin'), r.desc('sumPrice'))
                             query.run()
                                 .then(result => {
-                                    // res.json(result)
                                     result = result.map(m => {
                                         return {
                                             ...m,
@@ -436,12 +435,13 @@ exports.comAdmin = (req, res) => {
                                             page: reqCom == 'page' ? m.admin : m.page
                                         }
                                     })
-                                    res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
-                                        OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                        START_DATE: moment(req.query.startDate).format('LL'),
-                                        END_DATE: moment(req.query.endDate).format('LL'),
-                                        COST: reqCom
-                                    });
+                                    res.json(result)
+                                    // res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
+                                    //     OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    //     START_DATE: moment(req.query.startDate).format('LL'),
+                                    //     END_DATE: moment(req.query.endDate).format('LL'),
+                                    //     COST: reqCom
+                                    // });
                                 })
                         })
                 } else {
@@ -808,9 +808,9 @@ exports.dailySale = (req, res) => {
                                             fb: true,
                                             page: m('group')('page')
                                         }, {
-                                                fb: false,
-                                                page: m('group')('page').split('@')(1)
-                                            }))
+                                            fb: false,
+                                            page: m('group')('page').split('@')(1)
+                                        }))
                                     })
                                     .group(g => {
                                         return g.pluck('page', 'orderDate')
@@ -990,6 +990,84 @@ exports.dailyBank = (req, res) => {
 
                                         res.ireport("dailyBank.jrxml", req.query.file || "pdf", datas, {
                                             OUTPUT_NAME: 'dailySale' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                        });
+                                        // res.json(result)
+                                    })
+                            })
+                    } else {
+                        res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                    }
+                }
+            })
+    }
+
+    getDailySale();
+
+
+}
+exports.dailyCod = (req, res) => {
+    async function getDailySale() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    if (['owner', 'stock'].indexOf(auth.data().role) > -1) {
+                        db.collection('orders')
+                            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .where('return', '==', false)
+                            .where('country', '==', 'TH')
+                            .get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    // for (var i = 0; i < doc.data().banks.length; i++) {
+                                    //     const bank = doc.data().banks[i].name.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                    if (doc.data().bank.indexOf('COD') > -1) {
+                                        let name1 = doc.data().name.substr(0, 1);
+                                        orders.push({
+                                            // bank: bank == null ? "ลืมใส่" : bank[0],
+                                            bank: name1,
+                                            price: doc.data().price,
+                                            orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
+                                        })
+                                    }
+                                    // }
+                                })
+                                r.expr(orders)
+                                    .group(g => {
+                                        return g.pluck('bank', 'orderDate')
+                                    })
+                                    .ungroup()
+                                    .map(m => {
+                                        return m('group').merge(m2 => {
+                                            return {
+                                                countAll: m('reduction').count(),
+                                                priceAll: m('reduction').sum('price')
+                                            }
+                                        })
+                                        // .merge(r.branch(m('group')('bank').eq('COD'), {
+                                        //     bank: 'COD'
+                                        // }, {
+                                        //         bank: m('group')('bank')
+                                        //     }))
+                                    })
+                                    .orderBy('orderDate', r.desc('priceAll'))
+                                    .run()
+                                    .then(result => {
+                                        const datas = result.map(m => {
+                                            const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            return {
+                                                ...m,
+                                                orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll')
+                                            }
+                                        })
+
+                                        res.ireport("dailyBank.jrxml", req.query.file || "pdf", datas, {
+                                            OUTPUT_NAME: 'dailyCOD' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                             START_DATE: moment(req.query.startDate).format('LL'),
                                             END_DATE: moment(req.query.endDate).format('LL'),
                                         });
