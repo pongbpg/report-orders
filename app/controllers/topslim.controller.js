@@ -435,13 +435,13 @@ exports.comAdmin = (req, res) => {
                                             page: reqCom == 'page' ? m.admin : m.page
                                         }
                                     })
-                                    res.json(result)
-                                    // res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
-                                    //     OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                    //     START_DATE: moment(req.query.startDate).format('LL'),
-                                    //     END_DATE: moment(req.query.endDate).format('LL'),
-                                    //     COST: reqCom
-                                    // });
+                                    // res.json(result)
+                                    res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
+                                        OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        START_DATE: moment(req.query.startDate).format('LL'),
+                                        END_DATE: moment(req.query.endDate).format('LL'),
+                                        COST: reqCom
+                                    });
                                 })
                         })
                 } else {
