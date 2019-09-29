@@ -1018,6 +1018,7 @@ exports.dailyCod = (req, res) => {
                         db.collection('orders')
                             .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                             .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                            .where('cod', '==', true)
                             .where('return', '==', false)
                             .where('country', '==', 'TH')
                             .get()
@@ -1026,15 +1027,17 @@ exports.dailyCod = (req, res) => {
                                 snapShot.forEach(doc => {
                                     // for (var i = 0; i < doc.data().banks.length; i++) {
                                     //     const bank = doc.data().banks[i].name.toUpperCase().match(/[a-zA-Z]+/g, '');
-                                    if (doc.data().bank.indexOf('COD') > -1) {
-                                        let name1 = doc.data().name.substr(0, 1);
-                                        orders.push({
-                                            // bank: bank == null ? "ลืมใส่" : bank[0],
-                                            bank: name1,
-                                            price: doc.data().price,
-                                            orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
-                                        })
-                                    }
+                                    // if (doc.data().bank.indexOf('COD') > -1) {
+                                    let name1 = doc.data().name.substr(0, 1);
+                                    orders.push({
+                                        // bank: bank == null ? "ลืมใส่" : bank[0],
+                                        bank: name1,
+                                        price: doc.data().price,
+                                        received: doc.get('received') ? (doc.data().received == true ? doc.data().price : 0) : 0,
+                                        // returned: (doc.data().return == true ? doc.data().price : 0),
+                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
+                                    })
+                                    // }
                                     // }
                                 })
                                 r.expr(orders)
@@ -1046,7 +1049,15 @@ exports.dailyCod = (req, res) => {
                                         return m('group').merge(m2 => {
                                             return {
                                                 countAll: m('reduction').count(),
-                                                priceAll: m('reduction').sum('price')
+                                                priceAll: m('reduction').sum('price'),
+                                                sumRev: m('reduction').sum('received'),
+                                                countRev: m('reduction').filter(f => {
+                                                    return f('received').ne(0)
+                                                }).count(),
+                                                // sumRet: m('reduction').sum('returned'),
+                                                // countRet: m('reduction').filter(f => {
+                                                //     return f('return').ne(0)
+                                                // }).count(),
                                             }
                                         })
                                         // .merge(r.branch(m('group')('bank').eq('COD'), {
@@ -1066,7 +1077,7 @@ exports.dailyCod = (req, res) => {
                                             }
                                         })
 
-                                        res.ireport("dailyBank.jrxml", req.query.file || "pdf", datas, {
+                                        res.ireport("dailyCod.jrxml", req.query.file || "pdf", datas, {
                                             OUTPUT_NAME: 'dailyCOD' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
                                             START_DATE: moment(req.query.startDate).format('LL'),
                                             END_DATE: moment(req.query.endDate).format('LL'),
