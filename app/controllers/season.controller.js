@@ -1210,184 +1210,191 @@ exports.dailyChannel = (req, res) => {
                     costs.push({ id: doc.id, ...doc.data() })
                 })
             })
-        // await db.collection('emails').doc(req.query.uid).get().then(auth => {
-        // if (auth.data().role == 'owner'||auth.data().role == 'mar') {
+        await db.collection('emails').doc(req.query.uid).get().then(auth => {
+            if (auth.exists) {
 
-        await db.collection('orders')
-            .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-            .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-            .where('return', '==', false)
-            .get()
-            .then(snapShot => {
-                const dates = enumerateDaysBetweenDates(req.query.startDate, req.query.endDate);
-                const results = [];
-                for (let d = 0; d < dates.length; d++) {
-                    for (let p = 0; p < pages.length; p++) {
-                        const cost = costs.find(f => f.id == dates[d] + pages[p].page)
-                        results.push({
-                            date: dates[d],
-                            ...pages[p],
-                            orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
-                            adsFb: cost ? cost.fb : 0,
-                            adsLine: cost ? cost.line : 0,
-                            delivery: cost ? cost.delivery : 0
+                db.collection('orders')
+                    .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                    .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                    .where('return', '==', false)
+                    .get()
+                    .then(snapShot => {
+                        const dates = enumerateDaysBetweenDates(req.query.startDate, req.query.endDate);
+                        const results = [];
+                        for (let d = 0; d < dates.length; d++) {
+                            for (let p = 0; p < pages.length; p++) {
+                                const cost = costs.find(f => f.id == dates[d] + pages[p].page)
+                                const page = auth.data().pages.indexOf(pages[p].page) > -1;
+                                if (page)
+                                    results.push({
+                                        date: dates[d],
+                                        ...pages[p],
+                                        orderDate: req.query.sum == 'all' ? 'SUM' : dates[d],
+                                        adsFb: cost ? cost.fb : 0,
+                                        adsLine: cost ? cost.line : 0,
+                                        delivery: cost ? cost.delivery : 0
+                                    })
+                            }
+                        }
+
+                        let orders = []
+                        snapShot.forEach(doc => {
+                            const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
+                            const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
+                            const dChannel = doc.get('channel');
+                            let channel = '';
+                            let type = '';
+                            if (typePage == 'line') {
+                                type = 'line';
+                                channel = 'line-old'
+                                if (dChannel) {
+                                    if (dChannel == 'N') {
+                                        channel = 'line-new'
+                                    } else if (dChannel == 'F') {
+                                        type = 'fb';
+                                        channel = 'line-fb';
+                                    }
+                                }
+                            } else {
+                                type = 'fb'
+                                channel = 'fb-old'
+                                if (dChannel) {
+                                    if (dChannel == 'N') {
+                                        channel = 'fb-new'
+                                    }
+                                }
+                            }
+
+                            const page = auth.data().pages.indexOf(doc.data().page.replace('@', '')) > -1;
+                            // console.log(auth.data().pages, page, doc.data().page)
+                            if (auth.data().role == 'owner' || page == true) {
+                                orders.push({
+                                    id: doc.id, ...doc.data(),
+                                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                    // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
+                                    type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
+                                    // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
+                                    product: doc.data().product.map(m => {
+                                        return {
+                                            ...m,
+                                            cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
+                                        }
+                                    }),
+                                    price: doc.data().price * rate,
+                                    page: doc.data().page.replace('@', ''),
+                                    channel
+                                })
+                            }
                         })
-                    }
-                }
-
-                let orders = []
-                snapShot.forEach(doc => {
-                    const rate = doc.data().country == 'TH' ? 1 : Number(dataBOT.rate || 32);
-                    const typePage = doc.get('page').indexOf('@') > -1 ? 'line' : 'fb';
-                    const dChannel = doc.get('channel');
-                    let channel = '';
-                    let type = '';
-                    if (typePage == 'line') {
-                        type = 'line';
-                        channel = 'line-old'
-                        if (dChannel) {
-                            if (dChannel == 'N') {
-                                channel = 'line-new'
-                            } else if (dChannel == 'F') {
-                                type = 'fb';
-                                channel = 'line-fb';
-                            }
-                        }
-                    } else {
-                        type = 'fb'
-                        channel = 'fb-old'
-                        if (dChannel) {
-                            if (dChannel == 'N') {
-                                channel = 'fb-new'
-                            }
-                        }
-                    }
-                    orders.push({
-                        id: doc.id, ...doc.data(),
-                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                        // claim: doc.data().bank.indexOf('CM') == -1 ? false : true,
-                        type: doc.data().bank.indexOf('CM') > -1 ? 'cm' : type,
-                        // (doc.data().page.indexOf('@') == -1 ? 'fb' : 'line'),
-                        product: doc.data().product.map(m => {
-                            return {
-                                ...m,
-                                cost: (m.cost * m.amount) * rate//products.find(f => f.id == m.code).cost * m.amount
-                            }
-                        }),
-                        price: doc.data().price * rate,
-                        page: doc.data().page.replace('@', ''),
-                        channel
-                    })
-                })
-                // res.json(orders)
-                r.expr({
-                    orders,
-                    results
-                })
-                    .merge(m => {
-                        return {
-                            orders: m('orders').group(g => {
-                                return g.pluck('page', 'type', 'channel', 'orderDate')
-                            }).ungroup()
-                                .map(m2 => {
-                                    return m2('group').merge(m3 => {
-                                        return {
-                                            price: m2('reduction').sum('price'),
-                                            cost: m2('reduction').map(m4 => {
-                                                return { cost: m4('product').sum('cost') }
-                                            }).sum('cost')
-                                        }
-                                    })
-                                })
-                                .group(g => {
-                                    return g.pluck('page', 'orderDate')
-                                })
-                                .ungroup()
-                                .map(m2 => {
-                                    return m2('group').merge(m3 => {
-                                        return {
-                                            costFb: m2('reduction').filter({ type: 'fb' }).sum('cost'),
-                                            costLine: m2('reduction').filter({ type: 'line' }).sum('cost'),
-                                            costCm: m2('reduction').filter({ type: 'cm' }).sum('cost'),
-                                            cost: m2('reduction').sum('cost'),
-                                            priceFb: m2('reduction').filter({ type: 'fb' }).sum('price'),
-                                            priceLine: m2('reduction').filter({ type: 'line' }).sum('price'),
-                                            priceCm: m2('reduction').filter({ type: 'cm' }).sum('price'),
-                                            priceFbOld: m2('reduction').filter({ channel: 'fb-old' }).sum('price'),
-                                            priceFbNew: m2('reduction').filter({ channel: 'fb-new' }).sum('price'),
-                                            priceLineOld: m2('reduction').filter({ channel: 'line-old' }).sum('price'),
-                                            priceLineNew: m2('reduction').filter({ channel: 'line-new' }).sum('price'),
-                                            priceLineFb: m2('reduction').filter({ channel: 'line-fb' }).sum('price'),
-                                            price: m2('reduction').sum('price'),
-                                        }
-                                    })
-                                }),
-                            results: m('results').group(g => {
-                                return g.pluck('team', 'page', 'orderDate')
-                            }).ungroup()
-                                .map(m2 => {
-                                    return m2('group').merge(m3 => {
-                                        return {
-                                            adsFb: m2('reduction').sum('adsFb'),
-                                            adsLine: m2('reduction').sum('adsLine'),
-                                            delivery: m2('reduction').sum('delivery'),
-                                            ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine')).add(m2('reduction').sum('delivery'))
-                                        }
-                                    })
-                                })
-                        }
-                    })
-                    .do(d => {
-                        return d('results').merge(m => {
-                            return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
-                                .merge(m2 => {
-                                    var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
-                                    return r.branch(x.count().ge(1), x(0), {
-                                        costFb: 0,
-                                        costLine: 0,
-                                        costCm: 0,
-                                        cost: 0,
-                                        priceFb: 0,
-                                        priceFbOld: 0,
-                                        priceFbNew: 0,
-                                        priceLine: 0,
-                                        priceLineOld: 0,
-                                        priceLineNew: 0,
-                                        priceLineFb: 0,
-                                        priceCm: 0,
-                                        price: 0,
-                                    })
-                                })
+                        // res.json(orders)
+                        r.expr({
+                            orders,
+                            results
                         })
-                        // .reduce((le, ri) => {
-                        //     return le.add(ri)
-                        // }).default([])
-                    })
-                    .merge(m => {
-                        return {
-                            balance: m('price').sub(m('cost')).sub(m('ads'))
-                        }
-                    })
-                    .orderBy('orderDate', 'team', r.desc('balance'))
-                    .run()
-                    .then(result => {
-                        // res.json(result)
-                        //         console.log(dataBOT.rate)
-                        res.ireport("dailyChannel.jasper", req.query.file || "pdf", result, {
-                            OUTPUT_NAME: 'dailyChannel' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                            START_DATE: moment(req.query.startDate).format('LL'),
-                            END_DATE: moment(req.query.endDate).format('LL'),
-                            RATE_AMOUNT: Number(dataBOT.rate).toString(),
-                            RATE_DATE: moment(dataBOT.period).format('LL')
-                        });
+                            .merge(m => {
+                                return {
+                                    orders: m('orders').group(g => {
+                                        return g.pluck('page', 'type', 'channel', 'orderDate')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    price: m2('reduction').sum('price'),
+                                                    cost: m2('reduction').map(m4 => {
+                                                        return { cost: m4('product').sum('cost') }
+                                                    }).sum('cost')
+                                                }
+                                            })
+                                        })
+                                        .group(g => {
+                                            return g.pluck('page', 'orderDate')
+                                        })
+                                        .ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    costFb: m2('reduction').filter({ type: 'fb' }).sum('cost'),
+                                                    costLine: m2('reduction').filter({ type: 'line' }).sum('cost'),
+                                                    costCm: m2('reduction').filter({ type: 'cm' }).sum('cost'),
+                                                    cost: m2('reduction').sum('cost'),
+                                                    priceFb: m2('reduction').filter({ type: 'fb' }).sum('price'),
+                                                    priceLine: m2('reduction').filter({ type: 'line' }).sum('price'),
+                                                    priceCm: m2('reduction').filter({ type: 'cm' }).sum('price'),
+                                                    priceFbOld: m2('reduction').filter({ channel: 'fb-old' }).sum('price'),
+                                                    priceFbNew: m2('reduction').filter({ channel: 'fb-new' }).sum('price'),
+                                                    priceLineOld: m2('reduction').filter({ channel: 'line-old' }).sum('price'),
+                                                    priceLineNew: m2('reduction').filter({ channel: 'line-new' }).sum('price'),
+                                                    priceLineFb: m2('reduction').filter({ channel: 'line-fb' }).sum('price'),
+                                                    price: m2('reduction').sum('price'),
+                                                }
+                                            })
+                                        }),
+                                    results: m('results').group(g => {
+                                        return g.pluck('team', 'page', 'orderDate')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    adsFb: m2('reduction').sum('adsFb'),
+                                                    adsLine: m2('reduction').sum('adsLine'),
+                                                    delivery: m2('reduction').sum('delivery'),
+                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine')).add(m2('reduction').sum('delivery'))
+                                                }
+                                            })
+                                        })
+                                }
+                            })
+                            .do(d => {
+                                return d('results').merge(m => {
+                                    return m.pluck('adsFb', 'adsLine', 'delivery', 'ads', 'team', 'orderDate', 'page')
+                                        .merge(m2 => {
+                                            var x = d('orders').filter({ orderDate: m('orderDate'), page: m('page') });
+                                            return r.branch(x.count().ge(1), x(0), {
+                                                costFb: 0,
+                                                costLine: 0,
+                                                costCm: 0,
+                                                cost: 0,
+                                                priceFb: 0,
+                                                priceFbOld: 0,
+                                                priceFbNew: 0,
+                                                priceLine: 0,
+                                                priceLineOld: 0,
+                                                priceLineNew: 0,
+                                                priceLineFb: 0,
+                                                priceCm: 0,
+                                                price: 0,
+                                            })
+                                        })
+                                })
+                                // .reduce((le, ri) => {
+                                //     return le.add(ri)
+                                // }).default([])
+                            })
+                            .merge(m => {
+                                return {
+                                    balance: m('price').sub(m('cost')).sub(m('ads'))
+                                }
+                            })
+                            .orderBy('orderDate', 'team', r.desc('balance'))
+                            .run()
+                            .then(result => {
+                                // res.json(result)
+                                //         console.log(dataBOT.rate)
+                                res.ireport("dailyChannel.jasper", req.query.file || "pdf", result, {
+                                    OUTPUT_NAME: 'dailyChannel' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                    START_DATE: moment(req.query.startDate).format('LL'),
+                                    END_DATE: moment(req.query.endDate).format('LL'),
+                                    RATE_AMOUNT: Number(dataBOT.rate).toString(),
+                                    RATE_DATE: moment(dataBOT.period).format('LL')
+                                });
+                            })
+
                     })
 
-            })
-
-        // } else {
-        //     res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
-        // }
-        // })
+            } else {
+                res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+            }
+        })
     }
     getDailyChannel();
 }
