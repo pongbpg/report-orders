@@ -1225,7 +1225,7 @@ exports.dailyChannel = (req, res) => {
                             for (let p = 0; p < pages.length; p++) {
                                 const cost = costs.find(f => f.id == dates[d] + pages[p].page)
                                 const page = auth.data().pages.indexOf(pages[p].page) > -1;
-                                if (page)
+                                if (auth.data().role == 'owner' || page)
                                     results.push({
                                         date: dates[d],
                                         ...pages[p],
