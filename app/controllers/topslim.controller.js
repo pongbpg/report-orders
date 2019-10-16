@@ -1096,6 +1096,104 @@ exports.dailyCod = (req, res) => {
 
 
 }
+exports.statement = (req, res) => {
+    async function getStatement() {
+        var r = req.r;
+        await db.collection('emails').doc(req.query.uid)
+            .get()
+            .then(auth => {
+                if (auth.exists) {
+                    if (['owner', 'stock'].indexOf(auth.data().role) > -1) {
+                        var qry;
+                        if (req.query.groupBy == 'cutoff') {
+                            req.query.endDate = req.query.startDate;
+                            qry = db.collection('orders')
+                                .where('cutoffDate', '==', req.query.startDate.replace(/-/g, ''))
+                                .where('country', '==', 'TH')
+                                .where('return', '==', false)
+                        } else {
+                            qry = db.collection('orders')
+                                .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+                                .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                                .where('country', '==', 'TH')
+                                .where('return', '==', false)
+                        }
+
+                        // .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+                        // .where('return', '==', false)
+                        qry.get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    // const bank = doc.data().bank.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                    // const time = doc.data().bank.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                    const timestamp = new Date(doc.data().timestamp.toMillis());
+                                    let orderTime = twoDigit(timestamp.getHours()) + '.' + twoDigit(timestamp.getMinutes());
+
+                                    // console.log(doc.data().timestamp)
+                                    for (var i = 0; i < doc.data().banks.length; i++) {
+                                        const bank = doc.data().banks[i].name;//.toUpperCase().match(/[a-zA-Z]+/g, '');
+                                        const time = doc.data().banks[i].time;//.match(/[0-9][0-9][.][0-9][0-9]/g, '');
+                                        const orderDate = doc.data().banks[i].date;
+                                        if (bank != null) {
+                                            if (['CM', 'COD', 'ADMIN', 'STOCK', 'XX'].indexOf(bank) == -1) {
+                                                orders.push({
+                                                    id: doc.id,
+                                                    // ...doc.data(),
+                                                    bank: bank,
+                                                    time: time,
+                                                    orderTime: moment(timestamp).format('l LT'),// orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                                    orderDate: orderDate,//orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate,
+                                                    price: doc.data().banks[i].price,
+                                                    page: doc.data().page,
+                                                    name: doc.data().name,
+                                                    tel: doc.data().tel
+                                                })
+                                            }
+                                        }
+                                    }
+                                    // orders.push({
+                                    //     id: doc.id,
+                                    //     ...doc.data(),
+                                    //     bank: bank[0],
+                                    //     time: time[0],
+                                    //     orderTime: orderTime < time[0] ? moment(timestamp).format('l LT') : orderTime,
+                                    //     orderDate: orderTime < time[0] ? moment(doc.data().orderDate).subtract(1, 'days').format('YYYYMMDD') : doc.data().orderDate
+                                    // })
+                                })
+                                r.expr(orders)
+                                    .orderBy('bank', 'orderDate', 'time')
+                                    .pluck('bank', 'orderDate', 'time', 'page', 'price', 'id', 'name', 'tel', 'orderTime')
+                                    .run()
+                                    .then(result => {
+                                        const datas = result.map(m => {
+                                            const orderDate = m.orderDate;//.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            return {
+                                                ...m,
+                                                orderDate: moment(orderDate).format('ll')
+                                            }
+                                        })
+
+                                        res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                            OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                            GROUPBY: req.query.groupBy
+                                        });
+                                        // res.json(result)
+                                    })
+                            })
+                    } else {
+                        res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
+                    }
+                }
+            })
+    }
+
+    getStatement();
+
+
+}
 exports.dailyStatement = (req, res) => {
     async function getDailyStatement() {
         var r = req.r;
@@ -1576,76 +1674,77 @@ exports.infoCustomer = (req, res) => {
     db.collection('orders')
         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-        .where('return', '==', false)
+        // .where('return', '==', false)
         .where('country', '==', 'TH')
         .get()
         .then(snapShot => {
             let orders = []
             snapShot.forEach(doc => {
-                if (doc.data().bank.indexOf('CM') == -1)
+                // if (doc.data().bank.indexOf('CM') == -1)
+                if (doc.data().page.indexOf('TS01') > -1)
                     orders.push({
                         id: doc.id,
                         ...doc.data(),
-                        page: doc.data().page.replace('@', ''),
-                        source: doc.data().page.indexOf('@') > -1 ? 'LINE' : 'FACEBOOK',
-                        postcode: doc.data().addr.match(/\d{5}/g) == null ? '' : doc.data().addr.match(/\d{5}/g)[0]
+                        // page: doc.data().page.replace('@', ''),
+                        // source: doc.data().page.indexOf('@') > -1 ? 'LINE' : 'FACEBOOK',
+                        // postcode: doc.data().addr.match(/\d{5}/g) == null ? '' : doc.data().addr.match(/\d{5}/g)[0]
                     })
             })
-            // res.json(orders)
-            r.expr(orders)
-                .group(g => {
-                    return g.pluck('page')
-                })
-                .ungroup()
-                .map(m => {
-                    return m('group').merge({
-                        reduction: m('reduction').group('tel').ungroup()
-                            .map(m2 => {
-                                return {
-                                    // phone: r.expr("'").add(m2('group')),
-                                    phone: m2('group'),
-                                    value: m2('reduction').sum('price'),
-                                    social: m2('reduction')(0)('fb'),
-                                    zip: m2('reduction')(0)('postcode'),
-                                    name: m2('reduction')(0)('name'),
-                                    source: m2('reduction')(0)('source'),
-                                    count: m2('reduction').count(),
-                                    product: m2('reduction').map(pd => {
-                                        return pd('product')
-                                    }).reduce((le, ri) => {
-                                        return le.add(ri)
-                                    }).group('code').sum('amount').ungroup().orderBy(r.desc('reduction'))
-                                        .map(pd => {
-                                            return pd('group').add('=', pd('reduction').coerceTo('string'))
-                                        })
-                                        .reduce((le, ri) => {
-                                            return le.add(',', ri)
-                                        })
-                                }
-                            })
-                            .orderBy(r.desc('value'))
-                    })
-                })
-                .run()
-                .then(result => {
-                    // res.json(result);
-                    const XLSX = require('xlsx');
-                    // /* create workbook & set props*/
-                    const wb = { SheetNames: [], Sheets: {} };
+            res.json(orders)
+            // r.expr(orders)
+            //     .group(g => {
+            //         return g.pluck('page')
+            //     })
+            //     .ungroup()
+            //     .map(m => {
+            //         return m('group').merge({
+            //             reduction: m('reduction').group('tel').ungroup()
+            //                 .map(m2 => {
+            //                     return {
+            //                         // phone: r.expr("'").add(m2('group')),
+            //                         phone: m2('group'),
+            //                         value: m2('reduction').sum('price'),
+            //                         social: m2('reduction')(0)('fb'),
+            //                         zip: m2('reduction')(0)('postcode'),
+            //                         name: m2('reduction')(0)('name'),
+            //                         source: m2('reduction')(0)('source'),
+            //                         count: m2('reduction').count(),
+            //                         product: m2('reduction').map(pd => {
+            //                             return pd('product')
+            //                         }).reduce((le, ri) => {
+            //                             return le.add(ri)
+            //                         }).group('code').sum('amount').ungroup().orderBy(r.desc('reduction'))
+            //                             .map(pd => {
+            //                                 return pd('group').add('=', pd('reduction').coerceTo('string'))
+            //                             })
+            //                             .reduce((le, ri) => {
+            //                                 return le.add(',', ri)
+            //                             })
+            //                     }
+            //                 })
+            //                 .orderBy(r.desc('value'))
+            //         })
+            //     })
+            //     .run()
+            //     .then(result => {
+            //         // res.json(result);
+            //         const XLSX = require('xlsx');
+            //         // /* create workbook & set props*/
+            //         const wb = { SheetNames: [], Sheets: {} };
 
-                    // // /* create file 'in memory' */
-                    for (var prop in result) {
-                        var ws = XLSX.utils.json_to_sheet(result[prop]['reduction']);
-                        XLSX.utils.book_append_sheet(wb, ws, result[prop]['page']);
-                    }
-                    // // res.json(ws);
-                    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-                    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
-                    var filename = "topslim_customer.xlsx";
-                    res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
-                    res.type('application/octet-stream');
-                    res.send(wbout);
-                })
+            //         // // /* create file 'in memory' */
+            //         for (var prop in result) {
+            //             var ws = XLSX.utils.json_to_sheet(result[prop]['reduction']);
+            //             XLSX.utils.book_append_sheet(wb, ws, result[prop]['page']);
+            //         }
+            //         // // res.json(ws);
+            //         // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            //         var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+            //         var filename = "topslim_customer.xlsx";
+            //         res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+            //         res.type('application/octet-stream');
+            //         res.send(wbout);
+            //     })
         })
 
 }

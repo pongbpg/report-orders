@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dailySale" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="257"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="START_DATE" class="java.lang.String"/>
 	<parameter name="END_DATE" class="java.lang.String"/>
+	<parameter name="GROUPBY" class="java.lang.String"/>
 	<field name="bank" class="java.lang.String"/>
 	<field name="orderDate" class="java.lang.String"/>
 	<field name="price" class="java.lang.Double"/>
@@ -26,8 +27,8 @@
 		<groupExpression><![CDATA[$F{bank}]]></groupExpression>
 		<groupHeader>
 			<band height="102">
-				<textField pattern="#,##0">
-					<reportElement x="0" y="0" width="802" height="46" uuid="f77844b7-29fd-42ee-b892-6153c9c84e14"/>
+				<textField isStretchWithOverflow="true" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="802" height="62" uuid="f77844b7-29fd-42ee-b892-6153c9c84e14"/>
 					<box leftPadding="0" rightPadding="0">
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -38,6 +39,7 @@
 						<font fontName="TH SarabunPSK" size="20" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["STATEMENT การโอนเงินบัญชี "+$F{bank}+
+($P{GROUPBY}=="cutoff"?" ตามรอบส่งของ":" ตามเวลาลงออเดอร์")+
 "\nวันที่ "+
 ($P{START_DATE}==$P{END_DATE}
     ? $P{START_DATE}
