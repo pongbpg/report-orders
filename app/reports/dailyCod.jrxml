@@ -118,7 +118,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTALL}-$V{GRP_SUM_COUNTREV}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_SUM_COUNTALL}-$V{GRP_SUM_COUNTREV}-$V{GRP_SUM_COUNTRET}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
 					<reportElement mode="Opaque" x="265" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="13019d16-d7e7-494a-b4ce-252688a5d61a"/>
@@ -144,7 +144,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEALL}-$V{GRP_SUM_REV}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GRP_SUM_PRICEALL}-$V{GRP_SUM_REV}-$V{GRP_SUM_RET}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0">
 					<reportElement mode="Opaque" x="335" y="0" width="50" height="20" backcolor="#CCFFCC" uuid="edb20bbf-c32d-47f0-8906-2b2da6490573"/>
@@ -431,7 +431,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{countAll}-$F{countRev}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{countAll}-$F{countRev}-$F{countRet}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="265" y="0" width="70" height="20" uuid="2d55d744-0b43-4bd0-8786-45d835dac5e5"/>
@@ -457,7 +457,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{priceAll}-$F{sumRev}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{priceAll}-$F{sumRev}-$F{sumRet}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="335" y="0" width="50" height="20" uuid="1f857cf7-c174-47c4-9fc8-360f132e74d9"/>
@@ -552,7 +552,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_COUNTALL}-$V{SUM_COUNTREV}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_COUNTALL}-$V{SUM_COUNTREV}-$V{SUM_COUNTRET}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement mode="Opaque" x="265" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="49641b65-b15f-4ef8-837f-ef8ff242139b"/>
@@ -578,7 +578,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_PRICEALL}-$V{SUM_REV}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_PRICEALL}-$V{SUM_REV}-$V{SUM_RET}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0">
 				<reportElement mode="Opaque" x="335" y="0" width="50" height="20" backcolor="#CCCCFF" uuid="b7ad0de8-ca47-4883-8209-8f3a88337a3b"/>
