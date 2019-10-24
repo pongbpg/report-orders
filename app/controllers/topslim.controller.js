@@ -1019,7 +1019,7 @@ exports.dailyCod = (req, res) => {
                             .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                             .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
                             .where('cod', '==', true)
-                            .where('return', '==', false)
+                            // .where('return', '==', false)
                             .where('country', '==', 'TH')
                             .get()
                             .then(snapShot => {
@@ -1034,6 +1034,7 @@ exports.dailyCod = (req, res) => {
                                         bank: name1,
                                         price: doc.data().price,
                                         received: doc.get('received') ? (doc.data().received == true ? doc.data().price : 0) : 0,
+                                        returned: doc.get('return') == true ? doc.data().price : 0,
                                         // returned: (doc.data().return == true ? doc.data().price : 0),
                                         orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate
                                     })
@@ -1053,6 +1054,10 @@ exports.dailyCod = (req, res) => {
                                                 sumRev: m('reduction').sum('received'),
                                                 countRev: m('reduction').filter(f => {
                                                     return f('received').ne(0)
+                                                }).count(),
+                                                sumRet: m('reduction').sum('returned'),
+                                                countRet: m('reduction').filter(f => {
+                                                    return f('returned').ne(0)
                                                 }).count(),
                                                 // sumRet: m('reduction').sum('returned'),
                                                 // countRet: m('reduction').filter(f => {
@@ -1904,6 +1909,15 @@ exports.counterPage = (req, res) => {
     } else {
         res.redirect('http://m.me/tpf001')
     }
+}
+exports.amount2 = (req, res) => {
+    db.collection('products').get()
+        .then(snapShot => {
+            snapShot.forEach(doc => {
+                doc.ref.update({ amount2: 0 })
+            })
+            res.json(true)
+        })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
