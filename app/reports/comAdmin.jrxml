@@ -19,6 +19,8 @@
 	<field name="delivery" class="java.lang.Double"/>
 	<field name="sumPrice" class="java.lang.Double"/>
 	<field name="sumCom" class="java.lang.Double"/>
+	<field name="sumBank" class="java.lang.Double"/>
+	<field name="sumCod" class="java.lang.Double"/>
 	<variable name="grp_sum_price" class="java.lang.Double" resetType="Group" resetGroup="grp_admin" calculation="Sum">
 		<variableExpression><![CDATA[$F{price}]]></variableExpression>
 	</variable>
@@ -39,6 +41,12 @@
 	</variable>
 	<variable name="grp_sum_comAll" class="java.lang.Double" resetType="Group" resetGroup="grp_admin" calculation="Sum">
 		<variableExpression><![CDATA[$F{sumCom}]]></variableExpression>
+	</variable>
+	<variable name="grp_sum_cod" class="java.lang.Double" resetType="Group" resetGroup="grp_admin" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumCod}]]></variableExpression>
+	</variable>
+	<variable name="grp_sum_bank" class="java.lang.Double" resetType="Group" resetGroup="grp_admin" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumBank}]]></variableExpression>
 	</variable>
 	<variable name="sum_price" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{price}]]></variableExpression>
@@ -64,12 +72,18 @@
 	<variable name="sum_page" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{sumPage}]]></variableExpression>
 	</variable>
+	<variable name="sum_cod" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumCod}]]></variableExpression>
+	</variable>
+	<variable name="sum_bank" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumBank}]]></variableExpression>
+	</variable>
 	<group name="grp_admin" minHeightToStartNewPage="80">
 		<groupExpression><![CDATA[$F{admin}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
 				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="101" height="20" backcolor="#CCFFCC" uuid="05ce1221-5f57-4eda-87fc-1543c8aaf5bb"/>
+					<reportElement mode="Opaque" x="0" y="0" width="117" height="20" backcolor="#CCFFCC" uuid="05ce1221-5f57-4eda-87fc-1543c8aaf5bb"/>
 					<box leftPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -82,7 +96,7 @@
 					<textFieldExpression><![CDATA[($P{COST}=="page"?"เพจ": "แอดมิน")+" : "+$F{admin}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="171" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="2a690696-edae-44e7-b07f-7241d4fa9eda"/>
+					<reportElement mode="Opaque" x="182" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="2a690696-edae-44e7-b07f-7241d4fa9eda"/>
 					<box leftPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -95,7 +109,7 @@
 					<textFieldExpression><![CDATA[$V{grp_sum_price}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="416" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="b4f28d5a-69c5-4577-a68e-57723d7364f0"/>
+					<reportElement mode="Opaque" x="422" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="b4f28d5a-69c5-4577-a68e-57723d7364f0"/>
 					<box leftPadding="0" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -108,7 +122,7 @@
 					<textFieldExpression><![CDATA[$V{grp_sum_com}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="101" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="2a11508c-a5c9-4bfd-a794-9f636457c363"/>
+					<reportElement mode="Opaque" x="117" y="0" width="65" height="20" backcolor="#CCFFCC" uuid="2a11508c-a5c9-4bfd-a794-9f636457c363"/>
 					<box leftPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -121,7 +135,7 @@
 					<textFieldExpression><![CDATA[""]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement mode="Opaque" x="381" y="0" width="35" height="20" backcolor="#CCFFCC" uuid="65c907b0-f58b-46cc-a15e-767f707fd93d"/>
+					<reportElement mode="Opaque" x="387" y="0" width="35" height="20" backcolor="#CCFFCC" uuid="65c907b0-f58b-46cc-a15e-767f707fd93d"/>
 					<box leftPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -134,7 +148,7 @@
 					<textFieldExpression><![CDATA[$F{rate}*100]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="241" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="d86684f3-4e4c-4368-8597-8988e676776e"/>
+					<reportElement mode="Opaque" x="252" y="0" width="65" height="20" backcolor="#CCFFCC" uuid="d86684f3-4e4c-4368-8597-8988e676776e"/>
 					<box leftPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -147,7 +161,7 @@
 					<textFieldExpression><![CDATA[$V{grp_sum_price2}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="486" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="21acb750-5157-46c7-8445-ade088a5c3c9"/>
+					<reportElement mode="Opaque" x="482" y="0" width="50" height="20" backcolor="#CCFFCC" uuid="21acb750-5157-46c7-8445-ade088a5c3c9"/>
 					<box leftPadding="0" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -160,7 +174,7 @@
 					<textFieldExpression><![CDATA[$V{grp_sum_com2}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="311" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="6ae1a559-e345-415d-bef0-359bda57a1a8"/>
+					<reportElement mode="Opaque" x="317" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="6ae1a559-e345-415d-bef0-359bda57a1a8"/>
 					<box leftPadding="5" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -173,7 +187,7 @@
 					<textFieldExpression><![CDATA[$V{grp_sum_price}+$V{grp_sum_price2}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="556" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="0296e95f-5316-4906-9c8b-ca7c4b33e4da"/>
+					<reportElement mode="Opaque" x="532" y="0" width="60" height="20" backcolor="#CCFFCC" uuid="0296e95f-5316-4906-9c8b-ca7c4b33e4da"/>
 					<box leftPadding="0" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -186,7 +200,7 @@
 					<textFieldExpression><![CDATA[$V{grp_sum_comAll}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="626" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="02bc13df-5ee8-4002-bb17-ead727199abd"/>
+					<reportElement mode="Opaque" x="592" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="93d18208-d330-4091-bec5-6ee60475cc47"/>
 					<box leftPadding="0" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -196,10 +210,10 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{COST}=="admin"?($V{grp_sum_comAll}*0.05):0)]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{grp_sum_bank}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" pattern="#,##0.00">
-					<reportElement mode="Opaque" x="696" y="0" width="106" height="20" backcolor="#CCFFCC" uuid="f5d1cb07-b3a2-40da-b4c4-7f64ecae4568"/>
+					<reportElement mode="Opaque" x="662" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="a4488f9a-be1a-4527-afa4-003ee9ac9d9d"/>
 					<box leftPadding="0" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -209,7 +223,20 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{COST}=="admin"?($V{grp_sum_comAll}-($V{grp_sum_comAll}*0.05)):0)]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{grp_sum_cod}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0.00">
+					<reportElement mode="Opaque" x="732" y="0" width="70" height="20" backcolor="#CCFFCC" uuid="ec1c0106-c9aa-42df-853a-6c0802282fc2"/>
+					<box leftPadding="0" rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{grp_sum_bank}+$V{grp_sum_cod}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -235,7 +262,7 @@
 	<columnHeader>
 		<band height="40">
 			<staticText>
-				<reportElement x="0" y="0" width="101" height="40" uuid="9b2dd694-cb8e-4e8c-8941-fd1b49823101"/>
+				<reportElement x="0" y="0" width="117" height="40" uuid="9b2dd694-cb8e-4e8c-8941-fd1b49823101"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -248,7 +275,7 @@
 				<text><![CDATA[แอดมิน/เพจ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="171" y="20" width="70" height="20" uuid="29a54f33-5be8-4161-9736-bac4c3f2aecb"/>
+				<reportElement x="182" y="20" width="70" height="20" uuid="29a54f33-5be8-4161-9736-bac4c3f2aecb"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -261,7 +288,7 @@
 				<text><![CDATA[ตอบ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="416" y="20" width="70" height="20" uuid="6e9036c0-ab52-4a3a-8302-de71a1f1cc15"/>
+				<reportElement x="422" y="20" width="60" height="20" uuid="6e9036c0-ab52-4a3a-8302-de71a1f1cc15"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -274,7 +301,7 @@
 				<text><![CDATA[ตอบ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="101" y="20" width="70" height="20" uuid="091832ce-ccb3-499d-81e7-30515f92c763"/>
+				<reportElement x="117" y="20" width="65" height="20" uuid="091832ce-ccb3-499d-81e7-30515f92c763"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -284,10 +311,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[เพจ]]></text>
+				<text><![CDATA[เพจหักค่าส่ง]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="381" y="20" width="35" height="20" uuid="cdffa089-bdfa-4aeb-83e2-a677c219da91"/>
+				<reportElement x="387" y="20" width="35" height="20" uuid="cdffa089-bdfa-4aeb-83e2-a677c219da91"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -300,7 +327,7 @@
 				<text><![CDATA[%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="241" y="20" width="70" height="20" uuid="e8d63f64-5753-4fd6-a2cb-a824cc9104d2"/>
+				<reportElement x="252" y="20" width="65" height="20" uuid="e8d63f64-5753-4fd6-a2cb-a824cc9104d2"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -313,7 +340,7 @@
 				<text><![CDATA[แก้ไข]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="486" y="20" width="70" height="20" uuid="87accbd1-c257-4877-8a05-f414b2882891"/>
+				<reportElement x="482" y="20" width="50" height="20" uuid="87accbd1-c257-4877-8a05-f414b2882891"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -326,7 +353,7 @@
 				<text><![CDATA[แก้ไข]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="311" y="20" width="70" height="20" uuid="c81ae257-2089-46a9-884b-bbeed333eb19"/>
+				<reportElement x="317" y="20" width="70" height="20" uuid="c81ae257-2089-46a9-884b-bbeed333eb19"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -339,7 +366,7 @@
 				<text><![CDATA[รวม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="101" y="0" width="315" height="20" uuid="739f14f9-afb9-40da-ba9b-d1e528626733"/>
+				<reportElement x="117" y="0" width="305" height="20" uuid="739f14f9-afb9-40da-ba9b-d1e528626733"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -352,7 +379,7 @@
 				<text><![CDATA[ยอดขาย]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="416" y="0" width="210" height="20" uuid="ce589045-586b-4463-95a3-f4a91bae89ce"/>
+				<reportElement x="422" y="0" width="170" height="20" uuid="ce589045-586b-4463-95a3-f4a91bae89ce"/>
 				<box>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -365,7 +392,7 @@
 				<textFieldExpression><![CDATA[($P{COST}=="page"?"ค่าใช้จ่าย":"ค่าคอมฯ")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="556" y="20" width="70" height="20" uuid="23f444ba-3a18-440f-866a-40159f9fe065"/>
+				<reportElement x="532" y="20" width="60" height="20" uuid="23f444ba-3a18-440f-866a-40159f9fe065"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -378,7 +405,7 @@
 				<text><![CDATA[รวม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="626" y="0" width="70" height="40" uuid="6e94248a-0c31-4066-9fef-e209b1f81cec"/>
+				<reportElement x="592" y="20" width="70" height="20" uuid="4d269ed6-d2da-49e2-9cef-67b19c260120"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -388,10 +415,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ภาษี 5%]]></text>
+				<text><![CDATA[โอนเงิน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="696" y="0" width="106" height="40" uuid="24aee3db-894a-4ed0-bf0c-6f9ad2ac225b"/>
+				<reportElement x="662" y="20" width="70" height="20" uuid="929eabdf-90be-43b7-bfa7-08cdf57bf9e1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -401,14 +428,40 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ค่าคอมฯสุทธิ]]></text>
+				<text><![CDATA[เงินสด]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="732" y="20" width="70" height="20" uuid="77e59c4f-7a1d-468f-a3db-a4adc76b7d52"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[รวม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="592" y="0" width="210" height="20" uuid="629884c8-ed25-442f-82a2-4f8d8f1007dd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[วิธีชำระเงิน]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20">
 			<textField>
-				<reportElement x="0" y="0" width="101" height="20" uuid="b9fe25a5-6a1f-42de-bdb2-1e4c4f12447b"/>
+				<reportElement x="0" y="0" width="117" height="20" uuid="b9fe25a5-6a1f-42de-bdb2-1e4c4f12447b"/>
 				<box leftPadding="20">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -421,7 +474,7 @@
 				<textFieldExpression><![CDATA[$F{page}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="171" y="0" width="70" height="20" uuid="ada58bca-05f1-42df-bcdc-8e41f8d5207e"/>
+				<reportElement x="182" y="0" width="70" height="20" uuid="ada58bca-05f1-42df-bcdc-8e41f8d5207e"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -434,7 +487,7 @@
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="416" y="0" width="70" height="20" uuid="259d534a-eb05-40c4-b9bf-f126c33241ad"/>
+				<reportElement x="422" y="0" width="60" height="20" uuid="259d534a-eb05-40c4-b9bf-f126c33241ad"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -447,7 +500,7 @@
 				<textFieldExpression><![CDATA[$F{com}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="101" y="0" width="70" height="20" uuid="4ec3b8fd-eeab-45dd-bfa0-0d9e58d9b70d"/>
+				<reportElement x="117" y="0" width="65" height="20" uuid="4ec3b8fd-eeab-45dd-bfa0-0d9e58d9b70d"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -460,7 +513,7 @@
 				<textFieldExpression><![CDATA[$F{sumPage}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="381" y="0" width="35" height="20" uuid="d9db59d4-6c2b-49c3-9366-2bf0101a78d3"/>
+				<reportElement x="387" y="0" width="35" height="20" uuid="d9db59d4-6c2b-49c3-9366-2bf0101a78d3"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -473,7 +526,7 @@
 				<textFieldExpression><![CDATA[$F{sumPrice}/$F{sumPage}*100]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="241" y="0" width="70" height="20" uuid="3e9766d5-ef8b-4fbd-9771-669394375c00"/>
+				<reportElement x="252" y="0" width="65" height="20" uuid="3e9766d5-ef8b-4fbd-9771-669394375c00"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -486,7 +539,7 @@
 				<textFieldExpression><![CDATA[$F{price2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="486" y="0" width="70" height="20" uuid="9e57de13-04d2-4c72-a608-e7b9f5cc94da"/>
+				<reportElement x="482" y="0" width="50" height="20" uuid="9e57de13-04d2-4c72-a608-e7b9f5cc94da"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -499,7 +552,7 @@
 				<textFieldExpression><![CDATA[$F{com2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="311" y="0" width="70" height="20" uuid="4dc17f48-e090-4a4c-acd1-3dc7bf92d5e9"/>
+				<reportElement x="317" y="0" width="70" height="20" uuid="4dc17f48-e090-4a4c-acd1-3dc7bf92d5e9"/>
 				<box leftPadding="5" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -512,7 +565,7 @@
 				<textFieldExpression><![CDATA[$F{sumPrice}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="556" y="0" width="70" height="20" uuid="d08d943a-6031-4703-ae82-b8328c94e4d8"/>
+				<reportElement x="532" y="0" width="60" height="20" uuid="d08d943a-6031-4703-ae82-b8328c94e4d8"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -525,7 +578,7 @@
 				<textFieldExpression><![CDATA[$F{sumCom}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="626" y="0" width="70" height="20" uuid="a8b7b542-6d6e-44b6-ab94-27f4c92d4052"/>
+				<reportElement x="592" y="0" width="70" height="20" uuid="e99dc54e-19f4-408b-a2e2-3e08c8d1dc2e"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -535,10 +588,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{COST}=="admin"?($F{sumCom}*0.05):0)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sumBank}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="696" y="0" width="106" height="20" uuid="c99c61a4-e169-4c58-9f3d-eaa91e9e06f9"/>
+				<reportElement x="662" y="0" width="70" height="20" uuid="d1eb1213-b8c5-48f0-9fbd-443f4a9853bd"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -548,14 +601,27 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{COST}=="admin"?($F{sumCom}-($F{sumCom}*0.05)):0)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sumCod}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="0" width="70" height="20" uuid="74de685d-8d30-45ae-86e8-784f8c79c1a8"/>
+				<box leftPadding="0" rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sumBank}+$F{sumCod}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="20">
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="416" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="e5dce9ed-2408-4fe3-8e40-86d82d2a92d5"/>
+				<reportElement mode="Opaque" x="422" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="e5dce9ed-2408-4fe3-8e40-86d82d2a92d5"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -568,7 +634,7 @@
 				<textFieldExpression><![CDATA[$V{sum_com}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="171" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="50c2c3d2-a2fb-4b87-8cb8-7c20eb95b3c8"/>
+				<reportElement mode="Opaque" x="182" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="50c2c3d2-a2fb-4b87-8cb8-7c20eb95b3c8"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -581,7 +647,7 @@
 				<textFieldExpression><![CDATA[$V{sum_price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="101" height="20" backcolor="#CCCCFF" uuid="fa30e03e-de2b-4dfe-90d8-767bd0d0928c"/>
+				<reportElement mode="Opaque" x="0" y="0" width="117" height="20" backcolor="#CCCCFF" uuid="fa30e03e-de2b-4dfe-90d8-767bd0d0928c"/>
 				<box leftPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -594,7 +660,7 @@
 				<textFieldExpression><![CDATA["รวมทั้งหมด"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="101" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="a59df93a-7cd4-4d17-bc0f-0c5f1b24793c"/>
+				<reportElement mode="Opaque" x="117" y="0" width="65" height="20" backcolor="#CCCCFF" uuid="a59df93a-7cd4-4d17-bc0f-0c5f1b24793c"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -607,7 +673,7 @@
 				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto">
-				<reportElement mode="Opaque" x="381" y="0" width="35" height="20" backcolor="#CCCCFF" uuid="f3a32fca-bb6f-4ca8-aa8e-086a6236bdd4"/>
+				<reportElement mode="Opaque" x="387" y="0" width="35" height="20" backcolor="#CCCCFF" uuid="f3a32fca-bb6f-4ca8-aa8e-086a6236bdd4"/>
 				<box leftPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -620,7 +686,7 @@
 				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="241" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="092fdd32-5cbc-4f73-bc4e-8f61e716e6c0"/>
+				<reportElement mode="Opaque" x="252" y="0" width="65" height="20" backcolor="#CCCCFF" uuid="092fdd32-5cbc-4f73-bc4e-8f61e716e6c0"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -633,7 +699,7 @@
 				<textFieldExpression><![CDATA[$V{sum_price2}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="486" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="9ab87382-4995-4660-8c91-86f147007ed5"/>
+				<reportElement mode="Opaque" x="482" y="0" width="50" height="20" backcolor="#CCCCFF" uuid="9ab87382-4995-4660-8c91-86f147007ed5"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -646,7 +712,7 @@
 				<textFieldExpression><![CDATA[$V{sum_com2}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="311" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="829fe746-a701-4cb5-9c59-3488f3fe97b4"/>
+				<reportElement mode="Opaque" x="317" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="829fe746-a701-4cb5-9c59-3488f3fe97b4"/>
 				<box leftPadding="0" rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -659,7 +725,7 @@
 				<textFieldExpression><![CDATA[$V{sum_priceAll}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="556" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="9bf3613a-e78d-4d0d-b55d-0021eab9688c"/>
+				<reportElement mode="Opaque" x="532" y="0" width="60" height="20" backcolor="#CCCCFF" uuid="9bf3613a-e78d-4d0d-b55d-0021eab9688c"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -672,7 +738,7 @@
 				<textFieldExpression><![CDATA[$V{sum_comAll}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="626" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="011236e5-983b-41d7-b4b0-1371aac39ad1"/>
+				<reportElement mode="Opaque" x="592" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="fe882290-6420-4014-b44b-dd791a117167"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -682,10 +748,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{COST}=="admin"?($V{sum_comAll}*0.05):0)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sum_bank}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" pattern="#,##0.00">
-				<reportElement mode="Opaque" x="696" y="0" width="106" height="20" backcolor="#CCCCFF" uuid="71dfd2b2-2021-43e6-9a7f-f077c3f1b987"/>
+				<reportElement mode="Opaque" x="662" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="3329288a-b6a7-4640-b1d6-286e45eb9b0d"/>
 				<box rightPadding="5">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -695,7 +761,20 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{COST}=="admin"?($V{sum_comAll}-($V{sum_comAll}*0.05)):0)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sum_cod}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" pattern="#,##0.00">
+				<reportElement mode="Opaque" x="732" y="0" width="70" height="20" backcolor="#CCCCFF" uuid="36a788b0-b980-4bb9-ae71-b4e66f392f97"/>
+				<box rightPadding="5">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_cod}+$V{sum_bank}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

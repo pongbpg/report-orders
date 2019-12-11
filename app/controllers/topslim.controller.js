@@ -351,6 +351,7 @@ exports.comAdmin = (req, res) => {
                                     page,
                                     edit: doc.data().edit == null ? false : doc.data().edit,
                                     return: doc.data().return ? true : false,
+                                    cod: doc.data().bank.indexOf('COD') > -1 ? true : false,
                                     totalFreight: doc.get('expressName')
                                         ? (doc.get('expressName') == 'FLASH'
                                             ? doc.get('freight') + (doc.get('codFee') * 1.07)
@@ -373,18 +374,45 @@ exports.comAdmin = (req, res) => {
                                                     m('reduction').filter({ edit: false, return: true }).count().mul(12.5)
                                                 )
                                         ),
+                                        freight: m('reduction').filter({ edit: false }).sum('totalFreight')
+                                            .add(
+                                                m('reduction').filter({ edit: false, return: true }).count().mul(12.5)
+                                            ),
                                         price2: m('reduction').filter({ edit: true, return: false }).sum('price').sub(
                                             m('reduction').filter({ edit: true }).sum('totalFreight')
                                                 .add(
                                                     m('reduction').filter({ edit: true, return: true }).count().mul(12.5)
                                                 )
                                         ),
+                                        freight2: m('reduction').filter({ edit: true }).sum('totalFreight')
+                                            .add(
+                                                m('reduction').filter({ edit: true, return: true }).count().mul(12.5)
+                                            ),
                                         sumPage: m('reduction').filter({ return: false }).sum('price').sub(
                                             m('reduction').sum('totalFreight')
                                                 .add(
                                                     m('reduction').filter({ return: true }).count().mul(12.5)
                                                 )
-                                        )
+                                        ),
+                                        sumFreight: m('reduction').sum('totalFreight')
+                                            .add(
+                                                m('reduction').filter({ return: true }).count().mul(12.5)
+                                            ),
+
+                                        codPrice: m('reduction').filter({ return: false, cod: true }).sum('price')
+                                            .sub(
+                                                m('reduction').filter({ cod: true }).sum('totalFreight')
+                                                    .add(
+                                                        m('reduction').filter({ return: true, cod: true }).count().mul(12.5)
+                                                    )
+                                            ),
+                                        bankPrice: m('reduction').filter({ return: false, cod: false }).sum('price')
+                                            .sub(
+                                                m('reduction').filter({ cod: false }).sum('totalFreight')
+                                                    .add(
+                                                        m('reduction').filter({ return: true, cod: false }).count().mul(12.5)
+                                                    )
+                                            )
                                     })
                                 })
                                 .do(d => {
@@ -393,22 +421,23 @@ exports.comAdmin = (req, res) => {
                                             sumPage: d.filter({ page: m('page') }).sum('sumPage'),
                                             sumAdmin: d.filter({ userId: m('userId') }).sum('price').add(
                                                 d.filter({ userId: m('userId') }).sum('price2')
-                                            ),
+                                            )
                                         }
-                                    }).merge(m => {
-                                        return {
-                                            rates: r.expr(admins).filter(f => {
-                                                return f('adminId').eq(m('userId'))
-                                            })(0)('coms').default([])
-                                        }
-                                    }).merge(m => {
-                                        return {
-                                            rate: m('rates').filter(f => {
-                                                return f('min').le(m('sumAdmin'))
-                                                    .and(f('max').ge(m('sumAdmin')))
-                                            })(0)('percent').default(0)
-                                        }
-                                    }).without('rates')
+                                    })
+                                        .merge(m => {
+                                            return {
+                                                rates: r.expr(admins).filter(f => {
+                                                    return f('adminId').eq(m('userId'))
+                                                })(0)('coms').default([])
+                                            }
+                                        }).merge(m => {
+                                            return {
+                                                rate: m('rates').filter(f => {
+                                                    return f('min').le(m('sumAdmin'))
+                                                        .and(f('max').ge(m('sumAdmin')))
+                                                })(0)('percent').default(0)
+                                            }
+                                        }).without('rates')
                                         .merge(m => {
                                             return {
                                                 com: m('rate').mul(m('price')),
@@ -421,9 +450,14 @@ exports.comAdmin = (req, res) => {
                                                 sumPrice: m('price').add(m('price2')),
                                             }
                                         })
+                                        .merge(m => {
+                                            return {
+                                                sumCod: m('sumCom').mul(m('codPrice')).div(m('sumPrice')),
+                                                sumBank: m('sumCom').mul(m('bankPrice')).div(m('sumPrice')),
+                                            }
+                                        })
                                 })
-                            // .orderBy(r.desc('sumAdmin'), r.desc('sumPrice'))
-                            // .orderBy(r.desc('sumPage'), r.desc('price'))
+
                             query = reqCom == 'page' ? query.orderBy(r.desc('sumPage'), r.desc('price'))
                                 : query.orderBy(r.desc('sumAdmin'), r.desc('sumPrice'))
                             query.run()
@@ -453,6 +487,16 @@ exports.comAdmin = (req, res) => {
     comAdmin();
 
 
+}
+exports.comAdmin2 = (req, res) => {
+    const reqCom = req.params.cost;
+    const result = [{ "admin": "มี่", "bankPrice": 512352.585, "codPrice": 573427.4654, "com": 43431.202015999996, "com2": 0, "freight": 49648.949600000095, "freight2": 0, "page": "TCT01", "price": 1085780.0503999998, "price2": 0, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 20494.1034, "sumCod": 22937.098616, "sumCom": 43431.202015999996, "sumFreight": 49648.949600000095, "sumPage": 1085330.0503999998, "sumPrice": 1085780.0503999998, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "มี่", "bankPrice": 169171.5, "codPrice": 241472.87219999998, "com": 16417.814888, "com2": 7.96, "freight": 19860.627800000006, "freight2": 1, "page": "TS03", "price": 410445.3722, "price2": 199, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 6766.860000000001, "sumCod": 9658.914888, "sumCom": 16425.774888, "sumFreight": 19861.627800000006, "sumPage": 410788.8722, "sumPrice": 410644.3722, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "มี่", "bankPrice": 2435, "codPrice": 7859.428, "com": 411.77712, "com2": 0, "freight": 505.572, "freight2": 0, "page": "TPF01", "price": 10294.428, "price2": 0, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 97.4, "sumCod": 314.37712, "sumCom": 411.77712, "sumFreight": 505.572, "sumPage": 202818.98309999998, "sumPrice": 10294.428, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "มี่", "bankPrice": 1118.5, "codPrice": 3641.176, "com": 190.38704, "com2": 0, "freight": 280.324, "freight2": 0, "page": "TS06", "price": 4759.676, "price2": 0, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 44.739999999999995, "sumCod": 145.64703999999998, "sumCom": 190.38704, "sumFreight": 280.324, "sumPage": 4759.676, "sumPrice": 4759.676, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "มี่", "bankPrice": 2784.5, "codPrice": 1930.195, "com": 188.5878, "com2": 0, "freight": 205.305, "freight2": 0, "page": "TS01", "price": 4714.695, "price2": 0, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 111.38000000000001, "sumCod": 77.20779999999999, "sumCom": 188.5878, "sumFreight": 205.305, "sumPage": 569427.561, "sumPrice": 4714.695, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "มี่", "bankPrice": 525, "codPrice": 3480.321, "com": 160.21284, "com2": 0, "freight": 194.679, "freight2": 0, "page": "TST", "price": 4005.321, "price2": 0, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 21, "sumCod": 139.21284, "sumCom": 160.21284, "sumFreight": 194.679, "sumPage": 465119.7591, "sumPrice": 4005.321, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "มี่", "bankPrice": 3073.5, "codPrice": 0, "com": 122.94, "com2": 0, "freight": 76.5, "freight2": 0, "page": "TSBT01", "price": 3073.5, "price2": 0, "rate": 0.04, "sumAdmin": 1523272.0425999998, "sumBank": 122.93999999999998, "sumCod": 0, "sumCom": 122.94, "sumFreight": 76.5, "sumPage": 177186.4071, "sumPrice": 3073.5, "userId": "U55cd4297b6458a0904fab1f9dc11c792" }, { "admin": "เปิ้ล", "bankPrice": 357435, "codPrice": 417389.0437000001, "com": 27099.416529500006, "com2": 19.425, "freight": 40399.95629999993, "freight2": 35, "page": "DB", "price": 774269.0437, "price2": 555, "rate": 0.035, "sumAdmin": 850550.7387000001, "sumBank": 12510.225000000002, "sumCod": 14608.616529500005, "sumCom": 27118.841529500005, "sumFreight": 40434.95629999994, "sumPage": 774801.0437, "sumPrice": 774824.0437, "userId": "U3c4d6b40bca9584020986892a57d897f" }, { "admin": "เปิ้ล", "bankPrice": 19346.5, "codPrice": 45793.659999999996, "com": 2279.9056, "com2": 0, "freight": 3679.8400000000006, "freight2": 0, "page": "TS04", "price": 65140.159999999996, "price2": 0, "rate": 0.035, "sumAdmin": 850550.7387000001, "sumBank": 677.1275, "sumCod": 1602.7781, "sumCom": 2279.9056, "sumFreight": 3679.8400000000006, "sumPage": 66953.86, "sumPrice": 65140.159999999996, "userId": "U3c4d6b40bca9584020986892a57d897f" }, { "admin": "เปิ้ล", "bankPrice": 1065, "codPrice": 6266.535, "com": 256.603725, "com2": 0, "freight": 418.46500000000003, "freight2": 0, "page": "TS01", "price": 7331.535, "price2": 0, "rate": 0.035, "sumAdmin": 850550.7387000001, "sumBank": 37.275000000000006, "sumCod": 219.328725, "sumCom": 256.603725, "sumFreight": 418.46500000000003, "sumPage": 569427.561, "sumPrice": 7331.535, "userId": "U3c4d6b40bca9584020986892a57d897f" }, { "admin": "เปิ้ล", "bankPrice": 2296.5, "codPrice": 0, "com": 80.37750000000001, "com2": 0, "freight": 93.5, "freight2": 0, "page": "TO01", "price": 2296.5, "price2": 0, "rate": 0.035, "sumAdmin": 850550.7387000001, "sumBank": 80.37750000000001, "sumCod": 0, "sumCom": 80.37750000000001, "sumFreight": 93.5, "sumPage": 188724.836, "sumPrice": 2296.5, "userId": "U3c4d6b40bca9584020986892a57d897f" }, { "admin": "เปิ้ล", "bankPrice": 958.5, "codPrice": 0, "com": 33.54750000000001, "com2": 0, "freight": 31.5, "freight2": 0, "page": "TST", "price": 958.5, "price2": 0, "rate": 0.035, "sumAdmin": 850550.7387000001, "sumBank": 33.54750000000001, "sumCod": 0, "sumCom": 33.54750000000001, "sumFreight": 31.5, "sumPage": 465119.7591, "sumPrice": 958.5, "userId": "U3c4d6b40bca9584020986892a57d897f" }, { "admin": "Gun", "bankPrice": 71607.5, "codPrice": 116074.5401, "com": 5630.461202999999, "com2": 0, "freight": 10883.959900000005, "freight2": 0, "page": "TPF01", "price": 187682.04009999998, "price2": 0, "rate": 0.03, "sumAdmin": 631679.3352, "sumBank": 2148.225, "sumCod": 3482.2362029999995, "sumCom": 5630.461202999999, "sumFreight": 10883.959900000005, "sumPage": 202818.98309999998, "sumPrice": 187682.04009999998, "userId": "Ubfe755500584c1459cee5eaac2a23933" }, { "admin": "Gun", "bankPrice": 121603.5, "codPrice": 64716.335999999996, "com": 5563.64508, "com2": 25.95, "freight": 7981.164, "freight2": 35, "page": "TO01", "price": 185454.836, "price2": 865, "rate": 0.03, "sumAdmin": 631679.3352, "sumBank": 3648.105, "sumCod": 1941.4900799999998, "sumCom": 5589.59508, "sumFreight": 8016.164, "sumPage": 188724.836, "sumPrice": 186319.836, "userId": "Ubfe755500584c1459cee5eaac2a23933" }, { "admin": "Gun", "bankPrice": 47507.5, "codPrice": 118951.2961, "com": 4993.763883, "com2": 0, "freight": 9180.203900000002, "freight2": 0, "page": "TSBT01", "price": 166458.7961, "price2": 0, "rate": 0.03, "sumAdmin": 631679.3352, "sumBank": 1425.225, "sumCod": 3568.5388829999997, "sumCom": 4993.763883, "sumFreight": 9180.203900000002, "sumPage": 177186.4071, "sumPrice": 166458.7961, "userId": "Ubfe755500584c1459cee5eaac2a23933" }, { "admin": "Gun", "bankPrice": 23626, "codPrice": 67592.663, "com": 2736.55989, "com2": 0, "freight": 5761.337000000001, "freight2": 0, "page": "TMK", "price": 91218.663, "price2": 0, "rate": 0.03, "sumAdmin": 631679.3352, "sumBank": 708.78, "sumCod": 2027.77989, "sumCom": 2736.55989, "sumFreight": 5761.337000000001, "sumPage": 97201.566, "sumPrice": 91218.663, "userId": "Ubfe755500584c1459cee5eaac2a23933" }, { "admin": "sine", "bankPrice": 387919, "codPrice": 162559.012, "com": 16514.34036, "com2": 0, "freight": 22749.98800000001, "freight2": 0, "page": "TS01", "price": 550478.012, "price2": 0, "rate": 0.03, "sumAdmin": 550478.012, "sumBank": 11637.569999999998, "sumCod": 4876.7703599999995, "sumCom": 16514.34036, "sumFreight": 22749.98800000001, "sumPage": 569427.561, "sumPrice": 550478.012, "userId": "U83daaad55a88eb3236ffc4aaadbca3ac" }, { "admin": "แนท", "bankPrice": 264151, "codPrice": 236222.87099999996, "com": 15011.21613, "com2": 0, "freight": 24671.12899999998, "freight2": 0, "page": "TS02", "price": 500373.87100000004, "price2": 0, "rate": 0.03, "sumAdmin": 507099.19000000006, "sumBank": 7924.53, "sumCod": 7086.686129999998, "sumCom": 15011.21613, "sumFreight": 24671.12899999998, "sumPage": 500272.37100000004, "sumPrice": 500373.87100000004, "userId": "Uaadb04ec7afb74a9be3c654c682ed706" }, { "admin": "แนท", "bankPrice": 5233.5, "codPrice": 1491.819, "com": 201.75957, "com2": 0, "freight": 254.681, "freight2": 0, "page": "TS01", "price": 6725.319, "price2": 0, "rate": 0.03, "sumAdmin": 507099.19000000006, "sumBank": 157.00499999999997, "sumCod": 44.75457, "sumCom": 201.75957, "sumFreight": 254.681, "sumPage": 569427.561, "sumPrice": 6725.319, "userId": "Uaadb04ec7afb74a9be3c654c682ed706" }, { "admin": "sunny", "bankPrice": 175967, "codPrice": 284051.43809999997, "com": 11500.460952500001, "com2": 0, "freight": 27730.561899999968, "freight2": 0, "page": "TST", "price": 460018.4381, "price2": 0, "rate": 0.025, "sumAdmin": 465502.8411, "sumBank": 4399.175, "sumCod": 7101.2859525, "sumCom": 11500.460952500001, "sumFreight": 27730.561899999968, "sumPage": 465119.7591, "sumPrice": 460018.4381, "userId": "U757c8be127b267e36fe82caef6abb711" }, { "admin": "sunny", "bankPrice": 2123.5, "codPrice": 3360.903, "com": 137.11007500000002, "com2": 0, "freight": 275.597, "freight2": 0, "page": "TMK", "price": 5484.403, "price2": 0, "rate": 0.025, "sumAdmin": 465502.8411, "sumBank": 53.087500000000006, "sumCod": 84.022575, "sumCom": 137.11007500000002, "sumFreight": 275.597, "sumPage": 97201.566, "sumPrice": 5484.403, "userId": "U757c8be127b267e36fe82caef6abb711" }, { "admin": "oil", "bankPrice": 51916.5, "codPrice": 79807.759, "com": 0, "com2": 0, "freight": 6983.741000000003, "freight2": 0, "page": "TS05", "price": 131724.259, "price2": 0, "rate": 0, "sumAdmin": 133537.959, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 6983.741000000003, "sumPage": 131724.259, "sumPrice": 131724.259, "userId": "U11e89805dd844372f5ff038493f7356c" }, { "admin": "oil", "bankPrice": 917.5, "codPrice": 896.2, "com": 0, "com2": 0, "freight": 86.3, "freight2": 0, "page": "TS04", "price": 1813.7, "price2": 0, "rate": 0, "sumAdmin": 133537.959, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 86.3, "sumPage": 66953.86, "sumPrice": 1813.7, "userId": "U11e89805dd844372f5ff038493f7356c" }, { "admin": "Pong", "bankPrice": 2723.5, "codPrice": 4797.111, "com": 0, "com2": 0, "freight": 349.389, "freight2": 0, "page": "TSBT01", "price": 7520.611, "price2": 0, "rate": 0, "sumAdmin": 12728.126, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 349.389, "sumPage": 177186.4071, "sumPrice": 7520.611, "userId": "U1819c11c24408869b907f8e6bb02ae84" }, { "admin": "Pong", "bankPrice": 2083.5, "codPrice": 2625.515, "com": 0, "com2": 0, "freight": 290.985, "freight2": 0, "page": "TPF01", "price": 4709.015, "price2": 0, "rate": 0, "sumAdmin": 12728.126, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 290.985, "sumPage": 202818.98309999998, "sumPrice": 4709.015, "userId": "U1819c11c24408869b907f8e6bb02ae84" }, { "admin": "Pong", "bankPrice": 0, "codPrice": 498.5, "com": 0, "com2": 0, "freight": 51.5, "freight2": 0, "page": "TMK", "price": 498.5, "price2": 0, "rate": 0, "sumAdmin": 12728.126, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 51.5, "sumPage": 97201.566, "sumPrice": 498.5, "userId": "U1819c11c24408869b907f8e6bb02ae84" }, { "admin": "Chhengki", "bankPrice": 1361, "codPrice": 3813, "com": 0, "com2": 0, "freight": 0, "freight2": 0, "page": "TKH", "price": 5174, "price2": 0, "rate": 0, "sumAdmin": 5550, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 0, "sumPage": 5174, "sumPrice": 5174, "userId": "U62d5716f35b9659765b9a4de0a3909ca" }, { "admin": "Chhengki", "bankPrice": 0, "codPrice": 376, "com": 0, "com2": 0, "freight": 0, "freight2": 0, "page": "CBD", "price": 376, "price2": 0, "rate": 0, "sumAdmin": 5550, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 0, "sumPage": 376, "sumPrice": 376, "userId": "U62d5716f35b9659765b9a4de0a3909ca" }, { "admin": "Karn", "bankPrice": 203, "codPrice": 0, "com": 0, "com2": 0, "freight": 197, "freight2": 0, "page": "TS01", "price": 203, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 197, "sumPage": 569427.561, "sumPrice": 203, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": 144.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 155.5, "freight2": 0, "page": "TS03", "price": 144.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 155.5, "sumPage": 410788.8722, "sumPrice": 144.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": 137.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 262.5, "freight2": 0, "page": "TST", "price": 137.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 262.5, "sumPage": 465119.7591, "sumPrice": 137.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": 133.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 66.5, "freight2": 0, "page": "TPF01", "price": 133.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 66.5, "sumPage": 202818.98309999998, "sumPrice": 133.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": 133.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 66.5, "freight2": 0, "page": "TSBT01", "price": 133.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 66.5, "sumPage": 177186.4071, "sumPrice": 133.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": 108.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 91.5, "freight2": 0, "page": "TO01", "price": 108.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 91.5, "sumPage": 188724.836, "sumPrice": 108.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": 8.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 91.5, "freight2": 0, "page": "DB", "price": 8.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 91.5, "sumPage": 774801.0437, "sumPrice": 8.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": -101.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 101.5, "freight2": 0, "page": "TS02", "price": -101.5, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 101.5, "sumPage": 500272.37100000004, "sumPrice": -101.5, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Karn", "bankPrice": -387, "codPrice": 0, "com": 0, "com2": 0, "freight": 387, "freight2": 0, "page": "TCT01", "price": -387, "price2": 0, "rate": 0, "sumAdmin": 380.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 387, "sumPage": 1085330.0503999998, "sumPrice": -387, "userId": "Ufe294bf562e0eaa8811c2102598db0c1" }, { "admin": "Da", "bankPrice": -25, "codPrice": 0, "com": 0, "com2": 0, "freight": 25, "freight2": 0, "page": "TS01", "price": -25, "price2": 0, "rate": 0, "sumAdmin": -119.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 25, "sumPage": 569427.561, "sumPrice": -25, "userId": "Ucaa6b785f6a3b466a2697c3085262043" }, { "admin": "Da", "bankPrice": -31.5, "codPrice": 0, "com": 0, "com2": 0, "freight": 31.5, "freight2": 0, "page": "DB", "price": -31.5, "price2": 0, "rate": 0, "sumAdmin": -119.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 31.5, "sumPage": 774801.0437, "sumPrice": -31.5, "userId": "Ucaa6b785f6a3b466a2697c3085262043" }, { "admin": "Da", "bankPrice": -63, "codPrice": 0, "com": 0, "com2": 0, "freight": 63, "freight2": 0, "page": "TCT01", "price": -63, "price2": 0, "rate": 0, "sumAdmin": -119.5, "sumBank": 0, "sumCod": 0, "sumCom": 0, "sumFreight": 63, "sumPage": 1085330.0503999998, "sumPrice": -63, "userId": "Ucaa6b785f6a3b466a2697c3085262043" }]
+    res.ireport("comAdmin.jasper", req.query.file || "pdf", result, {
+        OUTPUT_NAME: 'comAdmin' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+        START_DATE: moment(req.query.startDate).format('LL'),
+        END_DATE: moment(req.query.endDate).format('LL'),
+        COST: reqCom
+    });
 }
 exports.itemAdmin = (req, res) => {
     async function itemAdmin() {
@@ -1910,11 +1954,57 @@ exports.counterPage = (req, res) => {
         res.redirect('http://m.me/tpf001')
     }
 }
-exports.amount2 = (req, res) => {
-    db.collection('products').get()
-        .then(snapShot => {
-            snapShot.forEach(doc => {
-                doc.ref.update({ amount2: 0 })
+exports.cod2 = (req, res) => {
+    // let data = [];
+    // var r = req.r;
+    // const refs = ['20190918-vUinUYzKC',
+    //     '20190918-1p0KA28t0',
+    //     '20190917-Q1GuwLTXi',
+    //     '20190916-k7xksMTdV',
+    //     '20190909-ELMUYtFm8',
+    //     '20190910-u9YUCfXDV',
+    //     '20190906-QEFCIh4GS',
+    //     '20190901-SYvEf9_ed',
+    //     '20190915-y2I1gDxV9',
+    //     '20190923-Q8FSrFhVC',
+    //     '20190831-Vf5Dwm4bo',
+    //     '20190829-Ot3U5Rii2',
+    //     '20190920-oBPMli-zL',
+    //     '20190906-4YmS_9BiF',
+    //     '20190918-PyI-gDNg-',
+    //     '20190906-39mhMZ-L_',
+    //     '20190907-8VrGRHh4C',
+    //     '20190910-azN1d8nio',
+    //     '20190910-Utod3GXcV',
+    //     '20190910-j1V35wouw',
+    //     '20190912-Jn8OuLB0i',
+    //     '20190906-sNQ3gS8ut',
+    //     '20190912-u71gMT25j',
+    //     '20190908-quUlMwUuz',
+    //     '20190917-F4bddqiC6',
+    //     '20190912-pEHnAYjLG',
+    //     '20190901-elVPqmp-R',
+    //     '20190905-DNd8J7Jwg'].map(m => db.collection('orders').doc(m))
+    // db.getAll(...refs).then(snapShot => {
+    //     snapShot.forEach(doc => {
+    //         if (doc.exists)
+    //             data.push({ id: doc.id, price: doc.data().price, page: doc.data().page.replace('@', '') })
+    //     })
+    //     r.expr(data)
+    //         .group('page').sum('price')
+    //         .run()
+    //         .then(result => {
+    //             res.json(result)
+    //         })
+    // })
+    db.collection('orders')
+        .where('orderDate', '>=', '20190801')
+        .where('orderDate', '<=', '20190930')
+        .where('return', '==', true)
+        .get()
+        .then((snapShot) => {
+            snapShot.forEach(d => {
+                d.ref.update({ cod: true })
             })
             res.json(true)
         })
