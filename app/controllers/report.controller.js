@@ -1,7 +1,7 @@
 const moment = require('moment');
-const request = require("request");
+// const request = require("request");
 const db = require('../../config/firebase').topslim;
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin');
 moment.locale('th');
 exports.test = (req, res) => {
     const d = moment(req.query.date.match(/\d{6}/g)[0], 'DDMMYY').isValid();

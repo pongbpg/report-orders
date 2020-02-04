@@ -1,7 +1,7 @@
 const moment = require('moment');
 const request = require("request");
 const db = require('../../config/firebase').topslim;
-const admin = require('firebase-admin');
+const _ = require('underscore');
 moment.locale('th');
 exports.delivery = (req, res) => {
     db.collection('orders')
@@ -918,63 +918,110 @@ exports.dailySale = (req, res) => {
 exports.dailyProduct = (req, res) => {
     var r = req.r;
     let orders = [];
-    db.collection('orders')
+    var query = db.collection('orders')
         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-        .where('return', '==', false)
-        .get()
+        .where('return', '==', false);
+    if (req.query.page != 'ALL') query = query.where('page', 'in', [req.query.page.toUpperCase(), '@' + req.query.page.toUpperCase()])
+    query.get()
         .then(snapShot => {
-            const pages = [req.query.page, '@' + req.query.page]
+            // const pages = [req.query.page, '@' + req.query.page]
             snapShot.forEach(doc => {
-                if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
-                    orders.push({ id: doc.id, ...doc.data() })
-                }
+                // if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
+                orders.push({
+                    id: doc.id, ...doc.data(),
+                    orderDate: req.query.sum == 'all' ? 'SUM' : moment(doc.data().orderDate).format('ll'),
+                    products: doc.data().product.map(p => {
+                        return {
+                            ...p,
+                            claim: doc.data().bank.indexOf('CM') > -1,
+                            cod: doc.data().bank.indexOf('COD') > -1,
+                        }
+                    })
+                })
+                // }
             })
-            r.expr(orders)
-                .merge(m => {
-                    return {
-                        product: m('product').merge(m3 => {
+            const sum = function (t, n) { return t + n; };
+            const data = _.chain(orders)
+                .groupBy('orderDate')
+                .map((values, date) => {
+                    return _.chain(values).pluck('products').flatten()
+                        .groupBy('code')
+                        .map((product, id2) => {
                             return {
-                                claim: r.branch(m('bank').match('CM').eq(null), false, true),
-                                cod: r.branch(m('bank').match('COD').eq(null), false, true),
-                                cost: m3('cost').mul(m3('amount'))
+                                orderDate: date,
+                                // costs: _.reduce(_.pluck(values, 'costs'), sum, 0),
+                                code: id2,
+                                name: product[0].name,
+                                typeId: product[0].typeId,
+                                typeName: product[0].typeName,
+                                count: _.countBy(product, 'length').undefined,
+                                amount: _.reduce(_.pluck(product, 'amount'), sum, 0),
+                                amountSale: _.reduce(_.pluck(product.filter(f => f.cod == false && f.claim == false), 'amount'), sum, 0),
+                                amountCod: _.reduce(_.pluck(product.filter(f => f.cod == true), 'amount'), sum, 0),
+                                amountCm: _.reduce(_.pluck(product.filter(f => f.claim == true), 'amount'), sum, 0),
+                                costSale: _.reduce(_.pluck(product.filter(f => f.cod == false && f.claim == false), 'costs'), sum, 0),
+                                costCod: _.reduce(_.pluck(product.filter(f => f.cod == true), 'costs'), sum, 0),
+                                costCm: _.reduce(_.pluck(product.filter(f => f.claim == true), 'costs'), sum, 0),
+                                cost: _.reduce(_.pluck(product, 'costs'), sum, 0),
                             }
-                        })
-                    }
-                })
-                .getField('product')
-                .reduce((le, ri) => {
-                    return le.add(ri)
-                }).default([])
-                .group('code')
-                .ungroup()
-                .map(m => {
-                    return {
-                        code: m('group'),
-                        amountSale: m('reduction').filter({ claim: false, cod: false }).sum('amount'),
-                        amountCod: m('reduction').filter({ cod: true }).sum('amount'),
-                        amountCm: m('reduction').filter({ claim: true }).sum('amount'),
-                        amount: m('reduction').sum('amount'),
-                        costSale: m('reduction').filter({ claim: false, cod: false }).sum('cost'),
-                        costCod: m('reduction').filter({ cod: true }).sum('cost'),
-                        costCm: m('reduction').filter({ claim: true }).sum('cost'),
-                        cost: m('reduction').sum('cost'),
-                        name: m('reduction')(0)('name'),
-                        typeId: m('reduction')(0)('typeId'),
-                        typeName: m('reduction')(0)('typeName')
-                    }
-                })
-                .orderBy('typeId', 'code')
-                .run()
-                .then(datas => {
-                    // res.json(datas)
-                    res.ireport("topslim/dailyProduct.jasper", req.query.file || "pdf", datas, {
-                        PAGE: (req.query.page == 'ALL' ? 'ทั้งหมด' : req.query.page),
-                        OUTPUT_NAME: 'dailyProduct' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                        START_DATE: moment(req.query.startDate).format('LL'),
-                        END_DATE: moment(req.query.endDate).format('LL'),
-                    });
-                })
+                        }).value();
+                }).flatten().sortBy(s => [s.orderDate, s.typeId, s.code]).value();
+            // res.json(data)
+
+            // r.expr(orders)
+            //     .group(g => {
+            //         return g.pluck('orderDate')
+            //     })
+            //     .ungroup()
+            //     .map(m => {
+            //         return m('group').merge(m2 => {
+            //             return m('reduction')
+            //                 .map(m3 => {
+            //                     return {
+            //                         orderDate: m('group'),
+            //                         product: m3('product').merge({
+            //                             claim: r.branch(m3('bank').match('CM').eq(null), false, true),
+            //                             cod: r.branch(m3('bank').match('COD').eq(null), false, true),
+            //                         })
+            //                     }
+            //                 }).getField('product')
+            //                 .reduce((le, ri) => le.add(ri))
+            //         })
+            //     })
+            // .getField('product')
+            // .reduce((le, ri) => {
+            //     return le.add(ri)
+            // }).default([])
+            // .group('code')
+            // .ungroup()
+            // .map(m => {
+            //     return {
+            //         code: m('group'),
+            //         amountSale: m('reduction').filter({ claim: false, cod: false }).sum('amount'),
+            //         amountCod: m('reduction').filter({ cod: true }).sum('amount'),
+            //         amountCm: m('reduction').filter({ claim: true }).sum('amount'),
+            //         amount: m('reduction').sum('amount'),
+            //         costSale: m('reduction').filter({ claim: false, cod: false }).sum('cost'),
+            //         costCod: m('reduction').filter({ cod: true }).sum('cost'),
+            //         costCm: m('reduction').filter({ claim: true }).sum('cost'),
+            //         cost: m('reduction').sum('cost'),
+            //         name: m('reduction')(0)('name'),
+            //         typeId: m('reduction')(0)('typeId'),
+            //         typeName: m('reduction')(0)('typeName')
+            //     }
+            // })
+            // .orderBy('typeId', 'code')
+            // .run()
+            // .then(datas => {
+            // res.json(data)
+            res.ireport("topslim/dailyProduct2.jasper", req.query.file || "pdf", data, {
+                PAGE: (req.query.page == 'ALL' ? 'ทั้งหมด' : req.query.page),
+                OUTPUT_NAME: 'dailyProduct' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                START_DATE: moment(req.query.startDate).format('LL'),
+                END_DATE: moment(req.query.endDate).format('LL'),
+            });
+            // })
         })
 }
 exports.dailyBank = (req, res) => {
@@ -1351,46 +1398,38 @@ exports.dailyStatementProduct = (req, res) => {
                                                 .filter(f => f.code.indexOf('MN') > -1
                                                     || f.code.indexOf('LG') > -1
                                                     || f.code.indexOf('SP') > -1
+                                                    || f.code.indexOf('TE') > -1
                                                 ),
-                                            costs: doc.data().costs,
+                                            // costs: doc.data().costs,
                                             price: doc.data().price
                                         })
                                 })
-                                r.expr(orders)
-                                    .group('orderDate')
-                                    .ungroup()
+                                var sum = function (t, n) { return t + n; };
+                                const result = _.chain(orders)
                                     .map(m => {
                                         return {
-                                            orderDate: m('group'),
-                                            products: m('reduction').getField('products')
-                                                .reduce((le, ri) => {
-                                                    return le.add(ri)
-                                                })
-                                                .group('code')
-                                                .sum('amount')
-                                                .ungroup(),
-                                            costs: m('reduction').sum('costs'),
-                                            price: m('reduction').sum('price')
+                                            ...m,
+                                            costs: _.reduce(_.pluck(m.products, 'costs'), sum, 0)
                                         }
                                     })
-                                    .orderBy('orderDate')
-                                    .run()
-                                    .then(result => {
-                                        // const datas = result.map(m => {
-                                        //     const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
-                                        //     return {
-                                        //         ...m,
-                                        //         orderDate: moment(orderDate).format('ll')
-                                        //     }
-                                        // })
-
-                                        // res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
-                                        //     OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                        //     START_DATE: moment(req.query.startDate).format('LL'),
-                                        //     END_DATE: moment(req.query.endDate).format('LL'),
-                                        // });
-                                        res.json(result)
+                                    .groupBy('orderDate')
+                                    .map((values, id) => {
+                                        return {
+                                            orderDate: id,
+                                            costs: _.reduce(_.pluck(values, 'costs'), sum, 0),
+                                            price: _.reduce(_.pluck(values, 'price'), sum, 0),
+                                            products: _.chain(values).pluck('products').flatten()
+                                                .groupBy('code')
+                                                .map((product, id2) => {
+                                                    return {
+                                                        code: id2,
+                                                        amount: _.reduce(_.pluck(product, 'amount'), sum, 0),
+                                                    }
+                                                })
+                                        }
                                     })
+                                    .value();
+                                res.json(result)
                             })
                     } else {
                         res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')

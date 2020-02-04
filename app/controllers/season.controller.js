@@ -1,7 +1,6 @@
 const moment = require('moment');
 const request = require("request");
 const db = require('../../config/firebase').season;
-const admin = require('firebase-admin');
 moment.locale('th');
 exports.delivery = (req, res) => {
     db.collection('orders')
