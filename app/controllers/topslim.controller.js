@@ -930,7 +930,7 @@ exports.dailyProduct = (req, res) => {
                 // if (pages.indexOf(doc.data().page) > -1 || req.query.page == 'ALL') {
                 orders.push({
                     id: doc.id, ...doc.data(),
-                    orderDate: req.query.sum == 'all' ? 'SUM' : moment(doc.data().orderDate).format('ll'),
+                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
                     products: doc.data().product.map(p => {
                         return {
                             ...p,
@@ -966,7 +966,14 @@ exports.dailyProduct = (req, res) => {
                                 cost: _.reduce(_.pluck(product, 'costs'), sum, 0),
                             }
                         }).value();
-                }).flatten().sortBy(s => [s.orderDate, s.typeId, s.code]).value();
+                }).flatten().sortBy(s => [s.orderDate, s.typeId, s.code])
+                .map(m => {
+                    return {
+                        ...m,
+                        orderDate: m.orderDate != 'SUM' ? moment(m.orderDate).format('ll'):m.orderDate
+                    }
+                })
+                .value();
             // res.json(data)
 
             // r.expr(orders)
