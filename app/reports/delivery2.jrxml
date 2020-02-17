@@ -12,9 +12,9 @@
 		<groupHeader>
 			<band height="120">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="120" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
-					<box topPadding="5" leftPadding="10" bottomPadding="5" rightPadding="5">
-						<topPen lineWidth="0.5"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="25" width="278" height="95" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
+					<box topPadding="0" leftPadding="10" bottomPadding="5" rightPadding="5">
+						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.5"/>
@@ -25,9 +25,9 @@
 					<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="120" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
-					<box topPadding="5" leftPadding="10" bottomPadding="5" rightPadding="5">
-						<topPen lineWidth="0.5"/>
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="25" width="277" height="95" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
+					<box topPadding="0" leftPadding="10" bottomPadding="5" rightPadding="5">
+						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.5"/>
@@ -37,6 +37,34 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{col2}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="25" forecolor="#FF0033" uuid="c9ab4f88-c805-497c-9b33-12a39743ed41"/>
+					<box leftPadding="10">
+						<pen lineColor="#000000"/>
+						<topPen lineWidth="0.5" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineColor="#000000"/>
+						<bottomPen lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="TH SarabunPSK" size="21" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Jaoying Shop]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="25" forecolor="#FF0033" uuid="b9f24fd6-f41d-49f1-8c13-a2ec7836422d"/>
+					<box leftPadding="10">
+						<pen lineColor="#000000"/>
+						<topPen lineWidth="0.5" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineColor="#000000"/>
+						<bottomPen lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="TH SarabunPSK" size="21" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Jaoying Shop]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 	</group>
