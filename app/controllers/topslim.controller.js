@@ -452,8 +452,8 @@ exports.comAdmin = (req, res) => {
                                         })
                                         .merge(m => {
                                             return {
-                                                sumCod: m('sumCom').mul(m('codPrice')).div(m('sumPrice')),
-                                                sumBank: m('sumCom').mul(m('bankPrice')).div(m('sumPrice')),
+                                                sumCod: r.branch(m('sumPrice').eq(0), 0, m('sumCom').mul(m('codPrice')).div(m('sumPrice'))),
+                                                sumBank: r.branch(m('sumPrice').eq(0), 0, m('sumCom').mul(m('bankPrice')).div(m('sumPrice'))),
                                             }
                                         })
                                 })
@@ -970,7 +970,7 @@ exports.dailyProduct = (req, res) => {
                 .map(m => {
                     return {
                         ...m,
-                        orderDate: m.orderDate != 'SUM' ? moment(m.orderDate).format('ll'):m.orderDate
+                        orderDate: m.orderDate != 'SUM' ? moment(m.orderDate).format('ll') : m.orderDate
                     }
                 })
                 .value();
