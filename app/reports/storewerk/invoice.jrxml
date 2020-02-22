@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="292"/>
+	<property name="ireport.y" value="261"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="IS_COPY" class="java.lang.String"/>
@@ -181,7 +181,7 @@ No.]]></text>
 						<bottomPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[รวมเงิน]]></text>
@@ -194,7 +194,7 @@ No.]]></text>
 						<bottomPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[ค่าขนส่ง]]></text>
@@ -207,7 +207,7 @@ No.]]></text>
 						<bottomPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[ส่วนลด]]></text>
@@ -259,7 +259,7 @@ No.]]></text>
 						<bottomPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["ภาษี "+$F{vatPercent}+"%"]]></textFieldExpression>
@@ -272,7 +272,7 @@ No.]]></text>
 						<bottomPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[รวมเงินทั้งหมด]]></text>
@@ -311,7 +311,7 @@ No.]]></text>
 						<bottomPen lineWidth="0.25"/>
 						<rightPen lineWidth="0.25"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[รวมเงินสุทธิ]]></text>
@@ -520,33 +520,4 @@ No.]]></text>
 			</textField>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="20">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="271" height="20" uuid="a3d22815-d4cc-4279-b08e-79b5281b7366"/>
-				<box leftPadding="5" rightPadding="5">
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Top" markup="none">
-					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["พิมพ์โดย: "+$P{PRINTBY}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="284" y="0" width="271" height="20" uuid="1aede39b-8b47-42d2-a160-b6c50fdc4e3c"/>
-				<box leftPadding="5" rightPadding="5">
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top" markup="none">
-					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-			</textField>
-		</band>
-	</pageFooter>
 </jasperReport>
