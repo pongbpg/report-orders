@@ -39,3 +39,14 @@ exports.invoice = (req, res) => {
             }
         })
 }
+exports.dbSale = (req,res)=>{
+    db.query('call rptSaleByMonth(?,?)', [req.params.year, req.params.month])
+    .then(rows => {
+        const data = rows[0] || [];
+        if (data.length > 0) {
+            res.json(data)
+        } else {
+            res.json(null)
+        }
+    })
+}

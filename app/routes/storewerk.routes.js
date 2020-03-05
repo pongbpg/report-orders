@@ -3,4 +3,5 @@ module.exports = function (app) {
 
     app.get('/invoice/:year/:month', ctrl.invoiceBymonth);
     app.get('/invoice', ctrl.invoice);
+    app.get('/dashboard/sale/:year/:month', ctrl.dbSale);
 }
