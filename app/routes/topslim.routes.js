@@ -17,5 +17,6 @@ module.exports = function (app) {
     app.get('/error/price', ctrl.errorPrice);
     app.get('/infoCustomer', ctrl.infoCustomer);
     app.get('/receipts', ctrl.receipts);
-    app.get('/cod2', ctrl.cod2)
+    app.get('/covid', ctrl.covid)
+    app.post('/jt', ctrl.jt)
 }

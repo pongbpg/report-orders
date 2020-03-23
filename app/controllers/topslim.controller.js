@@ -13,7 +13,6 @@ exports.delivery = (req, res) => {
             let orderx = [];
             let orders = [];
             let index = 0;
-            let count = 0;
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 orderx.push({ id: doc.id, ...doc.data() })
@@ -23,7 +22,7 @@ exports.delivery = (req, res) => {
                 const bName = b.name.substr(0, 1) + b.orderDate + fourDigit(b.orderNo);
                 return aName > bName ? 1 : -1;
             })
-            if (req.query.file != 'flash') {
+            if (req.query.file != 'flash' && req.query.file != 'jt') {
                 orderx = orderx.map(order => {
                     // const data = doc.data();
                     const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
@@ -41,7 +40,7 @@ exports.delivery = (req, res) => {
                 // res.json(orders)
                 res.ireport("delivery.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
 
-            } else {
+            } else if (req.query.file == 'flash') {
                 orderx = orderx.map(order => {
                     const pc = order.addr.match(/[0-9]{5}/g);
                     let postcode = '';
@@ -92,6 +91,55 @@ exports.delivery = (req, res) => {
                 // // res.json(ws);
                 var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
                 var filename = 'FLASH_' + req.query.startDate + '.xlsx';
+                res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                res.type('application/octet-stream');
+                res.send(wbout);
+            } else if (req.query.file == 'jt') {
+                orderx = orderx.map(order => {
+                    if (order.name.substr(0, 1) == 'J') {
+                        if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                            || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                            || req.query.payment == 'ALL'
+                        ) {
+                            const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
+                            return {
+                                "น้ำหนักพัสดุ(กิโลกรัม)": 1,
+                                "ชื่อสกุลผู้ส่ง": "Topslim",
+                                "โทรศัพท์ผู้ส่ง": "0970576067",
+                                "ที่อยู่ผู้ส่ง": order.id + ' ' + order.page,
+                                "ชื่อสกุลผู้รับ": order.name,
+                                "โทรศัพท์ผู้รับ": order.tel,
+                                "จังหวัดผู้รับ": xx.province,
+                                "เขตอำเภอผู้รับ": xx.amphur,
+                                "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
+                                "รายละเอียดพัสดุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
+                                // "มูลค่าพัสดุโดยประเมิน": '',
+                                "หมายเหตุ": order.price,
+                                "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
+                            }
+                        }
+                    }
+                }).filter(f => f != null)
+                // res.json(orderx)
+                const XLSX = require('xlsx');
+                // /* create workbook & set props*/
+                const wb = { SheetNames: [], Sheets: {} };
+
+                // // /* create file 'in memory' */
+                // for (var prop in result) {
+                var ws = XLSX.utils.json_to_sheet(orderx);
+                // ws['B1'].v = '*Consignee_name';
+                // ws['C1'].v = '*Address';
+                // ws['D1'].v = '*Postal_code';
+                // ws['E1'].v = '*Phone_number';
+                // ws['H1'].v = '*Weight_kg';
+
+                // wb.Sheets['Order Template']=ws;
+                XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
+                // }
+                // // res.json(ws);
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                var filename = 'JT_' + req.query.startDate + '_' + req.query.payment + '.xlsx';
                 res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
                 res.type('application/octet-stream');
                 res.send(wbout);
@@ -1239,7 +1287,8 @@ exports.statement = (req, res) => {
                                         const time = doc.data().banks[i].time;//.match(/[0-9][0-9][.][0-9][0-9]/g, '');
                                         const orderDate = doc.data().banks[i].date;
                                         if (bank != null) {
-                                            if (['CM', 'COD', 'ADMIN', 'STOCK', 'XX'].indexOf(bank) == -1) {
+                                            // if (['CM', 'COD', 'ADMIN', 'STOCK', 'XX'].indexOf(bank) == -1) {
+                                            if (doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length > 0) {
                                                 orders.push({
                                                     id: doc.id,
                                                     // ...doc.data(),
@@ -1277,13 +1326,13 @@ exports.statement = (req, res) => {
                                             }
                                         })
 
-                                        res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
-                                            OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                            START_DATE: moment(req.query.startDate).format('LL'),
-                                            END_DATE: moment(req.query.endDate).format('LL'),
-                                            GROUPBY: req.query.groupBy
-                                        });
-                                        // res.json(result)
+                                        // res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                        //     OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                        //     START_DATE: moment(req.query.startDate).format('LL'),
+                                        //     END_DATE: moment(req.query.endDate).format('LL'),
+                                        //     GROUPBY: req.query.groupBy
+                                        // });
+                                        res.json(result)
                                     })
                             })
                     } else {
@@ -2000,60 +2049,80 @@ exports.counterPage = (req, res) => {
         res.redirect('http://m.me/tpf001')
     }
 }
-exports.cod2 = (req, res) => {
-    // let data = [];
-    // var r = req.r;
-    // const refs = ['20190918-vUinUYzKC',
-    //     '20190918-1p0KA28t0',
-    //     '20190917-Q1GuwLTXi',
-    //     '20190916-k7xksMTdV',
-    //     '20190909-ELMUYtFm8',
-    //     '20190910-u9YUCfXDV',
-    //     '20190906-QEFCIh4GS',
-    //     '20190901-SYvEf9_ed',
-    //     '20190915-y2I1gDxV9',
-    //     '20190923-Q8FSrFhVC',
-    //     '20190831-Vf5Dwm4bo',
-    //     '20190829-Ot3U5Rii2',
-    //     '20190920-oBPMli-zL',
-    //     '20190906-4YmS_9BiF',
-    //     '20190918-PyI-gDNg-',
-    //     '20190906-39mhMZ-L_',
-    //     '20190907-8VrGRHh4C',
-    //     '20190910-azN1d8nio',
-    //     '20190910-Utod3GXcV',
-    //     '20190910-j1V35wouw',
-    //     '20190912-Jn8OuLB0i',
-    //     '20190906-sNQ3gS8ut',
-    //     '20190912-u71gMT25j',
-    //     '20190908-quUlMwUuz',
-    //     '20190917-F4bddqiC6',
-    //     '20190912-pEHnAYjLG',
-    //     '20190901-elVPqmp-R',
-    //     '20190905-DNd8J7Jwg'].map(m => db.collection('orders').doc(m))
-    // db.getAll(...refs).then(snapShot => {
-    //     snapShot.forEach(doc => {
-    //         if (doc.exists)
-    //             data.push({ id: doc.id, price: doc.data().price, page: doc.data().page.replace('@', '') })
-    //     })
-    //     r.expr(data)
-    //         .group('page').sum('price')
-    //         .run()
-    //         .then(result => {
-    //             res.json(result)
-    //         })
-    // })
+exports.covid = (req, res) => {
     db.collection('orders')
-        .where('orderDate', '>=', '20190801')
-        .where('orderDate', '<=', '20190930')
-        .where('return', '==', true)
+        .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
+        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
+        .where('country', '==', 'TH')
+        .where('return', '==', false)
         .get()
-        .then((snapShot) => {
-            snapShot.forEach(d => {
-                d.ref.update({ cod: true })
+        .then(snapShot => {
+            let orders = []
+            snapShot.forEach(doc => {
+                const pdLen = doc.data().product.length;
+                const covid = doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length == pdLen;
+                orders.push({
+                    id: doc.id,
+                    product: doc.data().product.map(m => m.code).toString(),
+                    amount: covid ? doc.data().product.map(m => m.amount).reduce((a, b) => a + b) : 0,
+                    costs: doc.data().costs,
+                    price1: covid ? 0 : doc.data().price,
+                    price2: covid ? doc.data().price : 0,
+                    admin: doc.data().admin,
+                    page: doc.data().page.replace('@', '')
+                })
             })
-            res.json(true)
+            res.json(orders)
         })
+}
+exports.jt = (req, res) => {
+    const fs = require('fs');
+    let addr = req.body.addr.replace(/\n/g, ' ');;
+    let amphur = 'ไม่พบอำเภอ';
+    let province = 'ไม่พบจังหวัด';
+    let arrays = [];
+    if (addr.indexOf(' เขต') > -1) {
+        province = 'กรุงเทพมหานคร';
+        arrays = addr.split(' เขต');
+        amphur = 'เขต' + arrays[1].split(' ')[0];
+    } else {
+        arrays = addr.replace('อำเภอ', 'อ.').split(' อ.');
+        if (arrays.length > 1)
+            amphur = arrays[1].split(' ')[0];
+        arrays = addr.replace('จังหวัด', 'จ.').split(' จ.');
+        if (arrays.length > 1)
+            province = arrays[1].split(' ')[0];
+    }
+    // if (amphur != '' && province != '') {
+    const provinceJson = fs.readFileSync('./province.json');
+    const provinces = JSON.parse(provinceJson);
+    if (provinces.filter(f => f.province == province).length == 0)
+        addr = addr.concat('X' + province);
+
+    const amphurJson = fs.readFileSync('./amphur.json');
+    const amphures = JSON.parse(amphurJson);
+    if (amphures.filter(f => f.province == province && f.amphur == amphur).length == 0)
+        addr = addr.concat('X' + amphur);
+    // }
+    res.send({ amphur, province, addr })
+}
+const queryProvAmpr = (addr) => {
+    let amphur = 'ไม่พบอำเภอ';
+    let province = 'ไม่พบจังหวัด';
+    let arrays = [];
+    if (addr.indexOf(' เขต') > -1) {
+        province = 'กรุงเทพมหานคร';
+        arrays = addr.split(' เขต');
+        amphur = 'เขต' + arrays[1].split(' ')[0];
+    } else {
+        arrays = addr.replace('อำเภอ', 'อ.').split(' อ.');
+        if (arrays.length > 1)
+            amphur = arrays[1].split(' ')[0];
+        arrays = addr.replace('จังหวัด', 'จ.').split(' จ.');
+        if (arrays.length > 1)
+            province = arrays[1].split(' ')[0];
+    }
+    return { amphur, province }
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
