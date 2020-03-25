@@ -17,11 +17,15 @@ exports.delivery = (req, res) => {
             snapShot.forEach(doc => {
                 orderx.push({ id: doc.id, ...doc.data() })
             })
-            orderx = orderx.sort((a, b) => {
-                const aName = a.name.substr(0, 1) + a.orderDate + fourDigit(a.orderNo);
-                const bName = b.name.substr(0, 1) + b.orderDate + fourDigit(b.orderNo);
-                return aName > bName ? 1 : -1;
-            })
+            orderx = orderx.filter(order => (req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                || req.query.payment == 'ALL'
+            )
+                .sort((a, b) => {
+                    const aName = a.name.substr(0, 1) + a.orderDate + fourDigit(a.orderNo);
+                    const bName = b.name.substr(0, 1) + b.orderDate + fourDigit(b.orderNo);
+                    return aName > bName ? 1 : -1;
+                })
             if (req.query.file != 'flash' && req.query.file != 'jt') {
                 orderx = orderx.map(order => {
                     // const data = doc.data();
@@ -48,26 +52,26 @@ exports.delivery = (req, res) => {
                         postcode = pc[pc.length - 1]
                     }
                     if (order.name.substr(0, 1) == 'F') {
-                        if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
-                            || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
-                            || req.query.payment == 'ALL'
-                        )
-                            return {
-                                Customer_order_number: order.id,
-                                Consignee_name: order.name,
-                                Address: order.addr.replace(/\n/g, ' '),
-                                Postal_code: postcode,
-                                Phone_number: order.tel,
-                                Phone_number2: '',
-                                COD: order.bank.indexOf('COD') > -1 ? order.price : '',
-                                Weight_kg: 1,
-                                Length: '',
-                                Width: '',
-                                Height: '',
-                                Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
-                                Remark2: order.price,
-                                Remark3: order.page
-                            }
+                        // if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                        //     || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                        //     || req.query.payment == 'ALL'
+                        // )
+                        return {
+                            Customer_order_number: order.id,
+                            Consignee_name: order.name,
+                            Address: order.addr.replace(/\n/g, ' '),
+                            Postal_code: postcode,
+                            Phone_number: order.tel,
+                            Phone_number2: '',
+                            COD: order.bank.indexOf('COD') > -1 ? order.price : '',
+                            Weight_kg: 1,
+                            Length: '',
+                            Width: '',
+                            Height: '',
+                            Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
+                            Remark2: order.price,
+                            Remark3: order.page
+                        }
                     }
                 }).filter(f => f != null)
 
@@ -97,27 +101,27 @@ exports.delivery = (req, res) => {
             } else if (req.query.file == 'jt') {
                 orderx = orderx.map(order => {
                     if (order.name.substr(0, 1) == 'J') {
-                        if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
-                            || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
-                            || req.query.payment == 'ALL'
-                        ) {
-                            const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
-                            return {
-                                "น้ำหนักพัสดุ(กิโลกรัม)": 1,
-                                "ชื่อสกุลผู้ส่ง": "Topslim",
-                                "โทรศัพท์ผู้ส่ง": "0970576067",
-                                "ที่อยู่ผู้ส่ง": order.id + ' ' + order.page,
-                                "ชื่อสกุลผู้รับ": order.name,
-                                "โทรศัพท์ผู้รับ": order.tel,
-                                "จังหวัดผู้รับ": xx.province,
-                                "เขตอำเภอผู้รับ": xx.amphur,
-                                "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
-                                "รายละเอียดพัสดุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
-                                // "มูลค่าพัสดุโดยประเมิน": '',
-                                "หมายเหตุ": order.price,
-                                "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
-                            }
+                        // if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                        //     || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                        //     || req.query.payment == 'ALL'
+                        // ) {
+                        const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
+                        return {
+                            "น้ำหนักพัสดุ(กิโลกรัม)": 1,
+                            "ชื่อสกุลผู้ส่ง": "Topslim",
+                            "โทรศัพท์ผู้ส่ง": "0970576067",
+                            "ที่อยู่ผู้ส่ง": order.id + ' ' + order.page,
+                            "ชื่อสกุลผู้รับ": order.name,
+                            "โทรศัพท์ผู้รับ": order.tel,
+                            "จังหวัดผู้รับ": xx.province,
+                            "เขตอำเภอผู้รับ": xx.amphur,
+                            "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
+                            "รายละเอียดพัสดุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
+                            // "มูลค่าพัสดุโดยประเมิน": '',
+                            "หมายเหตุ": order.price,
+                            "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
                         }
+                        // }
                     }
                 }).filter(f => f != null)
                 // res.json(orderx)
@@ -128,12 +132,7 @@ exports.delivery = (req, res) => {
                 // // /* create file 'in memory' */
                 // for (var prop in result) {
                 var ws = XLSX.utils.json_to_sheet(orderx);
-                // ws['B1'].v = '*Consignee_name';
-                // ws['C1'].v = '*Address';
-                // ws['D1'].v = '*Postal_code';
-                // ws['E1'].v = '*Phone_number';
-                // ws['H1'].v = '*Weight_kg';
-
+                
                 // wb.Sheets['Order Template']=ws;
                 XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
                 // }
