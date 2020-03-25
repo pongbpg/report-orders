@@ -132,7 +132,7 @@ exports.delivery = (req, res) => {
                 // // /* create file 'in memory' */
                 // for (var prop in result) {
                 var ws = XLSX.utils.json_to_sheet(orderx);
-                
+
                 // wb.Sheets['Order Template']=ws;
                 XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
                 // }
@@ -1286,8 +1286,8 @@ exports.statement = (req, res) => {
                                         const time = doc.data().banks[i].time;//.match(/[0-9][0-9][.][0-9][0-9]/g, '');
                                         const orderDate = doc.data().banks[i].date;
                                         if (bank != null) {
-                                            // if (['CM', 'COD', 'ADMIN', 'STOCK', 'XX'].indexOf(bank) == -1) {
-                                            if (doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length > 0) {
+                                            if (['CM', 'COD', 'ADMIN', 'STOCK', 'XX'].indexOf(bank) == -1) {
+                                            // if (doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length > 0) {
                                                 orders.push({
                                                     id: doc.id,
                                                     // ...doc.data(),
@@ -1325,13 +1325,13 @@ exports.statement = (req, res) => {
                                             }
                                         })
 
-                                        // res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
-                                        //     OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                        //     START_DATE: moment(req.query.startDate).format('LL'),
-                                        //     END_DATE: moment(req.query.endDate).format('LL'),
-                                        //     GROUPBY: req.query.groupBy
-                                        // });
-                                        res.json(result)
+                                        res.ireport("dailyStatement.jrxml", req.query.file || "pdf", datas, {
+                                            OUTPUT_NAME: 'dailyStatement' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                            GROUPBY: req.query.groupBy
+                                        });
+                                        // res.json(result)
                                     })
                             })
                     } else {
