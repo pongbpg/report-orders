@@ -1287,7 +1287,7 @@ exports.statement = (req, res) => {
                                         const orderDate = doc.data().banks[i].date;
                                         if (bank != null) {
                                             if (['CM', 'COD', 'ADMIN', 'STOCK', 'XX'].indexOf(bank) == -1) {
-                                            // if (doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length > 0) {
+                                                // if (doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length > 0) {
                                                 orders.push({
                                                     id: doc.id,
                                                     // ...doc.data(),
@@ -2059,7 +2059,7 @@ exports.covid = (req, res) => {
             let orders = []
             snapShot.forEach(doc => {
                 const pdLen = doc.data().product.length;
-                const covid = doc.data().product.filter(f => f.code.indexOf('COVID') > -1).length == pdLen;
+                const covid = doc.data().product.filter(f => f.code.indexOf('COVID') > -1 || f.code.indexOf('FTJ') > -1).length == pdLen;
                 orders.push({
                     id: doc.id,
                     product: doc.data().product.map(m => m.code).toString(),
