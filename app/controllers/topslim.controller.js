@@ -2085,10 +2085,10 @@ exports.jt = (req, res) => {
         arrays = addr.split(' เขต');
         amphur = 'เขต' + arrays[1].split(' ')[0];
     } else {
-        arrays = addr.replace('อำเภอ', 'อ.').split(' อ.');
+        arrays = addr.replace(' อำเภอ', ' อ.').split(' อ.');
         if (arrays.length > 1)
             amphur = arrays[1].split(' ')[0];
-        arrays = addr.replace('จังหวัด', 'จ.').split(' จ.');
+        arrays = addr.replace(' จังหวัด', ' จ.').split(' จ.');
         if (arrays.length > 1)
             province = arrays[1].split(' ')[0];
     }
@@ -2114,10 +2114,10 @@ const queryProvAmpr = (addr) => {
         arrays = addr.split(' เขต');
         amphur = 'เขต' + arrays[1].split(' ')[0];
     } else {
-        arrays = addr.replace('อำเภอ', 'อ.').split(' อ.');
+        arrays = addr.replace(' อำเภอ', ' อ.').split(' อ.');
         if (arrays.length > 1)
             amphur = arrays[1].split(' ')[0];
-        arrays = addr.replace('จังหวัด', 'จ.').split(' จ.');
+        arrays = addr.replace(' จังหวัด', ' จ.').split(' จ.');
         if (arrays.length > 1)
             province = arrays[1].split(' ')[0];
     }
