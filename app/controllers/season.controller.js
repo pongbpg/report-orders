@@ -12,17 +12,20 @@ exports.delivery = (req, res) => {
             let orderx = [];
             let orders = [];
             let index = 0;
-            let count = 0;
             let obj = { col1: '', col2: '' };
             snapShot.forEach(doc => {
                 orderx.push({ id: doc.id, ...doc.data() })
             })
-            orderx = orderx.sort((a, b) => {
-                const aName = a.name.substr(0, 1) + a.orderDate + fourDigit(a.orderNo);
-                const bName = b.name.substr(0, 1) + b.orderDate + fourDigit(b.orderNo);
-                return aName > bName ? 1 : -1;
-            })
-            if (req.query.file != 'flash') {
+            orderx = orderx.filter(order => (req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                || req.query.payment == 'ALL'
+            )
+                .sort((a, b) => {
+                    const aName = a.name.substr(0, 1) + a.orderDate + fourDigit(a.orderNo);
+                    const bName = b.name.substr(0, 1) + b.orderDate + fourDigit(b.orderNo);
+                    return aName > bName ? 1 : -1;
+                })
+            if (req.query.file != 'flash' && req.query.file != 'jt') {
                 orderx = orderx.map(order => {
                     // const data = doc.data();
                     const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
@@ -40,7 +43,7 @@ exports.delivery = (req, res) => {
                 // res.json(orders)
                 res.ireport("delivery.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
 
-            } else {
+            } else if (req.query.file == 'flash') {
                 orderx = orderx.map(order => {
                     const pc = order.addr.match(/[0-9]{5}/g);
                     let postcode = '';
@@ -48,6 +51,10 @@ exports.delivery = (req, res) => {
                         postcode = pc[pc.length - 1]
                     }
                     if (order.name.substr(0, 1) == 'F') {
+                        // if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                        //     || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                        //     || req.query.payment == 'ALL'
+                        // )
                         return {
                             Customer_order_number: order.id,
                             Consignee_name: order.name,
@@ -87,6 +94,50 @@ exports.delivery = (req, res) => {
                 // // res.json(ws);
                 var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
                 var filename = 'FLASH_' + req.query.startDate + '.xlsx';
+                res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                res.type('application/octet-stream');
+                res.send(wbout);
+            } else if (req.query.file == 'jt') {
+                orderx = orderx.map(order => {
+                    if (order.name.substr(0, 1) == 'J') {
+                        // if ((req.query.payment == 'BANK' && order.bank.indexOf('COD') == -1)
+                        //     || (req.query.payment == 'COD' && order.bank.indexOf('COD') > -1)
+                        //     || req.query.payment == 'ALL'
+                        // ) {
+                        const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
+                        return {
+                            "น้ำหนักพัสดุ(กิโลกรัม)": 1,
+                            "ชื่อสกุลผู้ส่ง": "P.O.P.",
+                            "โทรศัพท์ผู้ส่ง": "0970576067",
+                            "ที่อยู่ผู้ส่ง": order.id + ' ' + order.page,
+                            "ชื่อสกุลผู้รับ": order.name,
+                            "โทรศัพท์ผู้รับ": order.tel,
+                            "จังหวัดผู้รับ": xx.province,
+                            "เขตอำเภอผู้รับ": xx.amphur,
+                            "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
+                            "รายละเอียดพัสดุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
+                            // "มูลค่าพัสดุโดยประเมิน": '',
+                            "หมายเหตุ": order.price,
+                            "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
+                        }
+                        // }
+                    }
+                }).filter(f => f != null)
+                // res.json(orderx)
+                const XLSX = require('xlsx');
+                // /* create workbook & set props*/
+                const wb = { SheetNames: [], Sheets: {} };
+
+                // // /* create file 'in memory' */
+                // for (var prop in result) {
+                var ws = XLSX.utils.json_to_sheet(orderx);
+
+                // wb.Sheets['Order Template']=ws;
+                XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
+                // }
+                // // res.json(ws);
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                var filename = 'JT_' + req.query.startDate + '_' + req.query.payment + '.xlsx';
                 res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
                 res.type('application/octet-stream');
                 res.send(wbout);
