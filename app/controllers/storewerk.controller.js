@@ -1,6 +1,6 @@
 const db = require('../../config/mariadb').db;
 exports.invoiceBymonth = (req, res) => {
-    db.query('call getIntvoiceByMonth(?,?)', [req.params.year, req.params.month])
+    db.query('call getIntvoiceByMonth(?,?,?)', [req.params.accId, req.params.year, req.params.month])
         .then(rows => {
             const data = rows[0] || [];
             if (data.length > 0) {
@@ -24,6 +24,19 @@ exports.invoice = (req, res) => {
         .then(rows => {
             const data = rows[0] || [];
             if (data.length > 0) {
+                // for (var i = 10 - data.length; i > 0; i--) {
+                //     data.push({
+                //         orderId1: data[0]['orderId1'],
+                //         orderDate1: data[0]['orderDate1'],
+                //         subTotal: data[0]['subTotal'],
+                //         shipping: data[0]['shipping'],
+                //         discount: data[0]['discount'],
+                //         total: data[0]['total'],
+                //         vatPercent: data[0]['vatPercent'],
+                //         vatPrice: data[0]['vatPrice'],
+                //         netTotal: data[0]['netTotal']
+                //     })
+                // }
                 // res.json(data)
                 // db.query('select accountLogo from accounts where accountId=?', [data[0].accountId])
                 //     .then(rows2 => {
@@ -39,14 +52,14 @@ exports.invoice = (req, res) => {
             }
         })
 }
-exports.dbSale = (req,res)=>{
+exports.dbSale = (req, res) => {
     db.query('call rptSaleByMonth(?,?)', [req.params.year, req.params.month])
-    .then(rows => {
-        const data = rows[0] || [];
-        if (data.length > 0) {
-            res.json(data)
-        } else {
-            res.json(null)
-        }
-    })
+        .then(rows => {
+            const data = rows[0] || [];
+            if (data.length > 0) {
+                res.json(data)
+            } else {
+                res.json(null)
+            }
+        })
 }
