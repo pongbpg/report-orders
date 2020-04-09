@@ -17,6 +17,7 @@ exports.delivery = (req, res) => {
             snapShot.forEach(doc => {
                 orderx.push({ id: doc.id, ...doc.data() })
             })
+
             r.expr(orderx)
                 .group('tel')
                 .ungroup()
@@ -49,24 +50,73 @@ exports.delivery = (req, res) => {
                 .orderBy('id')
                 .run()
                 .then(result => {
-                    // res.json(result)
-                    result.map(order => {
+                    if (req.query.file != 'flash') {
+                        result.map(order => {
+                            const text = `${index + 1}. ${order.name} (${order.amount})\nโทร.${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}${req.query.detail == 'show' ? '\n' + order.list : ''}`;
+                            // console.log(index,text)
+                            if (index % 2 == 0) {
+                                obj.col1 = text
+                            } else {
+                                obj.col2 = text
+                            }
+                            if (obj.col2 || (index + 1) == result.length) {
+                                orders.push(obj)
+                                obj = {};
+                            }
+                            index++;
+                        })
+                        // res.json(orders)
+                        res.ireport("delivery2.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
+                    } else {
+                        result = result.map(order => {
+                            const pc = order.addr.match(/[0-9]{5}/g);
+                            let postcode = '';
+                            if (pc != null) {
+                                postcode = pc[pc.length - 1]
+                            }
+                            // if (postcode != '')
+                                return {
+                                    Customer_order_number: order.id,
+                                    Consignee_name: `${order.name} (${order.amount})`,
+                                    Address: order.addr.replace(/\n/g, ' '),
+                                    Postal_code: postcode,
+                                    Phone_number: order.tel,
+                                    Phone_number2: '',
+                                    COD: '',
+                                    Weight_kg: 1,
+                                    Length: '',
+                                    Width: '',
+                                    Height: '',
+                                    // Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
+                                    // Remark2: order.price,
+                                    // Remark3: order.page
+                                }
+                        }).filter(f => f != null)
 
-                        const text = `${index + 1}. ${order.name} (${order.amount})\nโทร.${order.tel}\n${order.addr.replace(/\n/g, ' ')}\nFB: ${order.fb}${req.query.detail == 'show' ? '\n' + order.list : ''}`;
-                        // console.log(index,text)
-                        if (index % 2 == 0) {
-                            obj.col1 = text
-                        } else {
-                            obj.col2 = text
-                        }
-                        if (obj.col2 || (index + 1) == result.length) {
-                            orders.push(obj)
-                            obj = {};
-                        }
-                        index++;
-                    })
-                    // res.json(orders)
-                    res.ireport("delivery2.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
+                        // res.json(orderx)
+                        const XLSX = require('xlsx');
+                        // /* create workbook & set props*/
+                        const wb = { SheetNames: [], Sheets: {} };
+
+                        // // /* create file 'in memory' */
+                        // for (var prop in result) {
+                        var ws = XLSX.utils.json_to_sheet(result);
+                        ws['B1'].v = '*Consignee_name';
+                        ws['C1'].v = '*Address';
+                        ws['D1'].v = '*Postal_code';
+                        ws['E1'].v = '*Phone_number';
+                        ws['H1'].v = '*Weight_kg';
+
+                        // wb.Sheets['Order Template']=ws;
+                        XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
+                        // }
+                        // // res.json(ws);
+                        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                        var filename = 'FLASH_' + req.query.startDate + '.xlsx';
+                        res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                        res.type('application/octet-stream');
+                        res.send(wbout);
+                    }
                 })
 
             // res.json(orderx)
