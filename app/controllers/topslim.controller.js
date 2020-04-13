@@ -2085,6 +2085,7 @@ exports.covid = (req, res) => {
                     netEdit: doc.data().edit ? doc.data().price - doc.data().totalFreight : 0,
                     bank: doc.data().banks[0].name,
                     received: doc.data().received,
+                    cod: doc.data().cod,
                     times: doc.data().bank,
                     admin: doc.data().admin,
                     page: doc.data().page.replace('@', '')
