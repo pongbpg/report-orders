@@ -1450,11 +1450,21 @@ exports.dailyStatementProduct = (req, res) => {
                                             // date: doc.data().banks[0].date,
                                             orderDate: doc.data().orderDate,
                                             products: doc.data().product
-                                                .filter(f => f.code.indexOf('MN') > -1
-                                                    || f.code.indexOf('LG') > -1
-                                                    || f.code.indexOf('SP') > -1
-                                                    || f.code.indexOf('TE') > -1
-                                                ),
+                                                .filter(f => f.typeId == 'MN'
+                                                    || f.typeId == 'LG'
+                                                    || f.typeId == 'SP'
+                                                    || f.typeId == 'TE'
+                                                ).map(m => {
+                                                    if (m.typeId == "TE") {
+                                                        return {
+                                                            ...m,
+                                                            code: 'SP',
+                                                            amount: m.amount * 2
+                                                        }
+                                                    } else {
+                                                        return m
+                                                    }
+                                                }),
                                             // costs: doc.data().costs,
                                             price: doc.data().price
                                         })
@@ -2057,19 +2067,25 @@ exports.covid = (req, res) => {
         .get()
         .then(snapShot => {
             let orders = []
+            const specials = ["AF", "AP", "COVID100", "COVID120", "COVID250", "COVID300", "COVID450", "COVID480", "COVID50", "COVID500", "COVID60", "COVID750", "CV", "FS", "FTJ", "LS400", "LS60", "MF", "PAF", "PROK"];
             snapShot.forEach(doc => {
                 const pdLen = doc.data().product.length;
-                const covid = doc.data().product.filter(f => f.code.indexOf('COVID') > -1
-                    || f.code.indexOf('FTJ') > -1
-                    || f.code.indexOf('AF') > -1
-                ).length == pdLen;
+                const covid = doc.data().product.filter(f => specials.indexOf(f.code) > -1 || f.typeId == 'EVENT').length == pdLen;
                 orders.push({
                     id: doc.id,
                     product: doc.data().product.map(m => m.code).toString(),
-                    amount: covid ? doc.data().product.map(m => m.amount).reduce((a, b) => a + b) : 0,
+                    amount: doc.data().product.map(m => m.amount).reduce((a, b) => a + b),
                     costs: doc.data().costs,
-                    price1: covid ? 0 : doc.data().price,
-                    price2: covid ? doc.data().price : 0,
+                    priceTopslim: covid ? 0 : doc.data().price,
+                    priceSpecial: covid ? doc.data().price : 0,
+                    priceEdit: doc.data().edit ? doc.data().price : 0,
+                    totalFreight: doc.data().totalFreight,
+                    netTopslim: covid ? 0 : doc.data().price - doc.data().totalFreight,
+                    netSpecial: covid ? doc.data().price - doc.data().totalFreight : 0,
+                    netEdit: doc.data().edit ? doc.data().price - doc.data().totalFreight : 0,
+                    bank: doc.data().banks[0].name,
+                    return: doc.data().return,
+                    times: doc.data().bank,
                     admin: doc.data().admin,
                     page: doc.data().page.replace('@', '')
                 })
