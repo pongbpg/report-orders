@@ -2062,8 +2062,8 @@ exports.covid = (req, res) => {
     db.collection('orders')
         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-        .where('country', '==', 'TH')
-        .where('return', '==', false)
+        // .where('country', '==', 'TH')
+        // .where('return', '==', false)
         .get()
         .then(snapShot => {
             let orders = []
@@ -2079,16 +2079,20 @@ exports.covid = (req, res) => {
                     priceTopslim: covid ? 0 : doc.data().price,
                     priceSpecial: covid ? doc.data().price : 0,
                     priceEdit: doc.data().edit ? doc.data().price : 0,
+                    priceTotal: doc.data().price,
                     totalFreight: doc.data().totalFreight,
                     netTopslim: covid ? 0 : doc.data().price - doc.data().totalFreight,
                     netSpecial: covid ? doc.data().price - doc.data().totalFreight : 0,
+                    netTotal: doc.data().price - doc.data().totalFreight,
                     netEdit: doc.data().edit ? doc.data().price - doc.data().totalFreight : 0,
                     bank: doc.data().banks[0].name,
-                    received: doc.data().received,
-                    cod: doc.data().cod,
+                    received: doc.data().received ? 'รับเงินแล้ว' : 'ยังไม่ได้รับ',
+                    return: doc.data().return ? 'ตีคืน' : 'ปกติ',
+                    cod: doc.data().cod ? 'ปลายทาง' : 'โอนเงิน',
                     times: doc.data().bank,
                     admin: doc.data().admin,
-                    page: doc.data().page.replace('@', '')
+                    page: doc.data().page.replace('@', ''),
+                    team: doc.data().team
                 })
             })
             res.json(orders)
