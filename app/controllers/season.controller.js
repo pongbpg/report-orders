@@ -1674,6 +1674,24 @@ exports.counterPage = (req, res) => {
         res.redirect('http://m.me/tpf001')
     }
 }
+const queryProvAmpr = (addr) => {
+    let amphur = 'ไม่พบอำเภอ';
+    let province = 'ไม่พบจังหวัด';
+    let arrays = [];
+    if (addr.indexOf(' เขต') > -1) {
+        province = 'กรุงเทพมหานคร';
+        arrays = addr.split(' เขต');
+        amphur = 'เขต' + arrays[1].split(' ')[0];
+    } else {
+        arrays = addr.replace(' อำเภอ', ' อ.').split(' อ.');
+        if (arrays.length > 1)
+            amphur = arrays[1].split(' ')[0];
+        arrays = addr.replace(' จังหวัด', ' จ.').split(' จ.');
+        if (arrays.length > 1)
+            province = arrays[1].split(' ')[0];
+    }
+    return { amphur, province }
+}
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
         decimalCount = Math.abs(decimalCount);
