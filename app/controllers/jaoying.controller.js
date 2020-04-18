@@ -75,22 +75,22 @@ exports.delivery = (req, res) => {
                                 postcode = pc[pc.length - 1]
                             }
                             // if (postcode != '')
-                                return {
-                                    Customer_order_number: order.id,
-                                    Consignee_name: `${order.name} (${order.amount})`,
-                                    Address: order.addr.replace(/\n/g, ' '),
-                                    Postal_code: postcode,
-                                    Phone_number: order.tel,
-                                    Phone_number2: '',
-                                    COD: '',
-                                    Weight_kg: 1,
-                                    Length: '',
-                                    Width: '',
-                                    Height: '',
-                                    // Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
-                                    // Remark2: order.price,
-                                    // Remark3: order.page
-                                }
+                            return {
+                                Customer_order_number: order.id,
+                                Consignee_name: `${order.name} (${order.amount})`,
+                                Address: order.addr.replace(/\n/g, ' '),
+                                Postal_code: postcode,
+                                Phone_number: order.tel,
+                                Phone_number2: '',
+                                Item_type: '',
+                                Weight_kg: 1,
+                                // Length: '',
+                                // Width: '',
+                                // Height: '',
+                                // Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
+                                // Remark2: order.price,
+                                // Remark3: order.page
+                            }
                         }).filter(f => f != null)
 
                         // res.json(orderx)
@@ -609,30 +609,14 @@ exports.test = (req, res) => {
     //     })
 }
 exports.test2 = (req, res) => {
-    const r = req.r;
-    db.collection('orders')
-        .where('cutoffDate', '==', '20190104')
-        .where('tel', '==', '0881883434')
-        .get()
-        .then(snapShot => {
-            let orders = [];
-            snapShot.forEach(doc => {
-                orders.push({ id: doc.id, ...doc.data() })
-            })
-            const len = orders.length - 1;
-            const data = 'ชื่อ: ' + orders[len].name +
-                '\nโทร: ' + orders[len].tel +
-                '\nที่อยู่: ' + orders[len].addr +
-                '\nFB: ' + orders[len].fb +
-                '\nรายการสั่งซื้อ' + orders.map((order, i) => {
-                    return '\n#' + (i + 1) + ' ' + order.id +
-                        order.product.map(product => {
-                            return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'
-                        }) + '\n' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'
-                }) +
-                '\nยอดรวม: ' + formatMoney(orders.map(order => order.price).reduce((le, ri) => le + ri), 0) + ' บาท'
-            res.json(data)
-        })
+    // db.collection('products')
+    //     .get()
+    //     .then(snapShot => {
+    //         snapShot.forEach(doc => {
+    //             doc.ref.update({ id: doc.id })
+    //         })
+            res.json(true)
+        // })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
