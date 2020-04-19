@@ -7,6 +7,7 @@ exports.delivery = (req, res) => {
         .where('cutoffDate', '==', req.query.startDate)
         // .where('cutoff', '==', true)
         // .orderBy('name', 'asc')
+        // .limit(1)
         .get()
         .then(snapShot => {
             let orderx = [];
@@ -84,9 +85,16 @@ exports.delivery = (req, res) => {
                                 Phone_number2: '',
                                 Item_type: '',
                                 Weight_kg: 1,
-                                // Length: '',
-                                // Width: '',
-                                // Height: '',
+                                Length: '',
+                                Width: '',
+                                Height: '',
+                                Freight_insurance: '',
+                                Value_insurance: '',
+                                Declared_value: '',
+                                Speed_service: '',
+                                Remark1: 'FB: ' + order.fb,
+                                Remark2: '',
+                                Remark3: ''
                                 // Remark1: `${order.product.map(p => p.code + '=' + p.amount)}`,
                                 // Remark2: order.price,
                                 // Remark3: order.page
@@ -615,8 +623,8 @@ exports.test2 = (req, res) => {
     //         snapShot.forEach(doc => {
     //             doc.ref.update({ id: doc.id })
     //         })
-            res.json(true)
-        // })
+    res.json(true)
+    // })
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
