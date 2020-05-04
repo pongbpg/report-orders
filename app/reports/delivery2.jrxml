@@ -12,7 +12,7 @@
 		<groupHeader>
 			<band height="180">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="180" isPrintWhenDetailOverflows="true" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="180" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
 					<box topPadding="0" leftPadding="10" bottomPadding="2" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -25,7 +25,7 @@
 					<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="180" isPrintWhenDetailOverflows="true" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="180" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
 					<box topPadding="0" leftPadding="10" bottomPadding="2" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
