@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="234"/>
+	<property name="ireport.y" value="151"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="IS_COPY" class="java.lang.String"/>
@@ -12,6 +12,7 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<field name="orderId1" class="java.lang.String"/>
+	<field name="orderTypeId" class="java.lang.String"/>
 	<field name="orderDate1" class="java.lang.String"/>
 	<field name="invoiceNo" class="java.lang.String"/>
 	<field name="customerName" class="java.lang.String"/>
@@ -26,6 +27,7 @@
 	<field name="totalPrice" class="java.lang.Double"/>
 	<field name="sub_quantity" class="java.lang.Integer"/>
 	<field name="productPrice" class="java.lang.Double"/>
+	<field name="productCost" class="java.lang.Double"/>
 	<field name="subTotal" class="java.lang.Double"/>
 	<field name="shipping" class="java.lang.Double"/>
 	<field name="discount" class="java.lang.Double"/>
@@ -442,7 +444,12 @@ No.]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{productName}==null?"":$F{productPrice}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{productName}==null
+?""
+:(
+$F{orderTypeId}=="IN"?$F{productCost}:$F{productPrice}
+)
+]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="46" height="25" uuid="fc3d7623-5cc7-487b-bd9c-e1efe710d8d6"/>
