@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="231"/>
+	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="IS_COPY" class="java.lang.String"/>
@@ -38,71 +38,9 @@
 	<group name="grp_id" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{orderId1}]]></groupExpression>
 		<groupHeader>
-			<band height="138">
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="77" y="12" width="237" height="84" uuid="7e78518f-a440-49a5-bb29-c1618948c30a"/>
-					<box topPadding="5" leftPadding="5">
-						<topPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement verticalAlignment="Top">
-						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{customerName}+"\n"+$F{customerTel}+"\n"+$F{customerAddr}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="408" y="12" width="147" height="84" uuid="c925ccf3-f7d5-4262-a1b9-1ba0d3a0c373"/>
-					<box topPadding="5" leftPadding="5">
-						<topPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement verticalAlignment="Top">
-						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{orderId1}
-+"\n"+$F{invoiceNo}
-+"\n"+new nylon.utility.NumberFormat().toThaiDate($F{orderDate1})]]></textFieldExpression>
-				</textField>
+			<band height="42">
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="314" y="12" width="94" height="84" uuid="f6e28a25-24a4-46f1-bfda-99791349f613"/>
-					<box topPadding="5" leftPadding="5">
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Top" markup="none">
-						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<text><![CDATA[เลขที่สั่งซื้อ
-เลขที่ใบกำกับภาษี
-วันที่
-
-
-
-]]></text>
-				</staticText>
-				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="12" width="77" height="84" uuid="0f507695-80db-4b27-876f-b029e8990623"/>
-					<box topPadding="5" leftPadding="5">
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-					</box>
-					<textElement verticalAlignment="Top" markup="none">
-						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<text><![CDATA[ผู้ซื้อ/ Sold to
-เบอร์โทร/ Tel.
-ที่อยู่/ Address
-
-
-
-]]></text>
-				</staticText>
-				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="46" y="96" width="268" height="42" uuid="580f8564-e39a-4290-992c-905ca601d47a"/>
+					<reportElement stretchType="RelativeToBandHeight" x="46" y="0" width="268" height="42" uuid="580f8564-e39a-4290-992c-905ca601d47a"/>
 					<box leftPadding="0" rightPadding="0">
 						<topPen lineWidth="0.25"/>
 						<leftPen lineWidth="0.25"/>
@@ -116,7 +54,7 @@
 Description]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="314" y="96" width="60" height="42" uuid="1812ec01-1a6b-40fb-9fad-2fad6e38fb06"/>
+					<reportElement stretchType="RelativeToBandHeight" x="314" y="0" width="60" height="42" uuid="1812ec01-1a6b-40fb-9fad-2fad6e38fb06"/>
 					<box leftPadding="0" rightPadding="0">
 						<topPen lineWidth="0.25"/>
 						<leftPen lineWidth="0.25"/>
@@ -130,7 +68,7 @@ Description]]></text>
 Quantity]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="374" y="96" width="83" height="42" uuid="3df8b081-c046-449f-a26d-f1b285925b62"/>
+					<reportElement stretchType="RelativeToBandHeight" x="374" y="0" width="83" height="42" uuid="3df8b081-c046-449f-a26d-f1b285925b62"/>
 					<box leftPadding="0" rightPadding="0">
 						<topPen lineWidth="0.25"/>
 						<leftPen lineWidth="0.25"/>
@@ -144,7 +82,7 @@ Quantity]]></text>
 Unit Price]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="457" y="96" width="98" height="42" uuid="68e5ca78-3ef2-4bac-ae0c-b745eb307e52"/>
+					<reportElement stretchType="RelativeToBandHeight" x="457" y="0" width="98" height="42" uuid="68e5ca78-3ef2-4bac-ae0c-b745eb307e52"/>
 					<box leftPadding="0" rightPadding="0">
 						<topPen lineWidth="0.25"/>
 						<leftPen lineWidth="0.25"/>
@@ -158,7 +96,7 @@ Unit Price]]></text>
 Amount]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="96" width="46" height="42" uuid="d38661f0-57fb-41db-a714-293e2e8838bb"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="46" height="42" uuid="d38661f0-57fb-41db-a714-293e2e8838bb"/>
 					<box leftPadding="0" rightPadding="0">
 						<topPen lineWidth="0.25"/>
 						<leftPen lineWidth="0.25"/>
@@ -400,6 +338,72 @@ No.]]></text>
 			</textField>
 		</band>
 	</pageHeader>
+	<columnHeader>
+		<band height="84">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="77" y="0" width="237" height="84" uuid="7e78518f-a440-49a5-bb29-c1618948c30a"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{customerName}+"\n"+$F{customerTel}+"\n"+$F{customerAddr}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="408" y="0" width="147" height="84" uuid="c925ccf3-f7d5-4262-a1b9-1ba0d3a0c373"/>
+				<box topPadding="5" leftPadding="5">
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orderId1}
++"\n"+$F{invoiceNo}
++"\n"+new nylon.utility.NumberFormat().toThaiDate($F{orderDate1})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="314" y="0" width="94" height="84" uuid="f6e28a25-24a4-46f1-bfda-99791349f613"/>
+				<box topPadding="5" leftPadding="5">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="none">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เลขที่สั่งซื้อ
+เลขที่ใบกำกับภาษี
+วันที่
+
+
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="77" height="84" uuid="0f507695-80db-4b27-876f-b029e8990623"/>
+				<box topPadding="5" leftPadding="5">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Top" markup="none">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ผู้ซื้อ/ Sold to
+เบอร์โทร/ Tel.
+ที่อยู่/ Address
+
+
+
+]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
 	<detail>
 		<band height="25">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
@@ -448,8 +452,7 @@ No.]]></text>
 ?""
 :(
 $F{orderTypeId}=="IN"?$F{productCost}:$F{productPrice}
-)
-]]></textFieldExpression>
+)]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="46" height="25" uuid="fc3d7623-5cc7-487b-bd9c-e1efe710d8d6"/>

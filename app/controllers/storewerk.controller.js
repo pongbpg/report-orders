@@ -1,6 +1,6 @@
 const db = require('../../config/mariadb').db;
 exports.invoiceBymonth = (req, res) => {
-    db.query('call getIntvoiceByMonth(?,?,?)', [req.params.accId, req.params.year, req.params.month])
+    db.query('call getIntvoiceByMonth(?,?,?,?)', [req.params.orderType, req.params.accId, req.params.year, req.params.month])
         .then(rows => {
             const data = rows[0] || [];
             if (data.length > 0) {
