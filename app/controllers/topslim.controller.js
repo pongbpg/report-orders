@@ -2071,7 +2071,7 @@ exports.covid = (req, res) => {
             snapShot.forEach(doc => {
                 const pdLen = doc.data().product.length;
                 const covid = ((doc.data().product.filter(f => specials.indexOf(f.code) > -1 || f.typeId == 'EVENT').length == pdLen)
-                    || doc.data().product.filter(f => f.code == 'NP').length == 0);
+                    && !(doc.data().product.filter(f => f.code == 'NP').length > 0));
                 orders.push({
                     id: doc.id,
                     product: doc.data().product.map(m => m.code).toString(),
