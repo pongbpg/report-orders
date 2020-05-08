@@ -2070,7 +2070,8 @@ exports.covid = (req, res) => {
             const specials = ["AF", "AP", "COVID100", "COVID120", "COVID250", "COVID300", "COVID450", "COVID480", "COVID50", "COVID500", "COVID60", "COVID750", "CV", "FS", "FTJ", "LS400", "LS60", "MF", "PAF", "PROK"];
             snapShot.forEach(doc => {
                 const pdLen = doc.data().product.length;
-                const covid = doc.data().product.filter(f => specials.indexOf(f.code) > -1 || f.typeId == 'EVENT').length == pdLen;
+                const covid = ((doc.data().product.filter(f => specials.indexOf(f.code) > -1 || f.typeId == 'EVENT').length == pdLen)
+                    || doc.data().product.filter(f => f.code == 'NP').length == 0);
                 orders.push({
                     id: doc.id,
                     product: doc.data().product.map(m => m.code).toString(),
