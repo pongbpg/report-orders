@@ -263,7 +263,7 @@ exports.dailySayHi = (req, res) => {
                                             price: m('reduction').filter({ return: false }).sum('price'),
                                             countReturn: m('reduction').filter({ return: true }).count(),
                                             priceReturn: m('reduction').filter({ return: true }).sum('price'),
-                                            freight: m('reduction').sum('totalFreight').add(m('reduction').filter({ return: true }).count().mul(12.5)),
+                                            freight: m('reduction').sum('totalFreight'),//.add(m('reduction').filter({ return: true }).count().mul(12.5)),
                                             // promote: m('reduction').sum('promote'),
                                             interest: m('reduction').sum('interest')
                                         }
@@ -770,7 +770,7 @@ exports.dailyCost = (req, res) => {
                                                     priceLine: m2('reduction').filter({ type: 'line', return: false }).sum('price'),
                                                     priceCm: m2('reduction').filter({ type: 'cm', return: false }).sum('price'),
                                                     price: m2('reduction').filter({ return: false }).sum('price'),
-                                                    delivery: m2('reduction').sum('delivery').add(m2('reduction').filter({ return: true }).count().mul(12.5)),
+                                                    delivery: m2('reduction').sum('delivery'),//.add(m2('reduction').filter({ return: true }).count().mul(12.5)),
                                                 }
                                             })
                                         }),
