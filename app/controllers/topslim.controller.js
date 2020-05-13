@@ -2082,6 +2082,7 @@ exports.covid = (req, res) => {
                     priceEdit: doc.data().edit ? doc.data().price : 0,
                     priceTotal: doc.data().price,
                     totalFreight: doc.data().totalFreight,
+                    freight2: doc.get('freight2') ? doc.get('freight2') : 0,
                     netTopslim: covid ? 0 : doc.data().price - doc.data().totalFreight,
                     netSpecial: covid ? doc.data().price - doc.data().totalFreight : 0,
                     netTotal: doc.data().price - doc.data().totalFreight,
