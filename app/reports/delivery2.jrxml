@@ -5,14 +5,71 @@
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
+	<parameter name="SHOW_DETAIL" class="java.lang.String"/>
 	<field name="col1" class="java.lang.String"/>
 	<field name="col2" class="java.lang.String"/>
 	<group name="grpCol1" minHeightToStartNewPage="180">
 		<groupExpression><![CDATA[$F{col1}]]></groupExpression>
 		<groupHeader>
-			<band height="180">
+			<band height="110">
+				<printWhenExpression><![CDATA[$P{SHOW_DETAIL}!="show"]]></printWhenExpression>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="30" forecolor="#FF0033" uuid="aa426e17-964e-45b9-b8bb-740df6071481"/>
+					<box leftPadding="10">
+						<topPen lineWidth="0.5" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="TH SarabunPSK" size="24" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[JaoYing Shop]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="30" forecolor="#FF0033" uuid="37dd6123-3fee-4835-a147-abdb72efc87e"/>
+					<box leftPadding="10">
+						<topPen lineWidth="0.5" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font fontName="TH SarabunPSK" size="24" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[JaoYing Shop]]></text>
+				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="180" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="30" width="278" height="80" uuid="6d724a94-71af-416f-94e2-b41ab9d7548c"/>
+					<box topPadding="0" leftPadding="10" bottomPadding="2" rightPadding="5">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="30" width="277" height="80" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
+					<box topPadding="0" leftPadding="10" bottomPadding="2" rightPadding="5">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{col2}]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="120">
+				<printWhenExpression><![CDATA[$P{SHOW_DETAIL}=="show"]]></printWhenExpression>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="278" height="120" uuid="df252926-8046-4e77-b861-ed82d3efdc54"/>
 					<box topPadding="0" leftPadding="10" bottomPadding="2" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -25,7 +82,7 @@
 					<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="180" uuid="a10c9e47-fae8-4d69-b8d0-ab063e88d1b2"/>
+					<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="277" height="120" uuid="5f09fb32-6ab4-4fff-b495-20ee6df97813"/>
 					<box topPadding="0" leftPadding="10" bottomPadding="2" rightPadding="5">
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>

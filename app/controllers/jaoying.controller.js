@@ -67,7 +67,10 @@ exports.delivery = (req, res) => {
                             index++;
                         })
                         // res.json(orders)
-                        res.ireport("delivery2.jrxml", req.query.file || "pdf", orders, { OUTPUT_NAME: 'delivery_' + req.query.startDate });
+                        res.ireport("delivery2.jrxml", req.query.file || "pdf", orders, {
+                            OUTPUT_NAME: 'delivery_' + req.query.startDate,
+                            SHOW_DETAIL: req.query.detail
+                        });
                     } else {
                         result = result.map(order => {
                             const pc = order.addr.match(/[0-9]{5}/g);
