@@ -2146,6 +2146,9 @@ const queryProvAmpr = (addr) => {
         arrays = addr.replace(' จังหวัด', ' จ.').split(' จ.');
         if (arrays.length > 1)
             province = arrays[1].split(' ')[0];
+
+        if (amphur == 'เมือง')
+            amphur += province;
     }
     return { amphur, province }
 }
