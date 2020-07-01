@@ -639,7 +639,7 @@ exports.dailyCost = (req, res) => {
         let costs = [];
         let dataBOT = {};
         var r = req.r;
-        await db.collection('pages').where('active', '==', true).get().then(snapShot => {
+        await db.collection('pages').get().then(snapShot => {
             snapShot.forEach(doc => {
                 // admins.push({ ...doc.data(), page: doc.id })
                 pages.push({ ...doc.data(), page: doc.id })
@@ -814,6 +814,9 @@ exports.dailyCost = (req, res) => {
                                 return {
                                     balance: m('price').sub(m('cost')).sub(m('ads')).sub(m('other')).sub(m('delivery'))
                                 }
+                            })
+                            .filter(f => {
+                                return f('balance').ne(0)
                             })
                             .orderBy('orderDate', 'team', r.desc('balance'))
                             .run()
