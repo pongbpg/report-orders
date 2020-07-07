@@ -1674,6 +1674,22 @@ exports.counterPage = (req, res) => {
         res.redirect('http://m.me/tpf001')
     }
 }
+exports.fixCodAmount = (req, res) => {
+    db.collection('orders')
+        .where('orderDate', '==', req.query.date)
+        .get()
+        .then(snapShot => {
+            let ords = [];
+            snapShot.forEach(doc => {
+                // if (typeof doc.data().codAmount == 'undefined')
+                ords.push({ id: doc.id, ...doc.data() })
+            })
+            ords.filter(f => isNaN(f.codAmount)).map(m => {
+                db.collection('orders').doc(m.id).update({ codAmount: 0 })
+            })
+            res.json(true)
+        })
+}
 const queryProvAmpr = (addr) => {
     let amphur = 'ไม่พบอำเภอ';
     let province = 'ไม่พบจังหวัด';

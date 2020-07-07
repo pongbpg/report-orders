@@ -19,4 +19,5 @@ module.exports = function (app) {
     app.get('/receipts', ctrl.receipts);
     app.get('/covid', ctrl.covid)
     app.post('/jt', ctrl.jt)
+    app.get('/fixCodAmount', ctrl.fixCodAmount)
 }

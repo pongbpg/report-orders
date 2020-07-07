@@ -15,4 +15,5 @@ module.exports = function (app) {
     app.get('/infoCustomer', ctrl.infoCustomer);
     // app.get('/cod2', ctrl.cod2)
     // app.get('/test', ctrl.updateRt);
+    app.get('/fixCodAmount', ctrl.fixCodAmount)
 }
