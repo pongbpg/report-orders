@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="20" uuid="9661290d-a77f-4ab7-9351-38364f1c01a3">
 	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="86"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<import value="nylon.report.*"/>
 	<parameter name="IS_COPY" class="java.lang.String"/>
@@ -10,6 +10,9 @@
 	<parameter name="FONTSIZE" class="java.lang.String"/>
 	<parameter name="PRINTBY" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LICENSE64" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<field name="orderId1" class="java.lang.String"/>
 	<field name="orderTypeId" class="java.lang.String"/>
@@ -468,39 +471,39 @@ $F{orderTypeId}=="IN"?$F{productCost}:$F{productPrice}
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="125">
+		<band height="145">
 			<staticText>
-				<reportElement x="1" y="54" width="165" height="21" uuid="cb4f3379-4b15-4760-ac6e-f2fee745db7a"/>
+				<reportElement x="0" y="102" width="165" height="21" uuid="cb4f3379-4b15-4760-ac6e-f2fee745db7a"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="none">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" isUnderline="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[ผู้รับสินค้า]]></text>
 			</staticText>
 			<line>
-				<reportElement x="12" y="53" width="139" height="1" uuid="2710452b-940b-436e-a5ae-f61a41511e64"/>
+				<reportElement x="11" y="101" width="139" height="1" uuid="2710452b-940b-436e-a5ae-f61a41511e64"/>
 			</line>
 			<line>
-				<reportElement x="405" y="52" width="139" height="1" uuid="a3ef9c75-bb78-41a2-a150-d18943f4e365"/>
+				<reportElement x="404" y="100" width="139" height="1" uuid="a3ef9c75-bb78-41a2-a150-d18943f4e365"/>
 			</line>
 			<staticText>
-				<reportElement x="197" y="51" width="165" height="24" uuid="10cabca7-08f0-420d-83c5-778826bd9a96"/>
+				<reportElement x="196" y="99" width="165" height="24" uuid="10cabca7-08f0-420d-83c5-778826bd9a96"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="none">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" isUnderline="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[ผู้จัดทำ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="210" y="51" width="139" height="1" uuid="8af0964b-0ffc-4c2c-a202-8e9192b6a95c"/>
+				<reportElement x="209" y="99" width="139" height="1" uuid="8af0964b-0ffc-4c2c-a202-8e9192b6a95c"/>
 			</line>
 			<staticText>
-				<reportElement x="33" y="75" width="134" height="22" uuid="1491a30f-1c4a-48ab-b46f-0c41cd2ee925"/>
+				<reportElement x="32" y="123" width="134" height="22" uuid="1491a30f-1c4a-48ab-b46f-0c41cd2ee925"/>
 				<textElement verticalAlignment="Bottom" markup="none">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" isUnderline="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[วันที่]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="197" y="75" width="165" height="22" uuid="7eccab03-2af2-4583-8820-ff6d09cdb412"/>
+				<reportElement x="196" y="123" width="165" height="22" uuid="7eccab03-2af2-4583-8820-ff6d09cdb412"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -513,7 +516,7 @@ $F{orderTypeId}=="IN"?$F{productCost}:$F{productPrice}
 				<textFieldExpression><![CDATA["วันที่ "+new nylon.utility.NumberFormat().toThaiDate($F{orderDate1})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="392" y="75" width="165" height="22" uuid="da7c8fe3-ef0e-415a-b744-b276ff40038e"/>
+				<reportElement x="391" y="123" width="165" height="22" uuid="da7c8fe3-ef0e-415a-b744-b276ff40038e"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -526,12 +529,16 @@ $F{orderTypeId}=="IN"?$F{productCost}:$F{productPrice}
 				<textFieldExpression><![CDATA["วันที่ "+new nylon.utility.NumberFormat().toThaiDate($F{orderDate1})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="390" y="51" width="165" height="24" uuid="b0c95525-834f-422f-b72a-4e345dc631ff"/>
+				<reportElement x="389" y="99" width="165" height="24" uuid="b0c95525-834f-422f-b72a-4e345dc631ff"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="none">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" isUnderline="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[ผู้อนุมัติ]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement x="408" y="0" width="135" height="99" uuid="82300dca-b9ab-43b7-ac3f-79ff10216a3b"/>
+				<imageExpression><![CDATA[$P{LICENSE64}!=null?new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{LICENSE64})):null]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

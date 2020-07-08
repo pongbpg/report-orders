@@ -1,17 +1,40 @@
 const db = require('../../config/mariadb').db;
 exports.invoiceBymonth = (req, res) => {
-    db.query('call getIntvoiceByMonth(?,?,?,?)', [req.params.orderType, req.params.accId, req.params.year, req.params.month])
+    db.query('call getIntvoiceByDates(?,?,?,?)', [req.params.orderType, req.params.accId, req.query.dateStart, req.query.dateEnd])
         .then(rows => {
             const data = rows[0] || [];
             if (data.length > 0) {
                 // res.json(data)
                 // db.query('select accountLogo from accounts where accountId=?', [data[0].accountId])
                 //     .then(rows2 => {
-                //         const LOGO64 = rows2[0].accountLogo.replace('data:image/png;base64,', '');
+                // const LOGO64 = req.query.accountLicense;//.replace('data:image/png;base64,', '');
                 res.ireport("storewerk/invoice.jasper", req.query.file || "pdf", data, {
                     OUTPUT_NAME: 'receipts',
                     IS_COPY: req.query.copy || "Y",
                     // LOGO64
+                });
+                // })
+            } else {
+                res.json(null)
+            }
+        })
+}
+exports.invoiceBymonth2 = (req, res) => {
+    db.query('call getIntvoiceByDates(?,?,?,?)', [req.params.orderType, req.params.accId, req.body.dateStart, req.body.dateEnd])
+        .then(rows => {
+            const data = rows[0] || [];
+            // res.json(rows)
+
+            if (data.length > 0) {
+                // res.json(data)
+                // db.query('select accountLogo from accounts where accountId=?', [data[0].accountId])
+                //     .then(rows2 => {
+                const LICENSE64 = req.body.accountLicense.replace('data:image/png;base64,', '') || null
+                // console.log(LICENSE64)
+                res.ireport("storewerk/invoice.jasper", req.body.file || "pdf", data, {
+                    OUTPUT_NAME: 'receipts',
+                    IS_COPY: req.body.copy || "Y",
+                    LICENSE64 //: req.body.accountLicense.replace('data:image/png;base64,', '') || ""
                 });
                 // })
             } else {
