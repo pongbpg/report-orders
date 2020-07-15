@@ -2097,7 +2097,8 @@ exports.covid = (req, res) => {
                     times: doc.data().bank,
                     admin: doc.data().admin,
                     page: doc.data().page.replace('@', ''),
-                    team: doc.data().team
+                    team: doc.data().team,
+                    date: doc.data().orderDate.substring(0, 10)
                 })
             })
             res.json(orders)
