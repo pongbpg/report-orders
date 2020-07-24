@@ -734,7 +734,8 @@ exports.dailyCost = (req, res) => {
                                     : 0
                             })
                         })
-
+                        // res.json(orders)
+                        orders = JSON.parse(JSON.stringify(orders));
                         r.expr({
                             orders,
                             results
@@ -744,51 +745,51 @@ exports.dailyCost = (req, res) => {
                                     orders: m('orders').group(g => {
                                         return g.pluck('page', 'type', 'return', 'orderDate')
                                     }).ungroup()
-                                        .map(m2 => {
-                                            return m2('group').merge(m3 => {
-                                                return {
-                                                    price: m2('reduction').sum('price'),
-                                                    cost: m2('reduction').map(m4 => {
-                                                        return { cost: m4('product').sum('cost') }
-                                                    }).sum('cost'),
-                                                    delivery: m2('reduction').sum('delivery')
-                                                }
-                                            })
-                                        })
-                                        .group(g => {
-                                            return g.pluck('page', 'orderDate')
-                                        })
-                                        .ungroup()
-                                        .map(m2 => {
-                                            return m2('group').merge(m3 => {
-                                                return {
-                                                    costFb: m2('reduction').filter({ type: 'fb', return: false }).sum('cost'),
-                                                    costLine: m2('reduction').filter({ type: 'line', return: false }).sum('cost'),
-                                                    costCm: m2('reduction').filter({ type: 'cm', return: false }).sum('cost'),
-                                                    cost: m2('reduction').filter({ return: false }).sum('cost'),
-                                                    priceFb: m2('reduction').filter({ type: 'fb', return: false }).sum('price'),
-                                                    priceLine: m2('reduction').filter({ type: 'line', return: false }).sum('price'),
-                                                    priceCm: m2('reduction').filter({ type: 'cm', return: false }).sum('price'),
-                                                    price: m2('reduction').filter({ return: false }).sum('price'),
-                                                    delivery: m2('reduction').sum('delivery'),//.add(m2('reduction').filter({ return: true }).count().mul(12.5)),
-                                                }
-                                            })
-                                        }),
+                            .map(m2 => {
+                                return m2('group').merge(m3 => {
+                                    return {
+                                        price: m2('reduction').sum('price'),
+                                        cost: m2('reduction').map(m4 => {
+                                            return { cost: m4('product').sum('cost') }
+                                        }).sum('cost'),
+                                        delivery: m2('reduction').sum('delivery')
+                                    }
+                                })
+                            })
+                            .group(g => {
+                                return g.pluck('page', 'orderDate')
+                            })
+                            .ungroup()
+                            .map(m2 => {
+                                return m2('group').merge(m3 => {
+                                    return {
+                                        costFb: m2('reduction').filter({ type: 'fb', return: false }).sum('cost'),
+                                        costLine: m2('reduction').filter({ type: 'line', return: false }).sum('cost'),
+                                        costCm: m2('reduction').filter({ type: 'cm', return: false }).sum('cost'),
+                                        cost: m2('reduction').filter({ return: false }).sum('cost'),
+                                        priceFb: m2('reduction').filter({ type: 'fb', return: false }).sum('price'),
+                                        priceLine: m2('reduction').filter({ type: 'line', return: false }).sum('price'),
+                                        priceCm: m2('reduction').filter({ type: 'cm', return: false }).sum('price'),
+                                        price: m2('reduction').filter({ return: false }).sum('price'),
+                                        delivery: m2('reduction').sum('delivery'),//.add(m2('reduction').filter({ return: true }).count().mul(12.5)),
+                                    }
+                                })
+                            }),
 
-                                    results: m('results').group(g => {
-                                        return g.pluck('team', 'page', 'orderDate')
-                                    }).ungroup()
-                                        .map(m2 => {
-                                            return m2('group').merge(m3 => {
-                                                return {
-                                                    adsFb: m2('reduction').sum('adsFb'),
-                                                    adsLine: m2('reduction').sum('adsLine'),
-                                                    // delivery: m2('reduction').sum('delivery'),
-                                                    other: m2('reduction').sum('other'),
-                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))//.add(m2('reduction').sum('delivery'))
-                                                }
-                                            })
-                                        })
+                            results: m('results').group(g => {
+                                return g.pluck('team', 'page', 'orderDate')
+                            }).ungroup()
+                            .map(m2 => {
+                                return m2('group').merge(m3 => {
+                                    return {
+                                        adsFb: m2('reduction').sum('adsFb'),
+                                        adsLine: m2('reduction').sum('adsLine'),
+                                        // delivery: m2('reduction').sum('delivery'),
+                                        other: m2('reduction').sum('other'),
+                                        ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))//.add(m2('reduction').sum('delivery'))
+                                    }
+                                })
+                            })
                                 }
                             })
                             .do(d => {
