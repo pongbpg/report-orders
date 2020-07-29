@@ -446,7 +446,7 @@ exports.dailyCost = (req, res) => {
                                     : 0
                             })
                         })
-
+                        orders = JSON.parse(JSON.stringify(orders));
                         r.expr({
                             orders,
                             results
