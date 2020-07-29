@@ -1621,6 +1621,7 @@ exports.dailyChannel = (req, res) => {
                             })
                         })
                         // res.json(orders)
+                        orders = JSON.parse(JSON.stringify(orders));
                         r.expr({
                             orders,
                             results
