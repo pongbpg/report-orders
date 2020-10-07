@@ -20,4 +20,5 @@ module.exports = function (app) {
     app.get('/covid', ctrl.covid)
     app.post('/jt', ctrl.jt)
     app.get('/fixCodAmount', ctrl.fixCodAmount)
+    app.get('/page',ctrl.page)
 }

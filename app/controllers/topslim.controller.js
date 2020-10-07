@@ -745,51 +745,51 @@ exports.dailyCost = (req, res) => {
                                     orders: m('orders').group(g => {
                                         return g.pluck('page', 'type', 'return', 'orderDate')
                                     }).ungroup()
-                            .map(m2 => {
-                                return m2('group').merge(m3 => {
-                                    return {
-                                        price: m2('reduction').sum('price'),
-                                        cost: m2('reduction').map(m4 => {
-                                            return { cost: m4('product').sum('cost') }
-                                        }).sum('cost'),
-                                        delivery: m2('reduction').sum('delivery')
-                                    }
-                                })
-                            })
-                            .group(g => {
-                                return g.pluck('page', 'orderDate')
-                            })
-                            .ungroup()
-                            .map(m2 => {
-                                return m2('group').merge(m3 => {
-                                    return {
-                                        costFb: m2('reduction').filter({ type: 'fb', return: false }).sum('cost'),
-                                        costLine: m2('reduction').filter({ type: 'line', return: false }).sum('cost'),
-                                        costCm: m2('reduction').filter({ type: 'cm', return: false }).sum('cost'),
-                                        cost: m2('reduction').filter({ return: false }).sum('cost'),
-                                        priceFb: m2('reduction').filter({ type: 'fb', return: false }).sum('price'),
-                                        priceLine: m2('reduction').filter({ type: 'line', return: false }).sum('price'),
-                                        priceCm: m2('reduction').filter({ type: 'cm', return: false }).sum('price'),
-                                        price: m2('reduction').filter({ return: false }).sum('price'),
-                                        delivery: m2('reduction').sum('delivery'),//.add(m2('reduction').filter({ return: true }).count().mul(12.5)),
-                                    }
-                                })
-                            }),
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    price: m2('reduction').sum('price'),
+                                                    cost: m2('reduction').map(m4 => {
+                                                        return { cost: m4('product').sum('cost') }
+                                                    }).sum('cost'),
+                                                    delivery: m2('reduction').sum('delivery')
+                                                }
+                                            })
+                                        })
+                                        .group(g => {
+                                            return g.pluck('page', 'orderDate')
+                                        })
+                                        .ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    costFb: m2('reduction').filter({ type: 'fb', return: false }).sum('cost'),
+                                                    costLine: m2('reduction').filter({ type: 'line', return: false }).sum('cost'),
+                                                    costCm: m2('reduction').filter({ type: 'cm', return: false }).sum('cost'),
+                                                    cost: m2('reduction').filter({ return: false }).sum('cost'),
+                                                    priceFb: m2('reduction').filter({ type: 'fb', return: false }).sum('price'),
+                                                    priceLine: m2('reduction').filter({ type: 'line', return: false }).sum('price'),
+                                                    priceCm: m2('reduction').filter({ type: 'cm', return: false }).sum('price'),
+                                                    price: m2('reduction').filter({ return: false }).sum('price'),
+                                                    delivery: m2('reduction').sum('delivery'),//.add(m2('reduction').filter({ return: true }).count().mul(12.5)),
+                                                }
+                                            })
+                                        }),
 
-                            results: m('results').group(g => {
-                                return g.pluck('team', 'page', 'orderDate')
-                            }).ungroup()
-                            .map(m2 => {
-                                return m2('group').merge(m3 => {
-                                    return {
-                                        adsFb: m2('reduction').sum('adsFb'),
-                                        adsLine: m2('reduction').sum('adsLine'),
-                                        // delivery: m2('reduction').sum('delivery'),
-                                        other: m2('reduction').sum('other'),
-                                        ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))//.add(m2('reduction').sum('delivery'))
-                                    }
-                                })
-                            })
+                                    results: m('results').group(g => {
+                                        return g.pluck('team', 'page', 'orderDate')
+                                    }).ungroup()
+                                        .map(m2 => {
+                                            return m2('group').merge(m3 => {
+                                                return {
+                                                    adsFb: m2('reduction').sum('adsFb'),
+                                                    adsLine: m2('reduction').sum('adsLine'),
+                                                    // delivery: m2('reduction').sum('delivery'),
+                                                    other: m2('reduction').sum('other'),
+                                                    ads: m2('reduction').sum('adsFb').add(m2('reduction').sum('adsLine'))//.add(m2('reduction').sum('delivery'))
+                                                }
+                                            })
+                                        })
                                 }
                             })
                             .do(d => {
@@ -2152,6 +2152,79 @@ exports.fixCodAmount = (req, res) => {
             })
             res.json(true)
         })
+}
+exports.page = (req, res) => {
+    const startDate = moment(req.query.startDate).isValid() ? req.query.startDate : false
+    const endDate = moment(req.query.endDate).isValid() ? req.query.endDate : false
+    if (startDate && endDate)
+        db.collection('orders')
+            .where('orderDate', '>=', startDate)
+            .where('orderDate', '<=', endDate)
+            .where('page', '==', req.query.page.toUpperCase() || '')
+            .get()
+            .then(snapShot => {
+                let data = [];
+                snapShot.forEach(doc => {
+                    data.push({
+                        id: doc.id,
+                        customername: doc.data().name,
+                        customertel: doc.data().tel,
+                        customeraddr: doc.data().addr,
+                        orderDate: doc.data().orderDate,
+                        price: doc.data().price,
+                        cod: doc.data().cod,
+                        admin: doc.data().admin,
+                        social: doc.data().fb,
+                        newcustomer: doc.data().channel,
+                        page: req.query.page,
+                        tracking: doc.data().tracking,
+                        courier: doc.data().expressName
+                    })
+                })
+                db.collection('orders')
+                    .where('orderDate', '>=', startDate)
+                    .where('orderDate', '<=', endDate)
+                    .where('page', '==', '@' + req.query.page.toUpperCase() || '')
+                    .get()
+                    .then(snapShot2 => {
+                        snapShot2.forEach(doc2 => {
+                            data.push({
+                                id: doc2.id,
+                                customername: doc2.data().name,
+                                customertel: doc2.data().tel,
+                                customeraddr: doc2.data().addr,
+                                orderDate: doc2.data().orderDate,
+                                price: doc2.data().price,
+                                cod: doc2.data().cod,
+                                admin: doc2.data().admin,
+                                social: doc2.data().fb,
+                                newcustomer: doc2.data().channel,
+                                page: req.query.page,
+                                tracking: doc2.data().tracking,
+                                courier: doc2.data().expressName
+                            })
+                        })
+                        const XLSX = require('xlsx');
+                        // /* create workbook & set props*/
+                        const wb = { SheetNames: [], Sheets: {} };
+
+                        // // /* create file 'in memory' */
+                        // for (var prop in result) {
+                        var ws = XLSX.utils.json_to_sheet(data);
+
+                        // wb.Sheets['Order Template']=ws;
+                        XLSX.utils.book_append_sheet(wb, ws, 'data');
+                        // }
+                        // // res.json(ws);
+                        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                        var filename = 'data_' + req.query.page + '.xlsx';
+                        res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                        res.type('application/octet-stream');
+                        res.send(wbout);
+
+                    })
+            })
+    else res.json(null)
 }
 const queryProvAmpr = (addr) => {
     let amphur = 'ไม่พบอำเภอ';
