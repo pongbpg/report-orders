@@ -218,7 +218,7 @@ No.]]></text>
 					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 						<font fontName="TH SarabunPSK" size="16" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<text><![CDATA[รวมเงินทั้งหมด]]></text>
+					<text><![CDATA[รวมมูลค่าสินค้า]]></text>
 				</staticText>
 				<textField pattern="#,##0.00">
 					<reportElement x="457" y="72" width="98" height="24" uuid="16b11985-b5d7-4e3e-9ea2-4139250c6866"/>
