@@ -43,7 +43,7 @@ exports.invoiceBymonth2 = (req, res) => {
         })
 }
 exports.invoice = (req, res) => {
-    db.query('call getOrderById(?)', [req.query.orderId])
+    db.query('call getOrderById(?)', [atob(req.query.orderId)])
         .then(rows => {
             const data = rows[0] || [];
             if (data.length > 0) {
