@@ -1,4 +1,5 @@
 const db = require('../../config/mariadb').db;
+const atob = require('atob');
 exports.invoiceBymonth = (req, res) => {
     db.query('call getIntvoiceByDates(?,?,?,?)', [req.params.orderType, req.params.accId, req.query.dateStart, req.query.dateEnd])
         .then(rows => {
