@@ -44,6 +44,7 @@ exports.invoiceBymonth2 = (req, res) => {
         })
 }
 exports.invoice = (req, res) => {
+    console.log(atob(req.query.o))
     db.query('call getOrderById(?)', [atob(req.query.o)])
         .then(rows => {
             const data = rows[0] || [];
