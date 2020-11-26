@@ -108,7 +108,7 @@ exports.delivery = (req, res) => {
                         const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
                         return {
                             "เลขนำส่งพัสดุ": "",
-                            "หมายเลขคำสั่งซื้ออีคอมเมิร์ซ": order.id + '-' + order.page,
+                            "หมายเลขคำสั่งซื้ออีคอมเมิร์ซ": order.id + '-' + order.page.replace('@',''),
                             "น้ำหนักพัสดุ(กิโลกรัม)": 1,
                             "ชื่อสกุลผู้รับ": order.name,
                             "โทรศัพท์ผู้รับ": order.tel,
