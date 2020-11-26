@@ -1,3718 +1,3818 @@
 [
     {
-        "amphur": "เขตพระนคร",
-        "province": "กรุงเทพมหานคร"
+        "province": "abc",
+        "amphur": "abc"
     },
     {
-        "amphur": "เขตดุสิต",
-        "province": "กรุงเทพมหานคร"
+        "province": "มหาสารคาม",
+        "amphur": "นาเชือก"
     },
     {
-        "amphur": "เขตหนองจอก",
-        "province": "กรุงเทพมหานคร"
+        "province": "มหาสารคาม",
+        "amphur": "นาดูน"
     },
     {
-        "amphur": "เขตบางรัก",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "ปทุมรัตต์"
     },
     {
-        "amphur": "เขตบางเขน",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "พนมไพร"
     },
     {
-        "amphur": "เขตบางกะปิ",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "ศรีสมเด็จ"
     },
     {
-        "amphur": "เขตปทุมวัน",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "โพธิ์ชัย"
     },
     {
-        "amphur": "เขตป้อมปราบศัตรูพ่าย",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "โพนทราย"
     },
     {
-        "amphur": "เขตพระโขนง",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "โพนทอง"
     },
     {
-        "amphur": "เขตมีนบุรี",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "เมยวดี"
     },
     {
-        "amphur": "เขตลาดกระบัง",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "เกษตรวิสัย"
     },
     {
-        "amphur": "เขตยานนาวา",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "สุวรรณภูมิ"
     },
     {
-        "amphur": "เขตสัมพันธวงศ์",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "เสลภูมิ"
     },
     {
-        "amphur": "เขตพญาไท",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "หนองพอก"
     },
     {
-        "amphur": "เขตธนบุรี",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "เมืองร้อยเอ็ด"
     },
     {
-        "amphur": "เขตบางกอกใหญ่",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "เมืองสรวง"
     },
     {
-        "amphur": "เขตห้วยขวาง",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "หนองฮี"
     },
     {
-        "amphur": "เขตคลองสาน",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "อาจสามารถ"
     },
     {
-        "amphur": "เขตตลิ่งชัน",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "จตุรพักตรพิมาน"
     },
     {
-        "amphur": "เขตบางกอกน้อย",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "จังหาร"
     },
     {
-        "amphur": "เขตบางขุนเทียน",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "เชียงขวัญ"
     },
     {
-        "amphur": "เขตภาษีเจริญ",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "ทุ่งเขาหลวง"
     },
     {
-        "amphur": "เขตหนองแขม",
-        "province": "กรุงเทพมหานคร"
+        "province": "ร้อยเอ็ด",
+        "amphur": "ธวัชบุรี"
     },
     {
-        "amphur": "เขตราษฎร์บูรณะ",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "เมืองกาฬสินธุ์"
     },
     {
-        "amphur": "เขตบางพลัด",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ยางตลาด"
     },
     {
-        "amphur": "เขตดินแดง",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ร่องคำ"
     },
     {
-        "amphur": "เขตบึงกุ่ม",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "กมลาไสย"
     },
     {
-        "amphur": "เขตสาทร",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "กุฉินารายณ์"
     },
     {
-        "amphur": "เขตบางซื่อ",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "สามชัย"
     },
     {
-        "amphur": "เขตจตุจักร",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "หนองกุงศรี"
     },
     {
-        "amphur": "เขตบางคอแหลม",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ห้วยผึ้ง"
     },
     {
-        "amphur": "เขตประเวศ",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ห้วยเม็ก"
     },
     {
-        "amphur": "เขตคลองเตย",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "เขาวง"
     },
     {
-        "amphur": "เขตสวนหลวง",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "คำม่วง"
     },
     {
-        "amphur": "เขตจอมทอง",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ฆ้องชัย"
     },
     {
-        "amphur": "เขตดอนเมือง",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ท่าคันโท"
     },
     {
-        "amphur": "เขตราชเทวี",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "ดอนจาน"
     },
     {
-        "amphur": "เขตลาดพร้าว",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "นาคู"
     },
     {
-        "amphur": "เขตวัฒนา",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "นามน"
     },
     {
-        "amphur": "เขตบางแค",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "สมเด็จ"
     },
     {
-        "amphur": "เขตหลักสี่",
-        "province": "กรุงเทพมหานคร"
+        "province": "กาฬสินธุ์",
+        "amphur": "สหัสขันธ์"
     },
     {
-        "amphur": "เขตสายไหม",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "นิคมน้ำอูน"
     },
     {
-        "amphur": "เขตคันนายาว",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "พรรณานิคม"
     },
     {
-        "amphur": "เขตสะพานสูง",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "วานรนิวาส"
     },
     {
-        "amphur": "เขตวังทองหลาง",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "วาริชภูมิ"
     },
     {
-        "amphur": "เขตคลองสามวา",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "พังโคน"
     },
     {
-        "amphur": "เขตบางนา",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "โพนนาแก้ว"
     },
     {
-        "amphur": "เขตทวีวัฒนา",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "ภูพาน"
     },
     {
-        "amphur": "เขตทุ่งครุ",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "บ้านม่วง"
     },
     {
-        "amphur": "เขตบางบอน",
-        "province": "กรุงเทพมหานคร"
+        "province": "สกลนคร",
+        "amphur": "กุดบาก"
     },
     {
-        "amphur": "เกาะลันตา",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "กุสุมาลย์"
     },
     {
-        "amphur": "เขาพนม",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "เมืองสกลนคร"
     },
     {
-        "amphur": "คลองท่อม",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "อากาศอำนวย"
     },
     {
-        "amphur": "ปลายพระยา",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "คำตากล้า"
     },
     {
-        "amphur": "เมืองกระบี่",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "โคกศรีสุพรรณ"
     },
     {
-        "amphur": "ลำทับ",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "เจริญศิลป์"
     },
     {
-        "amphur": "เหนือคลอง",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "เต่างอย"
     },
     {
-        "amphur": "อ่าวลึก",
-        "province": "กระบี่"
+        "province": "สกลนคร",
+        "amphur": "สว่างแดนดิน"
     },
     {
-        "amphur": "ด่านมะขามเตี้ย",
-        "province": "กาญจนบุรี"
+        "province": "สกลนคร",
+        "amphur": "ส่องดาว"
     },
     {
-        "amphur": "ทองผาภูมิ",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "วังยาง"
     },
     {
-        "amphur": "ท่าม่วง",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "ศรีสงคราม"
     },
     {
-        "amphur": "ท่ามะกา",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "ปลาปาก"
     },
     {
-        "amphur": "ไทรโยค",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "โพนสวรรค์"
     },
     {
-        "amphur": "บ่อพลอย",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "เมืองนครพนม"
     },
     {
-        "amphur": "พนมทวน",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "เรณูนคร"
     },
     {
-        "amphur": "เมืองกาญจนบุรี",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "บ้านแพง"
     },
     {
-        "amphur": "เลาขวัญ",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "ท่าอุเทน"
     },
     {
-        "amphur": "ศรีสวัสดิ์",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "ธาตุพนม"
     },
     {
-        "amphur": "สังขละบุรี",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "นาแก"
     },
     {
-        "amphur": "หนองปรือ",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "นาทม"
     },
     {
-        "amphur": "ห้วยกระเจา",
-        "province": "กาญจนบุรี"
+        "province": "นครพนม",
+        "amphur": "นาหว้า"
     },
     {
-        "amphur": "กมลาไสย",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "นิคมคำสร้อย"
     },
     {
-        "amphur": "กุฉินารายณ์",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "หนองสูง"
     },
     {
-        "amphur": "เขาวง",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "เมืองมุกดาหาร"
     },
     {
-        "amphur": "คำม่วง",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "หว้านใหญ่"
     },
     {
-        "amphur": "ฆ้องชัย",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "คำชะอี"
     },
     {
-        "amphur": "ดอนจาน",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "ดงหลวง"
     },
     {
-        "amphur": "ท่าคันโท",
-        "province": "กาฬสินธุ์"
+        "province": "มุกดาหาร",
+        "amphur": "ดอนตาล"
     },
     {
-        "amphur": "นาคู",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "ฝาง"
     },
     {
-        "amphur": "นามน",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "แม่ออน"
     },
     {
-        "amphur": "เมืองกาฬสินธุ์",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "แม่อาย"
     },
     {
-        "amphur": "ยางตลาด",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "เวียงแหง"
     },
     {
-        "amphur": "ร่องคำ",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "พร้าว"
     },
     {
-        "amphur": "สมเด็จ",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "เมืองเชียงใหม่"
     },
     {
-        "amphur": "สหัสขันธ์",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "สารภี"
     },
     {
-        "amphur": "สามชัย",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "สันกำแพง"
     },
     {
-        "amphur": "หนองกุงศรี",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "สันทราย"
     },
     {
-        "amphur": "ห้วยผึ้ง",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "สันป่าตอง"
     },
     {
-        "amphur": "ห้วยเม็ก",
-        "province": "กาฬสินธุ์"
+        "province": "เชียงใหม่",
+        "amphur": "แม่แจ่ม"
     },
     {
-        "amphur": "โกสัมพีนคร",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "แม่แตง"
     },
     {
-        "amphur": "ขาณุวรลักษบุรี",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "หางดง"
     },
     {
-        "amphur": "คลองขลุง",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "อมก๋อย"
     },
     {
-        "amphur": "คลองลาน",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "ฮอด"
     },
     {
-        "amphur": "ทรายทองวัฒนา",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "จอมทอง"
     },
     {
-        "amphur": "ไทรงาม",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "เชียงดาว"
     },
     {
-        "amphur": "บึงสามัคคี",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "ไชยปราการ"
     },
     {
-        "amphur": "ปางศิลาทอง",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "ดอยเต่า"
     },
     {
-        "amphur": "พรานกระต่าย",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "ดอยสะเก็ด"
     },
     {
-        "amphur": "เมืองกำแพงเพชร",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "ดอยหล่อ"
     },
     {
-        "amphur": "ลานกระบือ",
-        "province": "กำแพงเพชร"
+        "province": "เชียงใหม่",
+        "amphur": "กัลยาณิวัฒนา"
     },
     {
-        "amphur": "กระนวน",
-        "province": "ขอนแก่น"
+        "province": "เชียงใหม่",
+        "amphur": "แม่วาง"
     },
     {
-        "amphur": "เขาสวนกวาง",
-        "province": "ขอนแก่น"
+        "province": "เชียงใหม่",
+        "amphur": "แม่ริม"
     },
     {
-        "amphur": "โคกโพธิ์ไชย",
-        "province": "ขอนแก่น"
+        "province": "เชียงใหม่",
+        "amphur": "สะเมิง"
     },
     {
-        "amphur": "ชนบท",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "บ้านธิ"
     },
     {
-        "amphur": "ชุมแพ",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "บ้านโฮ่ง"
     },
     {
-        "amphur": "ซำสูง",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "ป่าซาง"
     },
     {
-        "amphur": "น้ำพอง",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "เวียงหนองล่อง"
     },
     {
-        "amphur": "โนนศิลา",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "ลี้"
     },
     {
-        "amphur": "บ้านไผ่",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "เมืองลำพูน"
     },
     {
-        "amphur": "บ้านฝาง",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "แม่ทา"
     },
     {
-        "amphur": "บ้านแฮด",
-        "province": "ขอนแก่น"
+        "province": "ลำพูน",
+        "amphur": "ทุ่งหัวช้าง"
     },
     {
-        "amphur": "เปือยน้อย",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "วังเหนือ"
     },
     {
-        "amphur": "พระยืน",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "สบปราบ"
     },
     {
-        "amphur": "พล",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "เกาะคา"
     },
     {
-        "amphur": "ภูผาม่าน",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "เสริมงาม"
     },
     {
-        "amphur": "ภูเวียง",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "เมืองปาน"
     },
     {
-        "amphur": "มัญจาคีรี",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "เมืองลำปาง"
     },
     {
-        "amphur": "เมืองขอนแก่น",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "แม่ทะ"
     },
     {
-        "amphur": "เวียงเก่า",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "ห้างฉัตร"
     },
     {
-        "amphur": "แวงน้อย",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "งาว"
     },
     {
-        "amphur": "แวงใหญ่",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "แจ้ห่ม"
     },
     {
-        "amphur": "สีชมพู",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "เถิน"
     },
     {
-        "amphur": "หนองนาคำ",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "แม่พริก"
     },
     {
-        "amphur": "หนองเรือ",
-        "province": "ขอนแก่น"
+        "province": "ลำปาง",
+        "amphur": "แม่เมาะ"
     },
     {
-        "amphur": "หนองสองห้อง",
-        "province": "ขอนแก่น"
+        "province": "อุตรดิตถ์",
+        "amphur": "บ้านโคก"
     },
     {
-        "amphur": "อุบลรัตน์",
-        "province": "ขอนแก่น"
+        "province": "อุตรดิตถ์",
+        "amphur": "พิชัย"
     },
     {
-        "amphur": "แก่งหางแมว",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "ฟากท่า"
     },
     {
-        "amphur": "ขลุง",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "ลับแล"
     },
     {
-        "amphur": "เขาคิชฌกูฏ",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "เมืองอุตรดิตถ์"
     },
     {
-        "amphur": "ท่าใหม่",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "ทองแสนขัน"
     },
     {
-        "amphur": "นายายอาม",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "ตรอน"
     },
     {
-        "amphur": "โป่งน้ำร้อน",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "ท่าปลา"
     },
     {
-        "amphur": "มะขาม",
-        "province": "จันทบุรี"
+        "province": "อุตรดิตถ์",
+        "amphur": "น้ำปาด"
     },
     {
-        "amphur": "เมืองจันทบุรี",
-        "province": "จันทบุรี"
+        "province": "แพร่",
+        "amphur": "วังชิ้น"
     },
     {
-        "amphur": "สอยดาว",
-        "province": "จันทบุรี"
+        "province": "แพร่",
+        "amphur": "ร้องกวาง"
     },
     {
-        "amphur": "แหลมสิงห์",
-        "province": "จันทบุรี"
+        "province": "แพร่",
+        "amphur": "ลอง"
     },
     {
-        "amphur": "คลองเขื่อน",
-        "province": "ฉะเชิงเทรา"
+        "province": "แพร่",
+        "amphur": "สูงเม่น"
     },
     {
-        "amphur": "ท่าตะเกียบ",
-        "province": "ฉะเชิงเทรา"
+        "province": "แพร่",
+        "amphur": "หนองม่วงไข่"
     },
     {
-        "amphur": "บางคล้า",
-        "province": "ฉะเชิงเทรา"
+        "province": "อุดรธานี",
+        "amphur": "น้ำโสม"
     },
     {
-        "amphur": "บางน้ำเปรี้ยว",
-        "province": "ฉะเชิงเทรา"
+        "province": "อุดรธานี",
+        "amphur": "สร้างคอม"
     },
     {
-        "amphur": "บางปะกง",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "ปากชม"
     },
     {
-        "amphur": "บ้านโพธิ์",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "ผาขาว"
     },
     {
-        "amphur": "แปลงยาว",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "วังสะพุง"
     },
     {
-        "amphur": "พนมสารคาม",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "ภูกระดึง"
     },
     {
-        "amphur": "เมืองฉะเชิงเทรา",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "ภูเรือ"
     },
     {
-        "amphur": "ราชสาส์น",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "ภูหลวง"
     },
     {
-        "amphur": "สนามชัยเขต",
-        "province": "ฉะเชิงเทรา"
+        "province": "เลย",
+        "amphur": "หนองหิน"
     },
     {
-        "amphur": "เกาะจันทร์",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "เมืองเลย"
     },
     {
-        "amphur": "เกาะสีชัง",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "เอราวัณ"
     },
     {
-        "amphur": "บ่อทอง",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "เชียงคาน"
     },
     {
-        "amphur": "บางละมุง",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "ด่านซ้าย"
     },
     {
-        "amphur": "บ้านบึง",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "ท่าลี่"
     },
     {
-        "amphur": "พนัสนิคม",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "นาด้วง"
     },
     {
-        "amphur": "พานทอง",
-        "province": "ชลบุรี"
+        "province": "เลย",
+        "amphur": "นาแห้ว"
     },
     {
-        "amphur": "เมืองชลบุรี",
-        "province": "ชลบุรี"
+        "province": "หนองคาย",
+        "amphur": "เฝ้าไร่"
     },
     {
-        "amphur": "ศรีราชา",
-        "province": "ชลบุรี"
+        "province": "หนองคาย",
+        "amphur": "ศรีเชียงใหม่"
     },
     {
-        "amphur": "สัตหีบ",
-        "province": "ชลบุรี"
+        "province": "หนองคาย",
+        "amphur": "โพธิ์ตาก"
     },
     {
-        "amphur": "หนองใหญ่",
-        "province": "ชลบุรี"
+        "province": "หนองคาย",
+        "amphur": "โพนพิสัย"
     },
     {
-        "amphur": "เนินขาม",
-        "province": "ชัยนาท"
+        "province": "หนองคาย",
+        "amphur": "รัตนวาปี"
     },
     {
-        "amphur": "มโนรมย์",
-        "province": "ชัยนาท"
+        "province": "หนองคาย",
+        "amphur": "เมืองหนองคาย"
     },
     {
-        "amphur": "เมืองชัยนาท",
-        "province": "ชัยนาท"
+        "province": "หนองคาย",
+        "amphur": "ท่าบ่อ"
     },
     {
-        "amphur": "วัดสิงห์",
-        "province": "ชัยนาท"
+        "province": "หนองคาย",
+        "amphur": "สระใคร"
     },
     {
-        "amphur": "สรรคบุรี",
-        "province": "ชัยนาท"
+        "province": "หนองคาย",
+        "amphur": "สังคม"
     },
     {
-        "amphur": "สรรพยา",
-        "province": "ชัยนาท"
+        "province": "มหาสารคาม",
+        "amphur": "บรบือ"
     },
     {
-        "amphur": "หนองมะโมง",
-        "province": "ชัยนาท"
+        "province": "มหาสารคาม",
+        "amphur": "พยัคฆภูมิพิสัย"
     },
     {
-        "amphur": "หันคา",
-        "province": "ชัยนาท"
+        "province": "มหาสารคาม",
+        "amphur": "วาปีปทุม"
     },
     {
-        "amphur": "เกษตรสมบูรณ์",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "ยางสีสุราช"
     },
     {
-        "amphur": "แก้งคร้อ",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "กันทรวิชัย"
     },
     {
-        "amphur": "คอนสวรรค์",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "กุดรัง"
     },
     {
-        "amphur": "คอนสาร",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "แกดำ"
     },
     {
-        "amphur": "จัตุรัส",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "โกสุมพิสัย"
     },
     {
-        "amphur": "ซับใหญ่",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "เมืองมหาสารคาม"
     },
     {
-        "amphur": "เทพสถิต",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "ชื่นชม"
     },
     {
-        "amphur": "เนินสง่า",
-        "province": "ชัยภูมิ"
+        "province": "มหาสารคาม",
+        "amphur": "เชียงยืน"
     },
     {
-        "amphur": "บ้านเขว้า",
-        "province": "ชัยภูมิ"
+        "province": "แพร่",
+        "amphur": "เมืองแพร่"
     },
     {
-        "amphur": "บ้านแท่น",
-        "province": "ชัยภูมิ"
+        "province": "แพร่",
+        "amphur": "เด่นชัย"
     },
     {
-        "amphur": "บำเหน็จณรงค์",
-        "province": "ชัยภูมิ"
+        "province": "แพร่",
+        "amphur": "สอง"
     },
     {
-        "amphur": "ภักดีชุมพล",
-        "province": "ชัยภูมิ"
+        "province": "น่าน",
+        "amphur": "บ่อเกลือ"
     },
     {
-        "amphur": "ภูเขียว",
-        "province": "ชัยภูมิ"
+        "province": "น่าน",
+        "amphur": "เวียงสา"
     },
     {
-        "amphur": "เมืองชัยภูมิ",
-        "province": "ชัยภูมิ"
+        "province": "น่าน",
+        "amphur": "ปัว"
     },
     {
-        "amphur": "หนองบัวแดง",
-        "province": "ชัยภูมิ"
+        "province": "น่าน",
+        "amphur": "ภูเพียง"
     },
     {
-        "amphur": "หนองบัวระเหว",
-        "province": "ชัยภูมิ"
+        "province": "น่าน",
+        "amphur": "สันติสุข"
     },
     {
-        "amphur": "ท่าแซะ",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "แม่จริม"
     },
     {
-        "amphur": "ทุ่งตะโก",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "เมืองน่าน"
     },
     {
-        "amphur": "ปะทิว",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "บ้านหลวง"
     },
     {
-        "amphur": "พะโต๊ะ",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "เฉลิมพระเกียรติ"
     },
     {
-        "amphur": "เมืองชุมพร",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "เชียงกลาง"
     },
     {
-        "amphur": "ละแม",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "ท่าวังผา"
     },
     {
-        "amphur": "สวี",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "ทุ่งช้าง"
     },
     {
-        "amphur": "หลังสวน",
-        "province": "ชุมพร"
+        "province": "น่าน",
+        "amphur": "นาน้อย"
     },
     {
-        "amphur": "ขุนตาล",
-        "province": "เชียงราย"
+        "province": "น่าน",
+        "amphur": "นาหมื่น"
     },
     {
-        "amphur": "เชียงของ",
-        "province": "เชียงราย"
+        "province": "น่าน",
+        "amphur": "สองแคว"
     },
     {
-        "amphur": "เชียงแสน",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "ปง"
     },
     {
-        "amphur": "ดอยหลวง",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "ภูกามยาว"
     },
     {
-        "amphur": "เทิง",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "ภูซาง"
     },
     {
-        "amphur": "ป่าแดด",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "เมืองพะเยา"
     },
     {
-        "amphur": "พญาเม็งราย",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "แม่ใจ"
     },
     {
-        "amphur": "พาน",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "จุน"
     },
     {
-        "amphur": "เมืองเชียงราย",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "เชียงคำ"
     },
     {
-        "amphur": "แม่จัน",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "เชียงม่วน"
     },
     {
-        "amphur": "แม่ฟ้าหลวง",
-        "province": "เชียงราย"
+        "province": "พะเยา",
+        "amphur": "ดอกคำใต้"
     },
     {
-        "amphur": "แม่ลาว",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "เทิง"
     },
     {
-        "amphur": "แม่สรวย",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "ป่าแดด"
     },
     {
-        "amphur": "แม่สาย",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "พญาเม็งราย"
     },
     {
-        "amphur": "เวียงแก่น",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "แม่สาย"
     },
     {
-        "amphur": "เวียงชัย",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "เวียงชัย"
     },
     {
-        "amphur": "เวียงเชียงรุ้ง",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "เวียงเชียงรุ้ง"
     },
     {
-        "amphur": "เวียงป่าเป้า",
-        "province": "เชียงราย"
+        "province": "เชียงราย",
+        "amphur": "เวียงป่าเป้า"
     },
     {
-        "amphur": "กัลยาณิวัฒนา",
-        "province": "เชียงใหม่"
+        "province": "เชียงราย",
+        "amphur": "พาน"
     },
     {
-        "amphur": "จอมทอง",
-        "province": "เชียงใหม่"
+        "province": "เชียงราย",
+        "amphur": "เมืองเชียงราย"
     },
     {
-        "amphur": "เชียงดาว",
-        "province": "เชียงใหม่"
+        "province": "เชียงราย",
+        "amphur": "ขุนตาล"
     },
     {
-        "amphur": "ไชยปราการ",
-        "province": "เชียงใหม่"
+        "province": "เชียงราย",
+        "amphur": "แม่จัน"
     },
     {
-        "amphur": "ดอยเต่า",
-        "province": "เชียงใหม่"
+        "province": "เชียงราย",
+        "amphur": "เชียงของ"
     },
     {
-        "amphur": "ดอยสะเก็ด",
-        "province": "เชียงใหม่"
+        "province": "หนองบัวลำภู",
+        "amphur": "โนนสัง"
     },
     {
-        "amphur": "ดอยหล่อ",
-        "province": "เชียงใหม่"
+        "province": "หนองบัวลำภู",
+        "amphur": "ศรีบุญเรือง"
     },
     {
-        "amphur": "ฝาง",
-        "province": "เชียงใหม่"
+        "province": "หนองบัวลำภู",
+        "amphur": "สุวรรณคูหา"
     },
     {
-        "amphur": "พร้าว",
-        "province": "เชียงใหม่"
+        "province": "หนองบัวลำภู",
+        "amphur": "เมืองหนองบัวลำภู"
     },
     {
-        "amphur": "เมืองเชียงใหม่",
-        "province": "เชียงใหม่"
+        "province": "หนองบัวลำภู",
+        "amphur": "นากลาง"
     },
     {
-        "amphur": "แม่แจ่ม",
-        "province": "เชียงใหม่"
+        "province": "หนองบัวลำภู",
+        "amphur": "นาวัง"
     },
     {
-        "amphur": "แม่แตง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "โนนศิลา"
     },
     {
-        "amphur": "แม่ริม",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "บ้านแฮด"
     },
     {
-        "amphur": "แม่วาง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "เปือยน้อย"
     },
     {
-        "amphur": "แม่ออน",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "แวงน้อย"
     },
     {
-        "amphur": "แม่อาย",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "แวงใหญ่"
     },
     {
-        "amphur": "เวียงแหง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "พระยืน"
     },
     {
-        "amphur": "สะเมิง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "พล"
     },
     {
-        "amphur": "สันกำแพง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "ภูผาม่าน"
     },
     {
-        "amphur": "สันทราย",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "ภูเวียง"
     },
     {
-        "amphur": "สันป่าตอง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "มัญจาคีรี"
     },
     {
-        "amphur": "สารภี",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "เมืองขอนแก่น"
     },
     {
-        "amphur": "หางดง",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "บ้านไผ่"
     },
     {
-        "amphur": "อมก๋อย",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "บ้านฝาง"
     },
     {
-        "amphur": "ฮอด",
-        "province": "เชียงใหม่"
+        "province": "ขอนแก่น",
+        "amphur": "กระนวน"
     },
     {
-        "amphur": "กันตัง",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "สีชมพู"
     },
     {
-        "amphur": "นาโยง",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "หนองนาคำ"
     },
     {
-        "amphur": "ปะเหลียน",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "หนองเรือ"
     },
     {
-        "amphur": "เมืองตรัง",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "หนองสองห้อง"
     },
     {
-        "amphur": "ย่านตาขาว",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "อุบลรัตน์"
     },
     {
-        "amphur": "รัษฎา",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "เขาสวนกวาง"
     },
     {
-        "amphur": "วังวิเศษ",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "โคกโพธิ์ไชย"
     },
     {
-        "amphur": "สิเกา",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "ชนบท"
     },
     {
-        "amphur": "ห้วยยอด",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "ชุมแพ"
     },
     {
-        "amphur": "หาดสำราญ",
-        "province": "ตรัง"
+        "province": "ขอนแก่น",
+        "amphur": "ซำสูง"
     },
     {
-        "amphur": "เกาะกูด",
-        "province": "ตราด"
+        "province": "ขอนแก่น",
+        "amphur": "น้ำพอง"
     },
     {
-        "amphur": "เกาะช้าง",
-        "province": "ตราด"
+        "province": "ขอนแก่น",
+        "amphur": "เวียงเก่า"
     },
     {
-        "amphur": "เขาสมิง",
-        "province": "ตราด"
+        "province": "อุดรธานี",
+        "amphur": "โนนสะอาด"
     },
     {
-        "amphur": "คลองใหญ่",
-        "province": "ตราด"
+        "province": "อุดรธานี",
+        "amphur": "บ้านดุง"
     },
     {
-        "amphur": "บ่อไร่",
-        "province": "ตราด"
+        "province": "อุดรธานี",
+        "amphur": "ประจักษ์ศิลปาคม"
     },
     {
-        "amphur": "เมืองตราด",
-        "province": "ตราด"
+        "province": "อุดรธานี",
+        "amphur": "วังสามหมอ"
     },
     {
-        "amphur": "แหลมงอบ",
-        "province": "ตราด"
+        "province": "อุดรธานี",
+        "amphur": "ศรีธาตุ"
     },
     {
-        "amphur": "ท่าสองยาง",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "พิบูลย์รักษ์"
     },
     {
-        "amphur": "บ้านตาก",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "เพ็ญ"
     },
     {
-        "amphur": "พบพระ",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "บ้านผือ"
     },
     {
-        "amphur": "เมืองตาก",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "กุดจับ"
     },
     {
-        "amphur": "แม่ระมาด",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "กุมภวาปี"
     },
     {
-        "amphur": "แม่สอด",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "กู่แก้ว"
     },
     {
-        "amphur": "วังเจ้า",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "หนองวัวซอ"
     },
     {
-        "amphur": "สามเงา",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "หนองแสง"
     },
     {
-        "amphur": "อุ้มผาง",
-        "province": "ตาก"
+        "province": "อุดรธานี",
+        "amphur": "หนองหาน"
     },
     {
-        "amphur": "บ้านนา",
-        "province": "นครนายก"
+        "province": "อุดรธานี",
+        "amphur": "เมืองอุดรธานี"
     },
     {
-        "amphur": "ปากพลี",
-        "province": "นครนายก"
+        "province": "อุดรธานี",
+        "amphur": "ไชยวาน"
     },
     {
-        "amphur": "เมืองนครนายก",
-        "province": "นครนายก"
+        "province": "อุดรธานี",
+        "amphur": "ทุ่งฝน"
     },
     {
-        "amphur": "องครักษ์",
-        "province": "นครนายก"
+        "province": "อุดรธานี",
+        "amphur": "นายูง"
     },
     {
-        "amphur": "กำแพงแสน",
-        "province": "นครปฐม"
+        "province": "อ่างทอง",
+        "amphur": "สามโก้"
     },
     {
-        "amphur": "ดอนตูม",
-        "province": "นครปฐม"
+        "province": "อ่างทอง",
+        "amphur": "เมืองอ่างทอง"
     },
     {
-        "amphur": "นครชัยศรี",
-        "province": "นครปฐม"
+        "province": "อ่างทอง",
+        "amphur": "ไชโย"
     },
     {
-        "amphur": "บางเลน",
-        "province": "นครปฐม"
+        "province": "อ่างทอง",
+        "amphur": "วิเศษชัยชาญ"
     },
     {
-        "amphur": "พุทธมณฑล",
-        "province": "นครปฐม"
+        "province": "ลพบุรี",
+        "amphur": "พัฒนานิคม"
     },
     {
-        "amphur": "เมืองนครปฐม",
-        "province": "นครปฐม"
+        "province": "ลพบุรี",
+        "amphur": "ลำสนธิ"
     },
     {
-        "amphur": "สามพราน",
-        "province": "นครปฐม"
+        "province": "ลพบุรี",
+        "amphur": "หนองม่วง"
     },
     {
-        "amphur": "ท่าอุเทน",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "เมืองลพบุรี"
     },
     {
-        "amphur": "ธาตุพนม",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "บ้านหมี่"
     },
     {
-        "amphur": "นาแก",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "โคกเจริญ"
     },
     {
-        "amphur": "นาทม",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "โคกสำโรง"
     },
     {
-        "amphur": "นาหว้า",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "ชัยบาดาล"
     },
     {
-        "amphur": "บ้านแพง",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "ท่าวุ้ง"
     },
     {
-        "amphur": "ปลาปาก",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "ท่าหลวง"
     },
     {
-        "amphur": "โพนสวรรค์",
-        "province": "นครพนม"
+        "province": "ลพบุรี",
+        "amphur": "สระโบสถ์"
     },
     {
-        "amphur": "เมืองนครพนม",
-        "province": "นครพนม"
+        "province": "สิงห์บุรี",
+        "amphur": "บางระจัน"
     },
     {
-        "amphur": "เรณูนคร",
-        "province": "นครพนม"
+        "province": "เชียงราย",
+        "amphur": "เชียงแสน"
     },
     {
-        "amphur": "วังยาง",
-        "province": "นครพนม"
+        "province": "เชียงราย",
+        "amphur": "ดอยหลวง"
     },
     {
-        "amphur": "ศรีสงคราม",
-        "province": "นครพนม"
+        "province": "เชียงราย",
+        "amphur": "แม่สรวย"
     },
     {
-        "amphur": "แก้งสนามนาง",
-        "province": "นครราชสีมา"
+        "province": "เชียงราย",
+        "amphur": "แม่ฟ้าหลวง"
     },
     {
-        "amphur": "ขามทะเลสอ",
-        "province": "นครราชสีมา"
+        "province": "เชียงราย",
+        "amphur": "แม่ลาว"
     },
     {
-        "amphur": "ขามสะแกแสง",
-        "province": "นครราชสีมา"
+        "province": "เชียงราย",
+        "amphur": "เวียงแก่น"
     },
     {
-        "amphur": "คง",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "ปางมะผ้า"
     },
     {
-        "amphur": "ครบุรี",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "ปาย"
     },
     {
-        "amphur": "จักราช",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "สบเมย"
     },
     {
-        "amphur": "เฉลิมพระเกียรติ",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "ขุนยวม"
     },
     {
-        "amphur": "ชุมพวง",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "เมืองแม่ฮ่องสอน"
     },
     {
-        "amphur": "โชคชัย",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "แม่สะเรียง"
     },
     {
-        "amphur": "ด่านขุนทด",
-        "province": "นครราชสีมา"
+        "province": "แม่ฮ่องสอน",
+        "amphur": "แม่ลาน้อย"
     },
     {
-        "amphur": "เทพารักษ์",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "บรรพตพิสัย"
     },
     {
-        "amphur": "โนนแดง",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "พยุหะคีรี"
     },
     {
-        "amphur": "โนนไทย",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "ไพศาลี"
     },
     {
-        "amphur": "โนนสูง",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "เมืองนครสวรรค์"
     },
     {
-        "amphur": "บัวลาย",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "ลาดยาว"
     },
     {
-        "amphur": "บัวใหญ่",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "เก้าเลี้ยว"
     },
     {
-        "amphur": "บ้านเหลื่อม",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "โกรกพระ"
     },
     {
-        "amphur": "ประทาย",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "หนองบัว"
     },
     {
-        "amphur": "ปักธงชัย",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "แม่เปิน"
     },
     {
-        "amphur": "ปากช่อง",
-        "province": "นครราชสีมา"
+        "province": "นครสวรรค์",
+        "amphur": "ชุมตาบง"
     },
     {
-        "amphur": "พระทองคำ",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "เมืองยาง"
     },
     {
-        "amphur": "พิมาย",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "บ้านเหลื่อม"
     },
     {
-        "amphur": "เมืองนครราชสีมา",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "คง"
     },
     {
-        "amphur": "เมืองยาง",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "ครบุรี"
     },
     {
-        "amphur": "ลำทะเมนชัย",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "จักราช"
     },
     {
-        "amphur": "วังน้ำเขียว",
-        "province": "นครราชสีมา"
+        "province": "บุรีรัมย์",
+        "amphur": "เฉลิมพระเกียรติ"
     },
     {
-        "amphur": "สีคิ้ว",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "ชุมพวง"
     },
     {
-        "amphur": "สีดา",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "โชคชัย"
     },
     {
-        "amphur": "สูงเนิน",
-        "province": "นครราชสีมา"
+        "province": "นครราชสีมา",
+        "amphur": "ด่านขุนทด"
     },
     {
-        "amphur": "เสิงสาง",
-        "province": "นครราชสีมา"
+        "province": "บุรีรัมย์",
+        "amphur": "โนนดินแดง"
     },
     {
-        "amphur": "หนองบุญมาก",
-        "province": "นครราชสีมา"
+        "province": "บุรีรัมย์",
+        "amphur": "โนนสุวรรณ"
     },
     {
-        "amphur": "ห้วยแถลง",
-        "province": "นครราชสีมา"
+        "province": "บุรีรัมย์",
+        "amphur": "บ้านกรวด"
     },
     {
-        "amphur": "ขนอม",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "บ้านด่าน"
     },
     {
-        "amphur": "จุฬาภรณ์",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "ประโคนชัย"
     },
     {
-        "amphur": "ฉวาง",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "สตึก"
     },
     {
-        "amphur": "เฉลิมพระเกียรติ",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "พลับพลาชัย"
     },
     {
-        "amphur": "ชะอวด",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "ปะคำ"
     },
     {
-        "amphur": "ช้างกลาง",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "พุทไธสง"
     },
     {
-        "amphur": "เชียรใหญ่",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "ละหานทราย"
     },
     {
-        "amphur": "ถ้ำพรรณรา",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "ลำปลายมาศ"
     },
     {
-        "amphur": "ท่าศาลา",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "กระสัง"
     },
     {
-        "amphur": "ทุ่งสง",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "หนองกี่"
     },
     {
-        "amphur": "ทุ่งใหญ่",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "หนองหงส์"
     },
     {
-        "amphur": "นบพิตำ",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "เมืองบุรีรัมย์"
     },
     {
-        "amphur": "นาบอน",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "ห้วยราช"
     },
     {
-        "amphur": "บางขัน",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "บ้านใหม่ไชยพจน์"
     },
     {
-        "amphur": "ปากพนัง",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "คูเมือง"
     },
     {
-        "amphur": "พรหมคีรี",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "แคนดง"
     },
     {
-        "amphur": "พระพรหม",
-        "province": "นครศรีธรรมราช"
+        "province": "นครราชสีมา",
+        "amphur": "เฉลิมพระเกียรติ"
     },
     {
-        "amphur": "พิปูน",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "ชำนิ"
     },
     {
-        "amphur": "เมืองนครศรีธรรมราช",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "นางรอง"
     },
     {
-        "amphur": "ร่อนพิบูลย์",
-        "province": "นครศรีธรรมราช"
+        "province": "บุรีรัมย์",
+        "amphur": "นาโพธิ์"
     },
     {
-        "amphur": "ลานสกา",
-        "province": "นครศรีธรรมราช"
+        "province": "สุรินทร์",
+        "amphur": "โนนนารายณ์"
     },
     {
-        "amphur": "สิชล",
-        "province": "นครศรีธรรมราช"
+        "province": "สุรินทร์",
+        "amphur": "บัวเชด"
     },
     {
-        "amphur": "หัวไทร",
-        "province": "นครศรีธรรมราช"
+        "province": "สุรินทร์",
+        "amphur": "ปราสาท"
     },
     {
-        "amphur": "เก้าเลี้ยว",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "พนมดงรัก"
     },
     {
-        "amphur": "โกรกพระ",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "ศรีณรงค์"
     },
     {
-        "amphur": "ชุมตาบง",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "ศีขรภูมิ"
     },
     {
-        "amphur": "ชุมแสง",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "สนม"
     },
     {
-        "amphur": "ตากฟ้า",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "รัตนบุรี"
     },
     {
-        "amphur": "ตาคลี",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "ลำดวน"
     },
     {
-        "amphur": "ท่าตะโก",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "กาบเชิง"
     },
     {
-        "amphur": "บรรพตพิสัย",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "สำโรงทาบ"
     },
     {
-        "amphur": "พยุหะคีรี",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "เมืองสุรินทร์"
     },
     {
-        "amphur": "ไพศาลี",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "เขวาสินรินทร์"
     },
     {
-        "amphur": "เมืองนครสวรรค์",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "จอมพระ"
     },
     {
-        "amphur": "แม่เปิน",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "ชุมพลบุรี"
     },
     {
-        "amphur": "แม่วงก์",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "ท่าตูม"
     },
     {
-        "amphur": "ลาดยาว",
-        "province": "นครสวรรค์"
+        "province": "สุรินทร์",
+        "amphur": "สังขะ"
     },
     {
-        "amphur": "หนองบัว",
-        "province": "นครสวรรค์"
+        "province": "ศรีสะเกษ",
+        "amphur": "โนนคูณ"
     },
     {
-        "amphur": "ไทรน้อย",
-        "province": "นนทบุรี"
+        "province": "ศรีสะเกษ",
+        "amphur": "บึงบูรพ์"
     },
     {
-        "amphur": "บางกรวย",
-        "province": "นนทบุรี"
+        "province": "ศรีสะเกษ",
+        "amphur": "เบญจลักษ์"
     },
     {
-        "amphur": "บางบัวทอง",
-        "province": "นนทบุรี"
+        "province": "ศรีสะเกษ",
+        "amphur": "ปรางค์กู่"
     },
     {
-        "amphur": "บางใหญ่",
-        "province": "นนทบุรี"
+        "province": "ศรีสะเกษ",
+        "amphur": "ห้วยทับทัน"
     },
     {
-        "amphur": "ปากเกร็ด",
-        "province": "นนทบุรี"
+        "province": "ศรีสะเกษ",
+        "amphur": "พยุห์"
     },
     {
-        "amphur": "เมืองนนทบุรี",
-        "province": "นนทบุรี"
+        "province": "ศรีสะเกษ",
+        "amphur": "วังหิน"
     },
     {
-        "amphur": "จะแนะ",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ยางชุมน้อย"
     },
     {
-        "amphur": "เจาะไอร้อง",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ศรีรัตนะ"
     },
     {
-        "amphur": "ตากใบ",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ศิลาลาด"
     },
     {
-        "amphur": "บาเจาะ",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "โพธิ์ศรีสุวรรณ"
     },
     {
-        "amphur": "เมืองนราธิวาส",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ไพรบึง"
     },
     {
-        "amphur": "ยี่งอ",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ภูสิงห์"
     },
     {
-        "amphur": "ระแงะ",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "เมืองจันทร์"
     },
     {
-        "amphur": "รือเสาะ",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ราษีไศล"
     },
     {
-        "amphur": "แว้ง",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "กันทรารมย์"
     },
     {
-        "amphur": "ศรีสาคร",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ขุขันธ์"
     },
     {
-        "amphur": "สุคิริน",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "ขุนหาญ"
     },
     {
-        "amphur": "สุไหงโก-ลก",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "กันทรลักษ์"
     },
     {
-        "amphur": "สุไหงปาดี",
-        "province": "นราธิวาส"
+        "province": "ศรีสะเกษ",
+        "amphur": "เมืองศรีสะเกษ"
     },
     {
-        "amphur": "เฉลิมพระเกียรติ",
-        "province": "น่าน"
+        "province": "ศรีสะเกษ",
+        "amphur": "อุทุมพรพิสัย"
     },
     {
-        "amphur": "เชียงกลาง",
-        "province": "น่าน"
+        "province": "ศรีสะเกษ",
+        "amphur": "น้ำเกลี้ยง"
     },
     {
-        "amphur": "ท่าวังผา",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "บุณฑริก"
     },
     {
-        "amphur": "ทุ่งช้าง",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "ศรีเมืองใหม่"
     },
     {
-        "amphur": "นาน้อย",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "พิบูลมังสาหาร"
     },
     {
-        "amphur": "นาหมื่น",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "โพธิ์ไทร"
     },
     {
-        "amphur": "บ่อเกลือ",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "ม่วงสามสิบ"
     },
     {
-        "amphur": "บ้านหลวง",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "กุดข้าวปุ้น"
     },
     {
-        "amphur": "ปัว",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "สำโรง"
     },
     {
-        "amphur": "ภูเพียง",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "สิรินธร"
     },
     {
-        "amphur": "เมืองน่าน",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "เมืองอุบลราชธานี"
     },
     {
-        "amphur": "แม่จริม",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "เหล่าเสือโก้ก"
     },
     {
-        "amphur": "เวียงสา",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "เขมราฐ"
     },
     {
-        "amphur": "สองแคว",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "เขื่องใน"
     },
     {
-        "amphur": "สันติสุข",
-        "province": "น่าน"
+        "province": "อุบลราชธานี",
+        "amphur": "โขงเจียม"
     },
     {
-        "amphur": "เซกา",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "ดอนมดแดง"
     },
     {
-        "amphur": "โซ่พิสัย",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "เดชอุดม"
     },
     {
-        "amphur": "บึงโขงหลง",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "ตระการพืชผล"
     },
     {
-        "amphur": "บุ่งคล้า",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "ตาลสุม"
     },
     {
-        "amphur": "ปากคาด",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "ทุ่งศรีอุดม"
     },
     {
-        "amphur": "พรเจริญ",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "นาจะหลวย"
     },
     {
-        "amphur": "เมืองบึงกาฬ",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "นาตาล"
     },
     {
-        "amphur": "ศรีวิไล",
-        "province": "บึงกาฬ"
+        "province": "อุบลราชธานี",
+        "amphur": "นาเยีย"
     },
     {
-        "amphur": "กระสัง",
-        "province": "บุรีรัมย์"
+        "province": "อุบลราชธานี",
+        "amphur": "น้ำขุ่น"
     },
     {
-        "amphur": "คูเมือง",
-        "province": "บุรีรัมย์"
+        "province": "อุบลราชธานี",
+        "amphur": "น้ำยืน"
     },
     {
-        "amphur": "แคนดง",
-        "province": "บุรีรัมย์"
+        "province": "อุบลราชธานี",
+        "amphur": "สว่างวีระวงศ์"
     },
     {
-        "amphur": "เฉลิมพระเกียรติ",
-        "province": "บุรีรัมย์"
+        "province": "อุบลราชธานี",
+        "amphur": "วารินชำราบ"
     },
     {
-        "amphur": "ชำนิ",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "ไทยเจริญ"
     },
     {
-        "amphur": "นางรอง",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "ป่าติ้ว"
     },
     {
-        "amphur": "นาโพธิ์",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "มหาชนะชัย"
     },
     {
-        "amphur": "โนนดินแดง",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "เลิงนกทา"
     },
     {
-        "amphur": "โนนสุวรรณ",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "กุดชุม"
     },
     {
-        "amphur": "บ้านกรวด",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "เมืองยโสธร"
     },
     {
-        "amphur": "บ้านด่าน",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "ค้อวัง"
     },
     {
-        "amphur": "บ้านใหม่ไชยพจน์",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "คำเขื่อนแก้ว"
     },
     {
-        "amphur": "ประโคนชัย",
-        "province": "บุรีรัมย์"
+        "province": "ยโสธร",
+        "amphur": "ทรายมูล"
     },
     {
-        "amphur": "ปะคำ",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "เนินสง่า"
     },
     {
-        "amphur": "พลับพลาชัย",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "เทพสถิต"
     },
     {
-        "amphur": "พุทไธสง",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "บ้านเขว้า"
     },
     {
-        "amphur": "เมืองบุรีรัมย์",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "บ้านแท่น"
     },
     {
-        "amphur": "ละหานทราย",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "บำเหน็จณรงค์"
     },
     {
-        "amphur": "ลำปลายมาศ",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "ภักดีชุมพล"
     },
     {
-        "amphur": "สตึก",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "ภูเขียว"
     },
     {
-        "amphur": "หนองกี่",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "เมืองชัยภูมิ"
     },
     {
-        "amphur": "หนองหงส์",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "เกษตรสมบูรณ์"
     },
     {
-        "amphur": "ห้วยราช",
-        "province": "บุรีรัมย์"
+        "province": "ชัยภูมิ",
+        "amphur": "แก้งคร้อ"
     },
     {
-        "amphur": "คลองหลวง",
-        "province": "ปทุมธานี"
+        "province": "ชัยภูมิ",
+        "amphur": "หนองบัวแดง"
     },
     {
-        "amphur": "ธัญบุรี",
-        "province": "ปทุมธานี"
+        "province": "ชัยภูมิ",
+        "amphur": "หนองบัวระเหว"
     },
     {
-        "amphur": "เมืองปทุมธานี",
-        "province": "ปทุมธานี"
+        "province": "ชัยภูมิ",
+        "amphur": "คอนสวรรค์"
     },
     {
-        "amphur": "ลาดหลุมแก้ว",
-        "province": "ปทุมธานี"
+        "province": "ชัยภูมิ",
+        "amphur": "คอนสาร"
     },
     {
-        "amphur": "ลำลูกกา",
-        "province": "ปทุมธานี"
+        "province": "ชัยภูมิ",
+        "amphur": "จัตุรัส"
     },
     {
-        "amphur": "สามโคก",
-        "province": "ปทุมธานี"
+        "province": "ชัยภูมิ",
+        "amphur": "ซับใหญ่"
     },
     {
-        "amphur": "หนองเสือ",
-        "province": "ปทุมธานี"
+        "province": "อำนาจเจริญ",
+        "amphur": "ปทุมราชวงศา"
     },
     {
-        "amphur": "กุยบุรี",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "อำนาจเจริญ",
+        "amphur": "พนา"
     },
     {
-        "amphur": "ทับสะแก",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "อำนาจเจริญ",
+        "amphur": "ลืออำนาจ"
     },
     {
-        "amphur": "บางสะพาน",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "อำนาจเจริญ",
+        "amphur": "เสนางคนิคม"
     },
     {
-        "amphur": "บางสะพานน้อย",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "อำนาจเจริญ",
+        "amphur": "เมืองอำนาจเจริญ"
     },
     {
-        "amphur": "ปราณบุรี",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "อำนาจเจริญ",
+        "amphur": "หัวตะพาน"
     },
     {
-        "amphur": "เมืองประจวบคีรีขันธ์",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "อำนาจเจริญ",
+        "amphur": "ชานุมาน"
     },
     {
-        "amphur": "สามร้อยยอด",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "บึงกาฬ",
+        "amphur": "บึงโขงหลง"
     },
     {
-        "amphur": "หัวหิน",
-        "province": "ประจวบคีรีขันธ์"
+        "province": "บึงกาฬ",
+        "amphur": "บุ่งคล้า"
     },
     {
-        "amphur": "กบินทร์บุรี",
-        "province": "ปราจีนบุรี"
+        "province": "บึงกาฬ",
+        "amphur": "ปากคาด"
     },
     {
-        "amphur": "นาดี",
-        "province": "ปราจีนบุรี"
+        "province": "บึงกาฬ",
+        "amphur": "พรเจริญ"
     },
     {
-        "amphur": "บ้านสร้าง",
-        "province": "ปราจีนบุรี"
+        "province": "บึงกาฬ",
+        "amphur": "ศรีวิไล"
     },
     {
-        "amphur": "ประจันตคาม",
-        "province": "ปราจีนบุรี"
+        "province": "บึงกาฬ",
+        "amphur": "เมืองบึงกาฬ"
     },
     {
-        "amphur": "เมืองปราจีนบุรี",
-        "province": "ปราจีนบุรี"
+        "province": "บึงกาฬ",
+        "amphur": "เซกา"
     },
     {
-        "amphur": "ศรีมหาโพธิ",
-        "province": "ปราจีนบุรี"
+        "province": "บึงกาฬ",
+        "amphur": "โซ่พิสัย"
     },
     {
-        "amphur": "ศรีมโหสถ",
-        "province": "ปราจีนบุรี"
+        "province": "นนทบุรี",
+        "amphur": "บางใหญ่"
     },
     {
-        "amphur": "กะพ้อ",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตราชเทวี"
     },
     {
-        "amphur": "โคกโพธิ์",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตราษฎร์บูรณะ"
     },
     {
-        "amphur": "ทุ่งยางแดง",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตลาดกระบัง"
     },
     {
-        "amphur": "ปะนาเระ",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตลาดพร้าว"
     },
     {
-        "amphur": "มายอ",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตวังทองหลาง"
     },
     {
-        "amphur": "เมืองปัตตานี",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตวัฒนา"
     },
     {
-        "amphur": "แม่ลาน",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตสวนหลวง"
     },
     {
-        "amphur": "ไม้แก่น",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตสะพานสูง"
     },
     {
-        "amphur": "ยะรัง",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตสัมพันธวงศ์"
     },
     {
-        "amphur": "ยะหริ่ง",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตสาทร"
     },
     {
-        "amphur": "สายบุรี",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตสายไหม"
     },
     {
-        "amphur": "หนองจิก",
-        "province": "ปัตตานี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตหนองแขม"
     },
     {
-        "amphur": "ท่าเรือ",
-        "province": "พระนครศรีอยุธยา"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตหนองจอก"
     },
     {
-        "amphur": "นครหลวง",
-        "province": "พระนครศรีอยุธยา"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตหลักสี่"
     },
     {
-        "amphur": "บางซ้าย",
-        "province": "พระนครศรีอยุธยา"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตห้วยขวาง"
     },
     {
-        "amphur": "บางไทร",
-        "province": "พระนครศรีอยุธยา"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางกอกน้อย"
     },
     {
-        "amphur": "บางบาล",
-        "province": "พระนครศรีอยุธยา"
+        "province": "นนทบุรี",
+        "amphur": "ปากเกร็ด"
     },
     {
-        "amphur": "บางปะหัน",
-        "province": "พระนครศรีอยุธยา"
+        "province": "นนทบุรี",
+        "amphur": "เมืองนนทบุรี"
     },
     {
-        "amphur": "บางปะอิน",
-        "province": "พระนครศรีอยุธยา"
+        "province": "นนทบุรี",
+        "amphur": "บางกรวย"
     },
     {
-        "amphur": "บ้านแพรก",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "ลาดหลุมแก้ว"
     },
     {
-        "amphur": "ผักไห่",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "ลำลูกกา"
     },
     {
-        "amphur": "พระนครศรีอยุธยา",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "หนองเสือ"
     },
     {
-        "amphur": "ภาชี",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "สามโคก"
     },
     {
-        "amphur": "มหาราช",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "เมืองปทุมธานี"
     },
     {
-        "amphur": "ลาดบัวหลวง",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "คลองหลวง"
     },
     {
-        "amphur": "วังน้อย",
-        "province": "พระนครศรีอยุธยา"
+        "province": "ปทุมธานี",
+        "amphur": "ธัญบุรี"
     },
     {
-        "amphur": "เสนา",
-        "province": "พระนครศรีอยุธยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "บางซ้าย"
     },
     {
-        "amphur": "อุทัย",
-        "province": "พระนครศรีอยุธยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "บางไทร"
     },
     {
-        "amphur": "จุน",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "บางบาล"
     },
     {
-        "amphur": "เชียงคำ",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "บางปะหัน"
     },
     {
-        "amphur": "เชียงม่วน",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "บางปะอิน"
     },
     {
-        "amphur": "ดอกคำใต้",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "ผักไห่"
     },
     {
-        "amphur": "ปง",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "วังน้อย"
     },
     {
-        "amphur": "ภูกามยาว",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "พระนครศรีอยุธยา"
     },
     {
-        "amphur": "ภูซาง",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "ภาชี"
     },
     {
-        "amphur": "เมืองพะเยา",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "มหาราช"
     },
     {
-        "amphur": "แม่ใจ",
-        "province": "พะเยา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "ลาดบัวหลวง"
     },
     {
-        "amphur": "กะปง",
-        "province": "พังงา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "บ้านแพรก"
     },
     {
-        "amphur": "เกาะยาว",
-        "province": "พังงา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "เสนา"
     },
     {
-        "amphur": "คุระบุรี",
-        "province": "พังงา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "อุทัย"
     },
     {
-        "amphur": "ตะกั่วทุ่ง",
-        "province": "พังงา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "ท่าเรือ"
     },
     {
-        "amphur": "ตะกั่วป่า",
-        "province": "พังงา"
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "นครหลวง"
     },
     {
-        "amphur": "ทับปุด",
-        "province": "พังงา"
+        "province": "อ่างทอง",
+        "amphur": "ป่าโมก"
     },
     {
-        "amphur": "ท้ายเหมือง",
-        "province": "พังงา"
+        "province": "อ่างทอง",
+        "amphur": "โพธิ์ทอง"
     },
     {
-        "amphur": "เมืองพังงา",
-        "province": "พังงา"
+        "province": "อ่างทอง",
+        "amphur": "แสวงหา"
     },
     {
-        "amphur": "กงหรา",
-        "province": "พัทลุง"
+        "province": "สงขลา",
+        "amphur": "นาทวี"
     },
     {
-        "amphur": "เขาชัยสน",
-        "province": "พัทลุง"
+        "province": "สงขลา",
+        "amphur": "นาหม่อม"
     },
     {
-        "amphur": "ควนขนุน",
-        "province": "พัทลุง"
+        "province": "สงขลา",
+        "amphur": "สะเดา"
     },
     {
-        "amphur": "ตะโหมด",
-        "province": "พัทลุง"
+        "province": "สงขลา",
+        "amphur": "สะบ้าย้อย"
     },
     {
-        "amphur": "บางแก้ว",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "มะนัง"
     },
     {
-        "amphur": "ปากพะยูน",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "ละงู"
     },
     {
-        "amphur": "ป่าบอน",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "เมืองสตูล"
     },
     {
-        "amphur": "ป่าพะยอม",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "ควนกาหลง"
     },
     {
-        "amphur": "เมืองพัทลุง",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "ควนโดน"
     },
     {
-        "amphur": "ศรีนครินทร์",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "ท่าแพ"
     },
     {
-        "amphur": "ศรีบรรพต",
-        "province": "พัทลุง"
+        "province": "สตูล",
+        "amphur": "ทุ่งหว้า"
     },
     {
-        "amphur": "ดงเจริญ",
-        "province": "พิจิตร"
+        "province": "ตรัง",
+        "amphur": "วังวิเศษ"
     },
     {
-        "amphur": "ตะพานหิน",
-        "province": "พิจิตร"
+        "province": "ตรัง",
+        "amphur": "ปะเหลียน"
     },
     {
-        "amphur": "ทับคล้อ",
-        "province": "พิจิตร"
+        "province": "ตรัง",
+        "amphur": "เมืองตรัง"
     },
     {
-        "amphur": "บางมูลนาก",
-        "province": "พิจิตร"
+        "province": "ตรัง",
+        "amphur": "ย่านตาขาว"
     },
     {
-        "amphur": "บึงนาราง",
-        "province": "พิจิตร"
+        "province": "ตรัง",
+        "amphur": "รัษฎา"
     },
     {
-        "amphur": "โพทะเล",
-        "province": "พิจิตร"
+        "province": "ตรัง",
+        "amphur": "กันตัง"
     },
     {
-        "amphur": "โพธิ์ประทับช้าง",
-        "province": "พิจิตร"
+        "province": "สิงห์บุรี",
+        "amphur": "พรหมบุรี"
     },
     {
-        "amphur": "เมืองพิจิตร",
-        "province": "พิจิตร"
+        "province": "สิงห์บุรี",
+        "amphur": "เมืองสิงห์บุรี"
     },
     {
-        "amphur": "วชิรบารมี",
-        "province": "พิจิตร"
+        "province": "สิงห์บุรี",
+        "amphur": "อินทร์บุรี"
     },
     {
-        "amphur": "วังทรายพูน",
-        "province": "พิจิตร"
+        "province": "สิงห์บุรี",
+        "amphur": "ค่ายบางระจัน"
     },
     {
-        "amphur": "สากเหล็ก",
-        "province": "พิจิตร"
+        "province": "สิงห์บุรี",
+        "amphur": "ท่าช้าง"
     },
     {
-        "amphur": "สามง่าม",
-        "province": "พิจิตร"
+        "province": "ชัยนาท",
+        "amphur": "เนินขาม"
     },
     {
-        "amphur": "ชาติตระการ",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "วัดสิงห์"
     },
     {
-        "amphur": "นครไทย",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "มโนรมย์"
     },
     {
-        "amphur": "เนินมะปราง",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "เมืองชัยนาท"
     },
     {
-        "amphur": "บางกระทุ่ม",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "หนองมะโมง"
     },
     {
-        "amphur": "บางระกำ",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "หันคา"
     },
     {
-        "amphur": "พรหมพิราม",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "สรรคบุรี"
     },
     {
-        "amphur": "เมืองพิษณุโลก",
-        "province": "พิษณุโลก"
+        "province": "ชัยนาท",
+        "amphur": "สรรพยา"
     },
     {
-        "amphur": "วังทอง",
-        "province": "พิษณุโลก"
+        "province": "สระบุรี",
+        "amphur": "วังม่วง"
     },
     {
-        "amphur": "วัดโบสถ์",
-        "province": "พิษณุโลก"
+        "province": "สระบุรี",
+        "amphur": "พระพุทธบาท"
     },
     {
-        "amphur": "แก่งกระจาน",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "มวกเหล็ก"
     },
     {
-        "amphur": "เขาย้อย",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "แก่งคอย"
     },
     {
-        "amphur": "ชะอำ",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "เสาไห้"
     },
     {
-        "amphur": "ท่ายาง",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "หนองแค"
     },
     {
-        "amphur": "บ้านลาด",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "หนองแซง"
     },
     {
-        "amphur": "บ้านแหลม",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "หนองโดน"
     },
     {
-        "amphur": "เมืองเพชรบุรี",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "เมืองสระบุรี"
     },
     {
-        "amphur": "หนองหญ้าปล้อง",
-        "province": "เพชรบุรี"
+        "province": "สระบุรี",
+        "amphur": "บ้านหมอ"
     },
     {
-        "amphur": "เขาค้อ",
-        "province": "เพชรบูรณ์"
+        "province": "สระบุรี",
+        "amphur": "เฉลิมพระเกียรติ"
     },
     {
-        "amphur": "ชนแดน",
-        "province": "เพชรบูรณ์"
+        "province": "สระบุรี",
+        "amphur": "ดอนพุด"
     },
     {
-        "amphur": "น้ำหนาว",
-        "province": "เพชรบูรณ์"
+        "province": "สระบุรี",
+        "amphur": "วิหารแดง"
     },
     {
-        "amphur": "บึงสามพัน",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "บ่อทอง"
     },
     {
-        "amphur": "เมืองเพชรบูรณ์",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "บางละมุง"
     },
     {
-        "amphur": "วังโป่ง",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "พนัสนิคม"
     },
     {
-        "amphur": "วิเชียรบุรี",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "ศรีราชา"
     },
     {
-        "amphur": "ศรีเทพ",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "พานทอง"
     },
     {
-        "amphur": "หนองไผ่",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "เมืองชลบุรี"
     },
     {
-        "amphur": "หล่มเก่า",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "บ้านบึง"
     },
     {
-        "amphur": "หล่มสัก",
-        "province": "เพชรบูรณ์"
+        "province": "ชลบุรี",
+        "amphur": "เกาะจันทร์"
     },
     {
-        "amphur": "เด่นชัย",
-        "province": "แพร่"
+        "province": "ชลบุรี",
+        "amphur": "เกาะสีชัง"
     },
     {
-        "amphur": "เมืองแพร่",
-        "province": "แพร่"
+        "province": "ชลบุรี",
+        "amphur": "หนองใหญ่"
     },
     {
-        "amphur": "ร้องกวาง",
-        "province": "แพร่"
+        "province": "ชลบุรี",
+        "amphur": "สัตหีบ"
     },
     {
-        "amphur": "ลอง",
-        "province": "แพร่"
+        "province": "ระยอง",
+        "amphur": "นิคมพัฒนา"
     },
     {
-        "amphur": "วังชิ้น",
-        "province": "แพร่"
+        "province": "ระยอง",
+        "amphur": "บ้านค่าย"
     },
     {
-        "amphur": "สอง",
-        "province": "แพร่"
+        "province": "ระยอง",
+        "amphur": "บ้านฉาง"
     },
     {
-        "amphur": "สูงเม่น",
-        "province": "แพร่"
+        "province": "ระยอง",
+        "amphur": "ปลวกแดง"
     },
     {
-        "amphur": "หนองม่วงไข่",
-        "province": "แพร่"
+        "province": "ระยอง",
+        "amphur": "วังจันทร์"
     },
     {
-        "amphur": "กะทู้",
-        "province": "ภูเก็ต"
+        "province": "ระยอง",
+        "amphur": "แกลง"
     },
     {
-        "amphur": "ถลาง",
-        "province": "ภูเก็ต"
+        "province": "ระยอง",
+        "amphur": "เมืองระยอง"
     },
     {
-        "amphur": "เมืองภูเก็ต",
-        "province": "ภูเก็ต"
+        "province": "ระยอง",
+        "amphur": "เขาชะเมา"
     },
     {
-        "amphur": "กันทรวิชัย",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "โป่งน้ำร้อน"
     },
     {
-        "amphur": "กุดรัง",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "มะขาม"
     },
     {
-        "amphur": "แกดำ",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "เมืองจันทบุรี"
     },
     {
-        "amphur": "โกสุมพิสัย",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "แก่งหางแมว"
     },
     {
-        "amphur": "ชื่นชม",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "ขลุง"
     },
     {
-        "amphur": "เชียงยืน",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "แหลมสิงห์"
     },
     {
-        "amphur": "นาเชือก",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "เขาคิชฌกูฏ"
     },
     {
-        "amphur": "นาดูน",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "ท่าใหม่"
     },
     {
-        "amphur": "บรบือ",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "นายายอาม"
     },
     {
-        "amphur": "พยัคฆภูมิพิสัย",
-        "province": "มหาสารคาม"
+        "province": "จันทบุรี",
+        "amphur": "สอยดาว"
     },
     {
-        "amphur": "เมืองมหาสารคาม",
-        "province": "มหาสารคาม"
+        "province": "ตราด",
+        "amphur": "บ่อไร่"
     },
     {
-        "amphur": "ยางสีสุราช",
-        "province": "มหาสารคาม"
+        "province": "ตราด",
+        "amphur": "เมืองตราด"
     },
     {
-        "amphur": "วาปีปทุม",
-        "province": "มหาสารคาม"
+        "province": "ตราด",
+        "amphur": "เกาะกูด"
     },
     {
-        "amphur": "คำชะอี",
-        "province": "มุกดาหาร"
+        "province": "ตราด",
+        "amphur": "เกาะช้าง"
     },
     {
-        "amphur": "ดงหลวง",
-        "province": "มุกดาหาร"
+        "province": "ตราด",
+        "amphur": "แหลมงอบ"
     },
     {
-        "amphur": "ดอนตาล",
-        "province": "มุกดาหาร"
+        "province": "ตราด",
+        "amphur": "เขาสมิง"
     },
     {
-        "amphur": "นิคมคำสร้อย",
-        "province": "มุกดาหาร"
+        "province": "ตราด",
+        "amphur": "คลองใหญ่"
     },
     {
-        "amphur": "เมืองมุกดาหาร",
-        "province": "มุกดาหาร"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "บางคล้า"
     },
     {
-        "amphur": "หนองสูง",
-        "province": "มุกดาหาร"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "บางน้ำเปรี้ยว"
     },
     {
-        "amphur": "หว้านใหญ่",
-        "province": "มุกดาหาร"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "บางปะกง"
     },
     {
-        "amphur": "ขุนยวม",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "แปลงยาว"
     },
     {
-        "amphur": "ปางมะผ้า",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "พนมสารคาม"
     },
     {
-        "amphur": "ปาย",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "สนามชัยเขต"
     },
     {
-        "amphur": "เมืองแม่ฮ่องสอน",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "เมืองฉะเชิงเทรา"
     },
     {
-        "amphur": "แม่ลาน้อย",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "ราชสาส์น"
     },
     {
-        "amphur": "แม่สะเรียง",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "บ้านโพธิ์"
     },
     {
-        "amphur": "สบเมย",
-        "province": "แม่ฮ่องสอน"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "คลองเขื่อน"
     },
     {
-        "amphur": "กุดชุม",
-        "province": "ยโสธร"
+        "province": "ฉะเชิงเทรา",
+        "amphur": "ท่าตะเกียบ"
     },
     {
-        "amphur": "ค้อวัง",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "ประจันตคาม"
     },
     {
-        "amphur": "คำเขื่อนแก้ว",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "ศรีมหาโพธิ"
     },
     {
-        "amphur": "ทรายมูล",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "ศรีมโหสถ"
     },
     {
-        "amphur": "ไทยเจริญ",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "กบินทร์บุรี"
     },
     {
-        "amphur": "ป่าติ้ว",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "เมืองปราจีนบุรี"
     },
     {
-        "amphur": "มหาชนะชัย",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "บ้านสร้าง"
     },
     {
-        "amphur": "เมืองยโสธร",
-        "province": "ยโสธร"
+        "province": "ปราจีนบุรี",
+        "amphur": "นาดี"
     },
     {
-        "amphur": "เลิงนกทา",
-        "province": "ยโสธร"
+        "province": "นครนายก",
+        "amphur": "บ้านนา"
     },
     {
-        "amphur": "กรงปินัง",
-        "province": "ยะลา"
+        "province": "นครนายก",
+        "amphur": "ปากพลี"
     },
     {
-        "amphur": "กาบัง",
-        "province": "ยะลา"
+        "province": "นครนายก",
+        "amphur": "เมืองนครนายก"
     },
     {
-        "amphur": "ธารโต",
-        "province": "ยะลา"
+        "province": "นครนายก",
+        "amphur": "องครักษ์"
     },
     {
-        "amphur": "บันนังสตา",
-        "province": "ยะลา"
+        "province": "สระแก้ว",
+        "amphur": "วังน้ำเย็น"
     },
     {
-        "amphur": "เบตง",
-        "province": "ยะลา"
+        "province": "สระแก้ว",
+        "amphur": "วังสมบูรณ์"
     },
     {
-        "amphur": "เมืองยะลา",
-        "province": "ยะลา"
+        "province": "สระแก้ว",
+        "amphur": "วัฒนานคร"
     },
     {
-        "amphur": "ยะหา",
-        "province": "ยะลา"
+        "province": "สระแก้ว",
+        "amphur": "เมืองสระแก้ว"
     },
     {
-        "amphur": "รามัน",
-        "province": "ยะลา"
+        "province": "สระแก้ว",
+        "amphur": "อรัญประเทศ"
     },
     {
-        "amphur": "เกษตรวิสัย",
-        "province": "ร้อยเอ็ด"
+        "province": "สระแก้ว",
+        "amphur": "เขาฉกรรจ์"
     },
     {
-        "amphur": "จตุรพักตรพิมาน",
-        "province": "ร้อยเอ็ด"
+        "province": "สระแก้ว",
+        "amphur": "คลองหาด"
     },
     {
-        "amphur": "จังหาร",
-        "province": "ร้อยเอ็ด"
+        "province": "สระแก้ว",
+        "amphur": "โคกสูง"
     },
     {
-        "amphur": "เชียงขวัญ",
-        "province": "ร้อยเอ็ด"
+        "province": "สระแก้ว",
+        "amphur": "ตาพระยา"
     },
     {
-        "amphur": "ทุ่งเขาหลวง",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "โนนแดง"
     },
     {
-        "amphur": "ธวัชบุรี",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "โนนไทย"
     },
     {
-        "amphur": "ปทุมรัตต์",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "โนนสูง"
     },
     {
-        "amphur": "พนมไพร",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "เทพารักษ์"
     },
     {
-        "amphur": "โพธิ์ชัย",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "ประทาย"
     },
     {
-        "amphur": "โพนทราย",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "ห้วยแถลง"
     },
     {
-        "amphur": "โพนทอง",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "ปากช่อง"
     },
     {
-        "amphur": "เมยวดี",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "วังน้ำเขียว"
     },
     {
-        "amphur": "เมืองร้อยเอ็ด",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "พระทองคำ"
     },
     {
-        "amphur": "เมืองสรวง",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "พิมาย"
     },
     {
-        "amphur": "ศรีสมเด็จ",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "ปักธงชัย"
     },
     {
-        "amphur": "สุวรรณภูมิ",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "เมืองนครราชสีมา"
     },
     {
-        "amphur": "เสลภูมิ",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "ลำทะเมนชัย"
     },
     {
-        "amphur": "หนองพอก",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "บัวลาย"
     },
     {
-        "amphur": "หนองฮี",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "บัวใหญ่"
     },
     {
-        "amphur": "อาจสามารถ",
-        "province": "ร้อยเอ็ด"
+        "province": "นครราชสีมา",
+        "amphur": "แก้งสนามนาง"
     },
     {
-        "amphur": "กระบุรี",
-        "province": "ระนอง"
+        "province": "นครราชสีมา",
+        "amphur": "ขามทะเลสอ"
     },
     {
-        "amphur": "กะเปอร์",
-        "province": "ระนอง"
+        "province": "นครราชสีมา",
+        "amphur": "ขามสะแกแสง"
     },
     {
-        "amphur": "เมืองระนอง",
-        "province": "ระนอง"
+        "province": "นครราชสีมา",
+        "amphur": "สีคิ้ว"
     },
     {
-        "amphur": "ละอุ่น",
-        "province": "ระนอง"
+        "province": "นครราชสีมา",
+        "amphur": "สีดา"
     },
     {
-        "amphur": "สุขสำราญ",
-        "province": "ระนอง"
+        "province": "นครราชสีมา",
+        "amphur": "สูงเนิน"
     },
     {
-        "amphur": "แกลง",
-        "province": "ระยอง"
+        "province": "นครราชสีมา",
+        "amphur": "เสิงสาง"
     },
     {
-        "amphur": "เขาชะเมา",
-        "province": "ระยอง"
+        "province": "นครราชสีมา",
+        "amphur": "หนองบุญมาก"
     },
     {
-        "amphur": "นิคมพัฒนา",
-        "province": "ระยอง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตคลองเตย"
     },
     {
-        "amphur": "บ้านค่าย",
-        "province": "ระยอง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตคลองสาน"
     },
     {
-        "amphur": "บ้านฉาง",
-        "province": "ระยอง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตคลองสามวา"
     },
     {
-        "amphur": "ปลวกแดง",
-        "province": "ระยอง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตคันนายาว"
     },
     {
-        "amphur": "เมืองระยอง",
-        "province": "ระยอง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตจตุจักร"
     },
     {
-        "amphur": "วังจันทร์",
-        "province": "ระยอง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตจอมทอง"
     },
     {
-        "amphur": "จอมบึง",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตดอนเมือง"
     },
     {
-        "amphur": "ดำเนินสะดวก",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตดินแดง"
     },
     {
-        "amphur": "บางแพ",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตดุสิต"
     },
     {
-        "amphur": "บ้านคา",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตตลิ่งชัน"
     },
     {
-        "amphur": "บ้านโป่ง",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตทวีวัฒนา"
     },
     {
-        "amphur": "ปากท่อ",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตทุ่งครุ"
     },
     {
-        "amphur": "โพธาราม",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตธนบุรี"
     },
     {
-        "amphur": "เมืองราชบุรี",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางคอแหลม"
     },
     {
-        "amphur": "วัดเพลง",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางแค"
     },
     {
-        "amphur": "สวนผึ้ง",
-        "province": "ราชบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางซื่อ"
     },
     {
-        "amphur": "โคกเจริญ",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางนา"
     },
     {
-        "amphur": "โคกสำโรง",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางบอน"
     },
     {
-        "amphur": "ชัยบาดาล",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางพลัด"
     },
     {
-        "amphur": "ท่าวุ้ง",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางรัก"
     },
     {
-        "amphur": "ท่าหลวง",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบึงกุ่ม"
     },
     {
-        "amphur": "บ้านหมี่",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตปทุมวัน"
     },
     {
-        "amphur": "พัฒนานิคม",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตประเวศ"
     },
     {
-        "amphur": "เมืองลพบุรี",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตป้อมปราบศัตรูพ่าย"
     },
     {
-        "amphur": "ลำสนธิ",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตพญาไท"
     },
     {
-        "amphur": "สระโบสถ์",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตพระโขนง"
     },
     {
-        "amphur": "หนองม่วง",
-        "province": "ลพบุรี"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตพระนคร"
     },
     {
-        "amphur": "เกาะคา",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตภาษีเจริญ"
     },
     {
-        "amphur": "งาว",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตมีนบุรี"
     },
     {
-        "amphur": "แจ้ห่ม",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตยานนาวา"
     },
     {
-        "amphur": "เถิน",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางกอกใหญ่"
     },
     {
-        "amphur": "เมืองปาน",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางกะปิ"
     },
     {
-        "amphur": "เมืองลำปาง",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางขุนเทียน"
     },
     {
-        "amphur": "แม่ทะ",
-        "province": "ลำปาง"
+        "province": "กรุงเทพมหานคร",
+        "amphur": "เขตบางเขน"
     },
     {
-        "amphur": "แม่เมาะ",
-        "province": "ลำปาง"
+        "province": "สมุทรปราการ",
+        "amphur": "บางบ่อ"
     },
     {
-        "amphur": "วังเหนือ",
-        "province": "ลำปาง"
+        "province": "สมุทรปราการ",
+        "amphur": "บางพลี"
     },
     {
-        "amphur": "สบปราบ",
-        "province": "ลำปาง"
+        "province": "สมุทรปราการ",
+        "amphur": "บางเสาธง"
     },
     {
-        "amphur": "เสริมงาม",
-        "province": "ลำปาง"
+        "province": "สมุทรปราการ",
+        "amphur": "พระประแดง"
     },
     {
-        "amphur": "ห้างฉัตร",
-        "province": "ลำปาง"
+        "province": "สมุทรปราการ",
+        "amphur": "พระสมุทรเจดีย์"
     },
     {
-        "amphur": "แม่พริก",
-        "province": "ลำปาง"
+        "province": "สมุทรปราการ",
+        "amphur": "เมืองสมุทรปราการ"
     },
     {
-        "amphur": "ทุ่งหัวช้าง",
-        "province": "ลำพูน"
+        "province": "นนทบุรี",
+        "amphur": "ไทรน้อย"
     },
     {
-        "amphur": "บ้านธิ",
-        "province": "ลำพูน"
+        "province": "นนทบุรี",
+        "amphur": "บางบัวทอง"
     },
     {
-        "amphur": "บ้านโฮ่ง",
-        "province": "ลำพูน"
+        "province": "ตรัง",
+        "amphur": "สิเกา"
     },
     {
-        "amphur": "ป่าซาง",
-        "province": "ลำพูน"
+        "province": "ตรัง",
+        "amphur": "ห้วยยอด"
     },
     {
-        "amphur": "เมืองลำพูน",
-        "province": "ลำพูน"
+        "province": "ตรัง",
+        "amphur": "หาดสำราญ"
     },
     {
-        "amphur": "แม่ทา",
-        "province": "ลำพูน"
+        "province": "ตรัง",
+        "amphur": "นาโยง"
     },
     {
-        "amphur": "ลี้",
-        "province": "ลำพูน"
+        "province": "พัทลุง",
+        "amphur": "ปากพะยูน"
     },
     {
-        "amphur": "เวียงหนองล่อง",
-        "province": "ลำพูน"
+        "province": "พัทลุง",
+        "amphur": "ป่าบอน"
     },
     {
-        "amphur": "เชียงคาน",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "ป่าพะยอม"
     },
     {
-        "amphur": "ด่านซ้าย",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "ศรีนครินทร์"
     },
     {
-        "amphur": "ท่าลี่",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "ศรีบรรพต"
     },
     {
-        "amphur": "นาด้วง",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "กงหรา"
     },
     {
-        "amphur": "นาแห้ว",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "บางแก้ว"
     },
     {
-        "amphur": "ปากชม",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "เมืองพัทลุง"
     },
     {
-        "amphur": "ผาขาว",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "เขาชัยสน"
     },
     {
-        "amphur": "ภูกระดึง",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "ควนขนุน"
     },
     {
-        "amphur": "ภูเรือ",
-        "province": "เลย"
+        "province": "พัทลุง",
+        "amphur": "ตะโหมด"
     },
     {
-        "amphur": "ภูหลวง",
-        "province": "เลย"
+        "province": "ปัตตานี",
+        "amphur": "ไม้แก่น"
     },
     {
-        "amphur": "เมืองเลย",
-        "province": "เลย"
+        "province": "ปัตตานี",
+        "amphur": "ยะรัง"
     },
     {
-        "amphur": "วังสะพุง",
-        "province": "เลย"
+        "province": "ปัตตานี",
+        "amphur": "ยะหริ่ง"
     },
     {
-        "amphur": "หนองหิน",
-        "province": "เลย"
+        "province": "ปัตตานี",
+        "amphur": "ปะนาเระ"
     },
     {
-        "amphur": "เอราวัณ",
-        "province": "เลย"
+        "province": "ปัตตานี",
+        "amphur": "มายอ"
     },
     {
-        "amphur": "กันทรลักษ์",
-        "province": "ศรีสะเกษ"
+        "province": "ปัตตานี",
+        "amphur": "กะพ้อ"
     },
     {
-        "amphur": "กันทรารมย์",
-        "province": "ศรีสะเกษ"
+        "province": "ปัตตานี",
+        "amphur": "สายบุรี"
     },
     {
-        "amphur": "ขุขันธ์",
-        "province": "ศรีสะเกษ"
+        "province": "นครสวรรค์",
+        "amphur": "ชุมแสง"
     },
     {
-        "amphur": "ขุนหาญ",
-        "province": "ศรีสะเกษ"
+        "province": "นครสวรรค์",
+        "amphur": "ท่าตะโก"
     },
     {
-        "amphur": "น้ำเกลี้ยง",
-        "province": "ศรีสะเกษ"
+        "province": "นครสวรรค์",
+        "amphur": "แม่วงก์"
     },
     {
-        "amphur": "โนนคูณ",
-        "province": "ศรีสะเกษ"
+        "province": "นครสวรรค์",
+        "amphur": "ตากฟ้า"
     },
     {
-        "amphur": "บึงบูรพ์",
-        "province": "ศรีสะเกษ"
+        "province": "นครสวรรค์",
+        "amphur": "ตาคลี"
     },
     {
-        "amphur": "เบญจลักษ์",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "ห้วยคต"
     },
     {
-        "amphur": "ปรางค์กู่",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "ลานสัก"
     },
     {
-        "amphur": "พยุห์",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "บ้านไร่"
     },
     {
-        "amphur": "โพธิ์ศรีสุวรรณ",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "หนองขาหย่าง"
     },
     {
-        "amphur": "ไพรบึง",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "หนองฉาง"
     },
     {
-        "amphur": "ภูสิงห์",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "เมืองอุทัยธานี"
     },
     {
-        "amphur": "เมืองจันทร์",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "ทัพทัน"
     },
     {
-        "amphur": "เมืองศรีสะเกษ",
-        "province": "ศรีสะเกษ"
+        "province": "อุทัยธานี",
+        "amphur": "สว่างอารมณ์"
     },
     {
-        "amphur": "ยางชุมน้อย",
-        "province": "ศรีสะเกษ"
+        "province": "กำแพงเพชร",
+        "amphur": "ไทรงาม"
     },
     {
-        "amphur": "ราษีไศล",
-        "province": "ศรีสะเกษ"
+        "province": "พังงา",
+        "amphur": "กะปง"
     },
     {
-        "amphur": "วังหิน",
-        "province": "ศรีสะเกษ"
+        "province": "พังงา",
+        "amphur": "เมืองพังงา"
     },
     {
-        "amphur": "ศรีรัตนะ",
-        "province": "ศรีสะเกษ"
+        "province": "พังงา",
+        "amphur": "คุระบุรี"
     },
     {
-        "amphur": "ศิลาลาด",
-        "province": "ศรีสะเกษ"
+        "province": "พังงา",
+        "amphur": "ทับปุด"
     },
     {
-        "amphur": "ห้วยทับทัน",
-        "province": "ศรีสะเกษ"
+        "province": "พังงา",
+        "amphur": "ตะกั่วทุ่ง"
     },
     {
-        "amphur": "อุทุมพรพิสัย",
-        "province": "ศรีสะเกษ"
+        "province": "พังงา",
+        "amphur": "ตะกั่วป่า"
     },
     {
-        "amphur": "กุดบาก",
-        "province": "สกลนคร"
+        "province": "พังงา",
+        "amphur": "ท้ายเหมือง"
     },
     {
-        "amphur": "กุสุมาลย์",
-        "province": "สกลนคร"
+        "province": "ภูเก็ต",
+        "amphur": "กะทู้"
     },
     {
-        "amphur": "คำตากล้า",
-        "province": "สกลนคร"
+        "province": "ภูเก็ต",
+        "amphur": "เมืองภูเก็ต"
     },
     {
-        "amphur": "โคกศรีสุพรรณ",
-        "province": "สกลนคร"
+        "province": "ภูเก็ต",
+        "amphur": "ถลาง"
     },
     {
-        "amphur": "เจริญศิลป์",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "บ้านตาขุน"
     },
     {
-        "amphur": "เต่างอย",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "พนม"
     },
     {
-        "amphur": "นิคมน้ำอูน",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "เวียงสระ"
     },
     {
-        "amphur": "บ้านม่วง",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "พระแสง"
     },
     {
-        "amphur": "พรรณนานิคม",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "พุนพิน"
     },
     {
-        "amphur": "พังโคน",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "บ้านนาเดิม"
     },
     {
-        "amphur": "โพนนาแก้ว",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "บ้านนาสาร"
     },
     {
-        "amphur": "ภูพาน",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "กาญจนดิษฐ์"
     },
     {
-        "amphur": "เมืองสกลนคร",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "เกาะพะงัน"
     },
     {
-        "amphur": "วานรนิวาส",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "เกาะสมุย"
     },
     {
-        "amphur": "วาริชภูมิ",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "เมืองสุราษฎร์ธานี"
     },
     {
-        "amphur": "สว่างแดนดิน",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "คีรีรัฐนิคม"
     },
     {
-        "amphur": "ส่องดาว",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "เคียนซา"
     },
     {
-        "amphur": "อากาศอำนวย",
-        "province": "สกลนคร"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "ชัยบุรี"
     },
     {
-        "amphur": "กระแสสินธุ์",
-        "province": "สงขลา"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "ท่าฉาง"
     },
     {
-        "amphur": "คลองหอยโข่ง",
-        "province": "สงขลา"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "ท่าชนะ"
     },
     {
-        "amphur": "ควนเนียง",
-        "province": "สงขลา"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "ไชยา"
     },
     {
-        "amphur": "จะนะ",
-        "province": "สงขลา"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "ดอนสัก"
     },
     {
-        "amphur": "เทพา",
-        "province": "สงขลา"
+        "province": "สุราษฎร์ธานี",
+        "amphur": "วิภาวดี"
     },
     {
-        "amphur": "นาทวี",
-        "province": "สงขลา"
+        "province": "ระนอง",
+        "amphur": "ละอุ่น"
     },
     {
-        "amphur": "นาหม่อม",
-        "province": "สงขลา"
+        "province": "ระนอง",
+        "amphur": "กระบุรี"
     },
     {
-        "amphur": "บางกล่ำ",
-        "province": "สงขลา"
+        "province": "ระนอง",
+        "amphur": "กะเปอร์"
     },
     {
-        "amphur": "เมืองสงขลา",
-        "province": "สงขลา"
+        "province": "ระนอง",
+        "amphur": "สุขสำราญ"
     },
     {
-        "amphur": "ระโนด",
-        "province": "สงขลา"
+        "province": "ระนอง",
+        "amphur": "เมืองระนอง"
     },
     {
-        "amphur": "รัตภูมิ",
-        "province": "สงขลา"
+        "province": "ชุมพร",
+        "amphur": "หลังสวน"
     },
     {
-        "amphur": "สทิงพระ",
-        "province": "สงขลา"
+        "province": "ชุมพร",
+        "amphur": "พะโต๊ะ"
     },
     {
-        "amphur": "สะเดา",
-        "province": "สงขลา"
+        "province": "ชุมพร",
+        "amphur": "ปะทิว"
     },
     {
-        "amphur": "สะบ้าย้อย",
-        "province": "สงขลา"
+        "province": "ชุมพร",
+        "amphur": "เมืองชุมพร"
     },
     {
-        "amphur": "สิงหนคร",
-        "province": "สงขลา"
+        "province": "ชุมพร",
+        "amphur": "ละแม"
     },
     {
-        "amphur": "หาดใหญ่",
-        "province": "สงขลา"
+        "province": "ชุมพร",
+        "amphur": "ท่าแซะ"
     },
     {
-        "amphur": "ควนกาหลง",
-        "province": "สตูล"
+        "province": "ชุมพร",
+        "amphur": "ทุ่งตะโก"
     },
     {
-        "amphur": "ควนโดน",
-        "province": "สตูล"
+        "province": "ชุมพร",
+        "amphur": "สวี"
     },
     {
-        "amphur": "ท่าแพ",
-        "province": "สตูล"
+        "province": "สงขลา",
+        "amphur": "เทพา"
     },
     {
-        "amphur": "ทุ่งหว้า",
-        "province": "สตูล"
+        "province": "สงขลา",
+        "amphur": "สทิงพระ"
     },
     {
-        "amphur": "มะนัง",
-        "province": "สตูล"
+        "province": "สงขลา",
+        "amphur": "ระโนด"
     },
     {
-        "amphur": "เมืองสตูล",
-        "province": "สตูล"
+        "province": "สงขลา",
+        "amphur": "รัตภูมิ"
     },
     {
-        "amphur": "ละงู",
-        "province": "สตูล"
+        "province": "สงขลา",
+        "amphur": "บางกล่ำ"
     },
     {
-        "amphur": "บางบ่อ",
-        "province": "สมุทรปราการ"
+        "province": "สงขลา",
+        "amphur": "กระแสสินธุ์"
     },
     {
-        "amphur": "บางพลี",
-        "province": "สมุทรปราการ"
+        "province": "สงขลา",
+        "amphur": "สิงหนคร"
     },
     {
-        "amphur": "บางเสาธง",
-        "province": "สมุทรปราการ"
+        "province": "สงขลา",
+        "amphur": "เมืองสงขลา"
     },
     {
-        "amphur": "พระประแดง",
-        "province": "สมุทรปราการ"
+        "province": "สงขลา",
+        "amphur": "หาดใหญ่"
     },
     {
-        "amphur": "พระสมุทรเจดีย์",
-        "province": "สมุทรปราการ"
+        "province": "สงขลา",
+        "amphur": "คลองหอยโข่ง"
     },
     {
-        "amphur": "เมืองสมุทรปราการ",
-        "province": "สมุทรปราการ"
+        "province": "สงขลา",
+        "amphur": "ควนเนียง"
     },
     {
-        "amphur": "บางคนที",
-        "province": "สมุทรสงคราม"
+        "province": "สงขลา",
+        "amphur": "จะนะ"
     },
     {
-        "amphur": "เมืองสมุทรสงคราม",
-        "province": "สมุทรสงคราม"
+        "province": "ปัตตานี",
+        "amphur": "หนองจิก"
     },
     {
-        "amphur": "อัมพวา",
-        "province": "สมุทรสงคราม"
+        "province": "ปัตตานี",
+        "amphur": "เมืองปัตตานี"
     },
     {
-        "amphur": "กระทุ่มแบน",
-        "province": "สมุทรสาคร"
+        "province": "ปัตตานี",
+        "amphur": "โคกโพธิ์"
     },
     {
-        "amphur": "บ้านแพ้ว",
-        "province": "สมุทรสาคร"
+        "province": "ปัตตานี",
+        "amphur": "ทุ่งยางแดง"
     },
     {
-        "amphur": "เมืองสมุทรสาคร",
-        "province": "สมุทรสาคร"
+        "province": "ปัตตานี",
+        "amphur": "แม่ลาน"
     },
     {
-        "amphur": "เขาฉกรรจ์",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "บันนังสตา"
     },
     {
-        "amphur": "คลองหาด",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "เบตง"
     },
     {
-        "amphur": "โคกสูง",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "ยะหา"
     },
     {
-        "amphur": "ตาพระยา",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "รามัน"
     },
     {
-        "amphur": "เมืองสระแก้ว",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "กรงปินัง"
     },
     {
-        "amphur": "วังน้ำเย็น",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "กาบัง"
     },
     {
-        "amphur": "วังสมบูรณ์",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "เมืองยะลา"
     },
     {
-        "amphur": "วัฒนานคร",
-        "province": "สระแก้ว"
+        "province": "ยะลา",
+        "amphur": "ธารโต"
     },
     {
-        "amphur": "อรัญประเทศ",
-        "province": "สระแก้ว"
+        "province": "นราธิวาส",
+        "amphur": "บาเจาะ"
     },
     {
-        "amphur": "แก่งคอย",
-        "province": "สระบุรี"
+        "province": "นราธิวาส",
+        "amphur": "แว้ง"
     },
     {
-        "amphur": "เฉลิมพระเกียรติ",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "บึงสามัคคี"
     },
     {
-        "amphur": "ดอนพุด",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "ปางศิลาทอง"
     },
     {
-        "amphur": "บ้านหมอ",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "พรานกระต่าย"
     },
     {
-        "amphur": "พระพุทธบาท",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "เมืองกำแพงเพชร"
     },
     {
-        "amphur": "มวกเหล็ก",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "ลานกระบือ"
     },
     {
-        "amphur": "เมืองสระบุรี",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "โกสัมพีนคร"
     },
     {
-        "amphur": "วังม่วง",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "ขาณุวรลักษบุรี"
     },
     {
-        "amphur": "วิหารแดง",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "คลองขลุง"
     },
     {
-        "amphur": "เสาไห้",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "คลองลาน"
     },
     {
-        "amphur": "หนองแค",
-        "province": "สระบุรี"
+        "province": "กำแพงเพชร",
+        "amphur": "ทรายทองวัฒนา"
     },
     {
-        "amphur": "หนองแซง",
-        "province": "สระบุรี"
+        "province": "ตาก",
+        "amphur": "บ้านตาก"
     },
     {
-        "amphur": "หนองโดน",
-        "province": "สระบุรี"
+        "province": "ตาก",
+        "amphur": "พบพระ"
     },
     {
-        "amphur": "ค่ายบางระจัน",
-        "province": "สิงห์บุรี"
+        "province": "ตาก",
+        "amphur": "เมืองตาก"
     },
     {
-        "amphur": "ท่าช้าง",
-        "province": "สิงห์บุรี"
+        "province": "ตาก",
+        "amphur": "วังเจ้า"
     },
     {
-        "amphur": "บางระจัน",
-        "province": "สิงห์บุรี"
+        "province": "ตาก",
+        "amphur": "สามเงา"
     },
     {
-        "amphur": "พรหมบุรี",
-        "province": "สิงห์บุรี"
+        "province": "ตาก",
+        "amphur": "อุ้มผาง"
     },
     {
-        "amphur": "เมืองสิงห์บุรี",
-        "province": "สิงห์บุรี"
+        "province": "ตาก",
+        "amphur": "แม่สอด"
     },
     {
-        "amphur": "อินทร์บุรี",
-        "province": "สิงห์บุรี"
+        "province": "ตาก",
+        "amphur": "ท่าสองยาง"
     },
     {
-        "amphur": "กงไกรลาศ",
-        "province": "สุโขทัย"
+        "province": "ตาก",
+        "amphur": "แม่ระมาด"
     },
     {
-        "amphur": "คีรีมาศ",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "บ้านด่านลานหอย"
     },
     {
-        "amphur": "ทุ่งเสลี่ยม",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "ศรีนคร"
     },
     {
-        "amphur": "บ้านด่านลานหอย",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "ศรีสัชนาลัย"
     },
     {
-        "amphur": "เมืองสุโขทัย",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "ศรีสำโรง"
     },
     {
-        "amphur": "ศรีนคร",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "กงไกรลาศ"
     },
     {
-        "amphur": "ศรีสัชนาลัย",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "เมืองสุโขทัย"
     },
     {
-        "amphur": "ศรีสำโรง",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "คีรีมาศ"
     },
     {
-        "amphur": "สวรรคโลก",
-        "province": "สุโขทัย"
+        "province": "สุโขทัย",
+        "amphur": "ทุ่งเสลี่ยม"
     },
     {
-        "amphur": "ดอนเจดีย์",
-        "province": "สุพรรณบุรี"
+        "province": "สุโขทัย",
+        "amphur": "สวรรคโลก"
     },
     {
-        "amphur": "ด่านช้าง",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "เนินมะปราง"
     },
     {
-        "amphur": "เดิมบางนางบวช",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "บางระกำ"
     },
     {
-        "amphur": "บางปลาม้า",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "พรหมพิราม"
     },
     {
-        "amphur": "เมืองสุพรรณบุรี",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "วังทอง"
     },
     {
-        "amphur": "ศรีประจันต์",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "วัดโบสถ์"
     },
     {
-        "amphur": "สองพี่น้อง",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "บางกระทุ่ม"
     },
     {
-        "amphur": "สามชุก",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "เมืองพิษณุโลก"
     },
     {
-        "amphur": "หนองหญ้าไซ",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "ชาติตระการ"
     },
     {
-        "amphur": "อู่ทอง",
-        "province": "สุพรรณบุรี"
+        "province": "พิษณุโลก",
+        "amphur": "นครไทย"
     },
     {
-        "amphur": "กาญจนดิษฐ์",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "บางมูลนาก"
     },
     {
-        "amphur": "เกาะพะงัน",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "บึงนาราง"
     },
     {
-        "amphur": "เกาะสมุย",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "วังทรายพูน"
     },
     {
-        "amphur": "คีรีรัฐนิคม",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "โพธิ์ประทับช้าง"
     },
     {
-        "amphur": "เคียนซา",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "โพทะเล"
     },
     {
-        "amphur": "ชัยบุรี",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "วชิรบารมี"
     },
     {
-        "amphur": "ไชยา",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "สามง่าม"
     },
     {
-        "amphur": "ดอนสัก",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "สากเหล็ก"
     },
     {
-        "amphur": "ท่าฉาง",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "เมืองพิจิตร"
     },
     {
-        "amphur": "ท่าชนะ",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "ทับคล้อ"
     },
     {
-        "amphur": "บ้านตาขุน",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "ดงเจริญ"
     },
     {
-        "amphur": "บ้านนาเดิม",
-        "province": "สุราษฎร์ธานี"
+        "province": "พิจิตร",
+        "amphur": "ตะพานหิน"
     },
     {
-        "amphur": "บ้านนาสาร",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "บึงสามพัน"
     },
     {
-        "amphur": "พนม",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "หล่มเก่า"
     },
     {
-        "amphur": "พระแสง",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "หล่มสัก"
     },
     {
-        "amphur": "พุนพิน",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "วังโป่ง"
     },
     {
-        "amphur": "เมืองสุราษฎร์ธานี",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "ศรีเทพ"
     },
     {
-        "amphur": "วิภาวดี",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "หนองไผ่"
     },
     {
-        "amphur": "เวียงสระ",
-        "province": "สุราษฎร์ธานี"
+        "province": "เพชรบูรณ์",
+        "amphur": "เมืองเพชรบูรณ์"
     },
     {
-        "amphur": "กาบเชิง",
-        "province": "สุรินทร์"
+        "province": "เพชรบูรณ์",
+        "amphur": "เขาค้อ"
     },
     {
-        "amphur": "เขวาสินรินทร์",
-        "province": "สุรินทร์"
+        "province": "เพชรบูรณ์",
+        "amphur": "ชนแดน"
     },
     {
-        "amphur": "จอมพระ",
-        "province": "สุรินทร์"
+        "province": "เพชรบูรณ์",
+        "amphur": "น้ำหนาว"
     },
     {
-        "amphur": "ชุมพลบุรี",
-        "province": "สุรินทร์"
+        "province": "เพชรบูรณ์",
+        "amphur": "วิเชียรบุรี"
     },
     {
-        "amphur": "ท่าตูม",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "บางแพ"
     },
     {
-        "amphur": "โนนนารายณ์",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "บ้านคา"
     },
     {
-        "amphur": "บัวเชด",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "ปากท่อ"
     },
     {
-        "amphur": "ปราสาท",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "วัดเพลง"
     },
     {
-        "amphur": "พนมดงรัก",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "โพธาราม"
     },
     {
-        "amphur": "เมืองสุรินทร์",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "บ้านโป่ง"
     },
     {
-        "amphur": "รัตนบุรี",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "เมืองราชบุรี"
     },
     {
-        "amphur": "ลำดวน",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "จอมบึง"
     },
     {
-        "amphur": "ศรีณรงค์",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "ดำเนินสะดวก"
     },
     {
-        "amphur": "ศีขรภูมิ",
-        "province": "สุรินทร์"
+        "province": "ราชบุรี",
+        "amphur": "สวนผึ้ง"
     },
     {
-        "amphur": "สนม",
-        "province": "สุรินทร์"
+        "province": "กาญจนบุรี",
+        "amphur": "บ่อพลอย"
     },
     {
-        "amphur": "สังขะ",
-        "province": "สุรินทร์"
+        "province": "กาญจนบุรี",
+        "amphur": "ห้วยกระเจา"
     },
     {
-        "amphur": "สำโรงทาบ",
-        "province": "สุรินทร์"
+        "province": "กาญจนบุรี",
+        "amphur": "พนมทวน"
     },
     {
-        "amphur": "ท่าบ่อ",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "ศรีสวัสดิ์"
     },
     {
-        "amphur": "เฝ้าไร่",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "เมืองกาญจนบุรี"
     },
     {
-        "amphur": "โพธิ์ตาก",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "เลาขวัญ"
     },
     {
-        "amphur": "โพนพิสัย",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "หนองปรือ"
     },
     {
-        "amphur": "เมืองหนองคาย",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "ด่านมะขามเตี้ย"
     },
     {
-        "amphur": "รัตนวาปี",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "ทองผาภูมิ"
     },
     {
-        "amphur": "ศรีเชียงใหม่",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "ท่าม่วง"
     },
     {
-        "amphur": "สระใคร",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "ท่ามะกา"
     },
     {
-        "amphur": "สังคม",
-        "province": "หนองคาย"
+        "province": "กาญจนบุรี",
+        "amphur": "ไทรโยค"
     },
     {
-        "amphur": "นากลาง",
-        "province": "หนองบัวลำภู"
+        "province": "กาญจนบุรี",
+        "amphur": "สังขละบุรี"
     },
     {
-        "amphur": "นาวัง",
-        "province": "หนองบัวลำภู"
+        "province": "สุพรรณบุรี",
+        "amphur": "บางปลาม้า"
     },
     {
-        "amphur": "โนนสัง",
-        "province": "หนองบัวลำภู"
+        "province": "สุพรรณบุรี",
+        "amphur": "ศรีประจันต์"
     },
     {
-        "amphur": "เมืองหนองบัวลำภู",
-        "province": "หนองบัวลำภู"
+        "province": "สุพรรณบุรี",
+        "amphur": "สามชุก"
     },
     {
-        "amphur": "ศรีบุญเรือง",
-        "province": "หนองบัวลำภู"
+        "province": "สุพรรณบุรี",
+        "amphur": "หนองหญ้าไซ"
     },
     {
-        "amphur": "สุวรรณคูหา",
-        "province": "หนองบัวลำภู"
+        "province": "สุพรรณบุรี",
+        "amphur": "เมืองสุพรรณบุรี"
     },
     {
-        "amphur": "ไชโย",
-        "province": "อ่างทอง"
+        "province": "สุพรรณบุรี",
+        "amphur": "อู่ทอง"
     },
     {
-        "amphur": "ป่าโมก",
-        "province": "อ่างทอง"
+        "province": "สุพรรณบุรี",
+        "amphur": "ดอนเจดีย์"
     },
     {
-        "amphur": "โพธิ์ทอง",
-        "province": "อ่างทอง"
+        "province": "สุพรรณบุรี",
+        "amphur": "ด่านช้าง"
     },
     {
-        "amphur": "เมืองอ่างทอง",
-        "province": "อ่างทอง"
+        "province": "สุพรรณบุรี",
+        "amphur": "เดิมบางนางบวช"
     },
     {
-        "amphur": "วิเศษชัยชาญ",
-        "province": "อ่างทอง"
+        "province": "สุพรรณบุรี",
+        "amphur": "สองพี่น้อง"
     },
     {
-        "amphur": "สามโก้",
-        "province": "อ่างทอง"
+        "province": "นครปฐม",
+        "amphur": "บางเลน"
     },
     {
-        "amphur": "แสวงหา",
-        "province": "อ่างทอง"
+        "province": "นครปฐม",
+        "amphur": "พุทธมณฑล"
     },
     {
-        "amphur": "ชานุมาน",
-        "province": "อำนาจเจริญ"
+        "province": "นครปฐม",
+        "amphur": "เมืองนครปฐม"
     },
     {
-        "amphur": "ปทุมราชวงศา",
-        "province": "อำนาจเจริญ"
+        "province": "นครปฐม",
+        "amphur": "กำแพงแสน"
     },
     {
-        "amphur": "พนา",
-        "province": "อำนาจเจริญ"
+        "province": "นครปฐม",
+        "amphur": "สามพราน"
     },
     {
-        "amphur": "เมืองอำนาจเจริญ",
-        "province": "อำนาจเจริญ"
+        "province": "นครปฐม",
+        "amphur": "ดอนตูม"
     },
     {
-        "amphur": "ลืออำนาจ",
-        "province": "อำนาจเจริญ"
+        "province": "นครปฐม",
+        "amphur": "นครชัยศรี"
     },
     {
-        "amphur": "เสนางคนิคม",
-        "province": "อำนาจเจริญ"
+        "province": "สมุทรสาคร",
+        "amphur": "บ้านแพ้ว"
     },
     {
-        "amphur": "หัวตะพาน",
-        "province": "อำนาจเจริญ"
+        "province": "สมุทรสาคร",
+        "amphur": "กระทุ่มแบน"
     },
     {
-        "amphur": "กุดจับ",
-        "province": "อุดรธานี"
+        "province": "สมุทรสาคร",
+        "amphur": "เมืองสมุทรสาคร"
     },
     {
-        "amphur": "กุมภวาปี",
-        "province": "อุดรธานี"
+        "province": "สมุทรสงคราม",
+        "amphur": "บางคนที"
     },
     {
-        "amphur": "กู่แก้ว",
-        "province": "อุดรธานี"
+        "province": "สมุทรสงคราม",
+        "amphur": "เมืองสมุทรสงคราม"
     },
     {
-        "amphur": "ไชยวาน",
-        "province": "อุดรธานี"
+        "province": "สมุทรสงคราม",
+        "amphur": "อัมพวา"
     },
     {
-        "amphur": "ทุ่งฝน",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "บ้านลาด"
     },
     {
-        "amphur": "นายูง",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "แก่งกระจาน"
     },
     {
-        "amphur": "น้ำโสม",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "หนองหญ้าปล้อง"
     },
     {
-        "amphur": "โนนสะอาด",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "เมืองเพชรบุรี"
     },
     {
-        "amphur": "บ้านดุง",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "บ้านแหลม"
     },
     {
-        "amphur": "บ้านผือ",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "เขาย้อย"
     },
     {
-        "amphur": "ประจักษ์ศิลปาคม",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "ชะอำ"
     },
     {
-        "amphur": "พิบูลย์รักษ์",
-        "province": "อุดรธานี"
+        "province": "เพชรบุรี",
+        "amphur": "ท่ายาง"
     },
     {
-        "amphur": "เพ็ญ",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "บางสะพาน"
     },
     {
-        "amphur": "เมืองอุดรธานี",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "บางสะพานน้อย"
     },
     {
-        "amphur": "วังสามหมอ",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "ปราณบุรี"
     },
     {
-        "amphur": "ศรีธาตุ",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "กุยบุรี"
     },
     {
-        "amphur": "สร้างคอม",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "สามร้อยยอด"
     },
     {
-        "amphur": "หนองวัวซอ",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "เมืองประจวบคีรีขันธ์"
     },
     {
-        "amphur": "หนองแสง",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "หัวหิน"
     },
     {
-        "amphur": "หนองหาน",
-        "province": "อุดรธานี"
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "ทับสะแก"
     },
     {
-        "amphur": "ตรอน",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ทุ่งใหญ่"
     },
     {
-        "amphur": "ทองแสนขัน",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ปากพนัง"
     },
     {
-        "amphur": "ท่าปลา",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "พรหมคีรี"
     },
     {
-        "amphur": "น้ำปาด",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "พระพรหม"
     },
     {
-        "amphur": "บ้านโคก",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "พิปูน"
     },
     {
-        "amphur": "พิชัย",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "เมืองนครศรีธรรมราช"
     },
     {
-        "amphur": "ฟากท่า",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ร่อนพิบูลย์"
     },
     {
-        "amphur": "เมืองอุตรดิตถ์",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ลานสกา"
     },
     {
-        "amphur": "ลับแล",
-        "province": "อุตรดิตถ์"
+        "province": "นครศรีธรรมราช",
+        "amphur": "บางขัน"
     },
     {
-        "amphur": "ทัพทัน",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ขนอม"
     },
     {
-        "amphur": "บ้านไร่",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "สิชล"
     },
     {
-        "amphur": "เมืองอุทัยธานี",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "หัวไทร"
     },
     {
-        "amphur": "ลานสัก",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "จุฬาภรณ์"
     },
     {
-        "amphur": "สว่างอารมณ์",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ฉวาง"
     },
     {
-        "amphur": "หนองขาหย่าง",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "เฉลิมพระเกียรติ"
     },
     {
-        "amphur": "หนองฉาง",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ชะอวด"
     },
     {
-        "amphur": "ห้วยคต",
-        "province": "อุทัยธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ช้างกลาง"
     },
     {
-        "amphur": "กุดข้าวปุ้น",
-        "province": "อุบลราชธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "เชียรใหญ่"
     },
     {
-        "amphur": "เขมราฐ",
-        "province": "อุบลราชธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ถ้ำพรรณรา"
     },
     {
-        "amphur": "เขื่องใน",
-        "province": "อุบลราชธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ท่าศาลา"
     },
     {
-        "amphur": "โขงเจียม",
-        "province": "อุบลราชธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "ทุ่งสง"
     },
     {
-        "amphur": "ดอนมดแดง",
-        "province": "อุบลราชธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "นบพิตำ"
     },
     {
-        "amphur": "เดชอุดม",
-        "province": "อุบลราชธานี"
+        "province": "นครศรีธรรมราช",
+        "amphur": "นาบอน"
     },
     {
-        "amphur": "ตระการพืชผล",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "ปลายพระยา"
     },
     {
-        "amphur": "ตาลสุม",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "เมืองกระบี่"
     },
     {
-        "amphur": "ทุ่งศรีอุดม",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "ลำทับ"
     },
     {
-        "amphur": "นาจะหลวย",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "เกาะลันตา"
     },
     {
-        "amphur": "นาตาล",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "เหนือคลอง"
     },
     {
-        "amphur": "นาเยีย",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "อ่าวลึก"
     },
     {
-        "amphur": "น้ำขุ่น",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "เขาพนม"
     },
     {
-        "amphur": "น้ำยืน",
-        "province": "อุบลราชธานี"
+        "province": "กระบี่",
+        "amphur": "คลองท่อม"
     },
     {
-        "amphur": "บุณฑริก",
-        "province": "อุบลราชธานี"
+        "province": "พังงา",
+        "amphur": "เกาะยาว"
     },
     {
-        "amphur": "พิบูลมังสาหาร",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "ศรีสาคร"
     },
     {
-        "amphur": "โพธิ์ไทร",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "เมืองนราธิวาส"
     },
     {
-        "amphur": "ม่วงสามสิบ",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "ยี่งอ"
     },
     {
-        "amphur": "เมืองอุบลราชธานี",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "ระแงะ"
     },
     {
-        "amphur": "วารินชำราบ",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "รือเสาะ"
     },
     {
-        "amphur": "ศรีเมืองใหม่",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "สุคิริน"
     },
     {
-        "amphur": "สว่างวีระวงศ์",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "สุไหงโกลก"
     },
     {
-        "amphur": "สำโรง",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "สุไหงปาดี"
     },
     {
-        "amphur": "สิรินธร",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "จะแนะ"
     },
     {
-        "amphur": "เหล่าเสือโก้ก",
-        "province": "อุบลราชธานี"
+        "province": "นราธิวาส",
+        "amphur": "เจาะไอร้อง"
     },
     {
-        "amphur": "abc",
-        "province": "abc"
+        "province": "นราธิวาส",
+        "amphur": "ตากใบ"
+    },
+    {
+        "province": "กาฬสินธุ์",
+        "amphur": "กุฉินารายณ์"
+    },
+    {
+        "province": "สุรินทร์",
+        "amphur": "จอมพระ"
+    },
+    {
+        "province": "ศรีสะเกษ",
+        "amphur": "บึงบูรพ์"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "บึงโขงหลง"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "บุ่งคล้า"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "ปากคาด"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "พรเจริญ"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "ศรีวิไล"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "เมืองบึงกาฬ"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "เซกา"
+    },
+    {
+        "province": "บึงกาฬ",
+        "amphur": "โซ่พิสัย"
+    },
+    {
+        "province": "ขอนแก่น",
+        "amphur": "โคกโพธิ์ไชย"
+    },
+    {
+        "province": "อุดรธานี",
+        "amphur": "พิบูลย์รักษ์"
+    },
+    {
+        "province": "จันทบุรี",
+        "amphur": "เขาคิชฌกูฏ"
+    },
+    {
+        "province": "ฉะเชิงเทรา",
+        "amphur": "ราชสาส์น"
+    },
+    {
+        "province": "นครราชสีมา",
+        "amphur": "หนองบุญมาก"
+    },
+    {
+        "province": "พระนครศรีอยุธยา",
+        "amphur": "พระนครศรีอยุธยา"
+    },
+    {
+        "province": "พัทลุง",
+        "amphur": "ปากพะยูน"
+    },
+    {
+        "province": "กำแพงเพชร",
+        "amphur": "คลองขลุง"
+    },
+    {
+        "province": "พิจิตร",
+        "amphur": "วชิรบารมี"
+    },
+    {
+        "province": "ประจวบคีรีขันธ์",
+        "amphur": "ปราณบุรี"
+    },
+    {
+        "province": "สุราษฎร์ธานี",
+        "amphur": "เกาะพะงัน"
+    },
+    {
+        "province": "นราธิวาส",
+        "amphur": "สุไหงโกลก"
+    },
+    {
+        "province": "ยโสธร",
+        "amphur": "ทรายมูล"
+    },
+    {
+        "province": "นครราชสีมา",
+        "amphur": "บ้านเหลื่อม"
     }
 ]

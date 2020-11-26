@@ -107,20 +107,34 @@ exports.delivery = (req, res) => {
                         // ) {
                         const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
                         return {
+                            "เลขนำส่งพัสดุ": "",
+                            "หมายเลขคำสั่งซื้ออีคอมเมิร์ซ": order.id + '-' + order.page,
                             "น้ำหนักพัสดุ(กิโลกรัม)": 1,
-                            "ชื่อสกุลผู้ส่ง": "Topslim",
-                            "โทรศัพท์ผู้ส่ง": "0970576067",
-                            "ที่อยู่ผู้ส่ง": order.id + ' ' + order.page,
                             "ชื่อสกุลผู้รับ": order.name,
                             "โทรศัพท์ผู้รับ": order.tel,
                             "จังหวัดผู้รับ": xx.province,
                             "เขตอำเภอผู้รับ": xx.amphur,
                             "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
-                            "รายละเอียดพัสดุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
-                            // "มูลค่าพัสดุโดยประเมิน": '',
-                            "หมายเหตุ": order.price,
+                            "รายละเอียดพัสดุ": (order.product.filter(f => f.code == 'NC').length > 0 ? 'อาหารเสริม' : 'เสื้อผ้า') + ' ' + order.price,
+                            "มูลค่าพัสดุโดยประเมิน": order.price,
+                            "หมายเหตุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
                             "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
                         }
+                        // return {
+                        //     "น้ำหนักพัสดุ(กิโลกรัม)": 1,
+                        //     "ชื่อสกุลผู้ส่ง": "Topslim",
+                        //     "โทรศัพท์ผู้ส่ง": "0970576067",
+                        //     "ที่อยู่ผู้ส่ง": order.id + ' ' + order.page,
+                        //     "ชื่อสกุลผู้รับ": order.name,
+                        //     "โทรศัพท์ผู้รับ": order.tel,
+                        //     "จังหวัดผู้รับ": xx.province,
+                        //     "เขตอำเภอผู้รับ": xx.amphur,
+                        //     "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
+                        //     "รายละเอียดพัสดุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
+                        //     // "มูลค่าพัสดุโดยประเมิน": '',
+                        //     "หมายเหตุ": order.price,
+                        //     "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
+                        // }
                         // }
                     }
                 }).filter(f => f != null)
