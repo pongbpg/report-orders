@@ -108,15 +108,15 @@ exports.delivery = (req, res) => {
                         const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
                         return {
                             "เลขนำส่งพัสดุ": "",
-                            "หมายเลขคำสั่งซื้ออีคอมเมิร์ซ": order.id + '-' + order.page.replace('@',''),
+                            "หมายเลขคำสั่งซื้ออีคอมเมิร์ซ": order.id,
                             "น้ำหนักพัสดุ(กิโลกรัม)": 1,
                             "ชื่อสกุลผู้รับ": order.name,
                             "โทรศัพท์ผู้รับ": order.tel,
                             "จังหวัดผู้รับ": xx.province,
                             "เขตอำเภอผู้รับ": xx.amphur,
                             "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
-                            "รายละเอียดพัสดุ": (order.product.filter(f => f.code == 'NC').length > 0 ? 'อาหารเสริม' : 'เสื้อผ้า') + ' ' + order.price,
-                            "มูลค่าพัสดุโดยประเมิน": order.price,
+                            "รายละเอียดพัสดุ": (order.product.filter(f => f.code == 'NC').length > 0 ? 'อาหารเสริม' : 'เสื้อผ้า') + ' ' + order.page.replace('@', '') + order.price,
+                            "มูลค่าพัสดุโดยประเมิน": "",
                             "หมายเหตุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
                             "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
                         }
