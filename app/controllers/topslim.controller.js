@@ -115,7 +115,7 @@ exports.delivery = (req, res) => {
                             "จังหวัดผู้รับ": xx.province,
                             "เขตอำเภอผู้รับ": xx.amphur,
                             "ที่อยู่ผู้รับ": order.addr.replace(/\n/g, ' '),
-                            "รายละเอียดพัสดุ": (order.product.filter(f => f.code == 'NC').length > 0 ? 'อาหารเสริม' : 'เสื้อผ้า') + ' ' + order.page.replace('@', '') + order.price,
+                            "รายละเอียดพัสดุ": (order.product.filter(f => f.code == 'NC').length > 0 ? 'อาหารเสริม' : 'เสื้อผ้า') + ',' + order.price + ',' + order.page.replace('@', ''),
                             "มูลค่าพัสดุโดยประเมิน": "",
                             "หมายเหตุ": `${order.product.map(p => p.code + '(' + p.amount + ')')}`,
                             "จำนวนเงินที่ชำระปลายทาง (COD)": order.bank.indexOf('COD') > -1 ? order.price : ''
