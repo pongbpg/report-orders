@@ -2,6 +2,8 @@ const moment = require('moment');
 const request = require("request");
 const db = require('../../config/firebase').topslim;
 const _ = require('underscore');
+const { customAlphabet } = require('nanoid');
+const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 9);
 moment.locale('th');
 exports.delivery = (req, res) => {
     db.collection('orders')
@@ -26,7 +28,7 @@ exports.delivery = (req, res) => {
                     const bName = b.name.substr(0, 1) + b.orderDate + fourDigit(b.orderNo);
                     return aName > bName ? 1 : -1;
                 })
-            if (req.query.file != 'flash' && req.query.file != 'jt') {
+            if (req.query.file != 'flash' && req.query.file != 'jt' && req.query.file != 'ninja') {
                 orderx = orderx.map(order => {
                     // const data = doc.data();
                     const text = `${index + 1}.${order.name} ${order.tel}\n${order.addr.replace(/\n/g, ' ')}\n${order.bank}${order.banks.length > 1 ? ' (' + formatMoney(order.price, 0) + ')' : ''} บาท\n${order.product.map(p => p.code + '=' + p.amount)}\nREF:${order.id} (${order.page})`
@@ -153,6 +155,48 @@ exports.delivery = (req, res) => {
                 // // res.json(ws);
                 var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
                 var filename = 'JT_' + req.query.startDate + '_' + req.query.payment + '.xlsx';
+                res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                res.type('application/octet-stream');
+                res.send(wbout);
+            } else if (req.query.file == 'ninja') {
+                orderx = orderx.map(order => {
+                    if (order.name.substr(0, 1) == 'V') {
+                        const pc = order.addr.match(/[0-9]{5}/g);
+                        let postcode = '';
+                        if (pc != null) {
+                            postcode = pc[pc.length - 1]
+                        }
+                        const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
+                        return {
+                            "order no": nanoid(),
+                            "name": order.name,
+                            "contact": order.tel,
+                            "email": "",
+                            "address": `${order.addr.replace(/\n/g, ' ')} ${order.product.map(p => p.code + '(' + p.amount + ')')}, ${order.price}, ${order.page.replace('@', '')}`,
+                            "postcode": postcode,
+                            "size": "S",
+                            "comment": order.id,
+                            "cod": order.bank.indexOf('COD') > -1 ? order.price : '',
+                            "insurance": "",
+                            "weight": 1,
+                        }
+                    }
+                }).filter(f => f != null)
+                // res.json(orderx)
+                const XLSX = require('xlsx');
+                // /* create workbook & set props*/
+                const wb = { SheetNames: [], Sheets: {} };
+
+                // // /* create file 'in memory' */
+                // for (var prop in result) {
+                var ws = XLSX.utils.json_to_sheet(orderx);
+
+                // wb.Sheets['Order Template']=ws;
+                XLSX.utils.book_append_sheet(wb, ws, 'Order Template');
+                // }
+                // // res.json(ws);
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                var filename = 'NINJA_' + req.query.startDate + '_' + req.query.payment + '.xlsx';
                 res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
                 res.type('application/octet-stream');
                 res.send(wbout);
