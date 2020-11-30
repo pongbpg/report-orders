@@ -168,7 +168,7 @@ exports.delivery = (req, res) => {
                         }
                         const xx = queryProvAmpr(order.addr.replace(/\n/g, ' '));
                         return {
-                            "order no": nanoid(),
+                            "order no": order.id.split('-')[1].substr(0, 9),
                             "name": order.name,
                             "contact": order.tel,
                             "email": "",
