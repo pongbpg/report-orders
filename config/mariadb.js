@@ -2,10 +2,10 @@
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'yaumjai.com',
-    user: 'storewerk',
+    user: 'tsstore',
     password: 'password',
     connectionLimit: 5,
-    database: 'storewerk',
+    database: 'tsstore',
     charset: 'UTF8'
 });
 exports.db = pool;
