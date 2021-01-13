@@ -2297,7 +2297,7 @@ exports.page2 = (req, res) => {
                 let data = [];
                 snapShot.forEach(doc => {
                     const xx = queryProvAmpr(doc.data().addr);
-                    const pc = doc2.data().addr.match(/[0-9]{5}/g);
+                    const pc = doc.data().addr.match(/[0-9]{5}/g);
                     let postcode = '';
                     if (pc != null) {
                         postcode = pc[pc.length - 1]
