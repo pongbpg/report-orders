@@ -2425,7 +2425,7 @@ exports.team2 = (req, res) => {
                 // }
                 // // res.json(ws);
                 var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
-                var filename = 'data2_' + req.query.page + '.xlsx';
+                var filename = 'data2_' + req.query.team + '.xlsx';
                 res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
                 res.type('application/octet-stream');
                 res.send(wbout);
