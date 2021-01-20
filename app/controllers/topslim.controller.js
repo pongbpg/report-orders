@@ -2375,6 +2375,63 @@ exports.page2 = (req, res) => {
             })
     else res.json(null)
 }
+exports.team2 = (req, res) => {
+    const startDate = moment(req.query.startDate).isValid() ? req.query.startDate : false
+    const endDate = moment(req.query.endDate).isValid() ? req.query.endDate : false
+    if (startDate && endDate)
+        db.collection('orders')
+            .where('orderDate', '>=', startDate)
+            .where('orderDate', '<=', endDate)
+            .where('team','==',req.query.team)
+            .get()
+            .then(snapShot => {
+                let data = [];
+                snapShot.forEach(doc => {
+                    const xx = queryProvAmpr(doc.data().addr);
+                    const pc = doc.data().addr.match(/[0-9]{5}/g);
+                    let postcode = '';
+                    if (pc != null) {
+                        postcode = pc[pc.length - 1]
+                    }
+                    data.push({
+                        id: doc.id,
+                        customername: doc.data().name,
+                        customertel: doc.data().tel,
+                        customeraddr: doc.data().addr,
+                        orderDate: doc.data().orderDate,
+                        price: doc.data().price,
+                        cod: doc.data().cod,
+                        admin: doc.data().admin,
+                        social: doc.data().fb,
+                        newcustomer: doc.data().channel,
+                        page: req.query.page,
+                        tracking: doc.data().tracking,
+                        courier: doc.data().expressName,
+                        amphur: xx.amphur,
+                        province: xx.province,
+                        postcode
+                    })
+                })
+                const XLSX = require('xlsx');
+                // /* create workbook & set props*/
+                const wb = { SheetNames: [], Sheets: {} };
+
+                // // /* create file 'in memory' */
+                // for (var prop in result) {
+                var ws = XLSX.utils.json_to_sheet(data);
+
+                // wb.Sheets['Order Template']=ws;
+                XLSX.utils.book_append_sheet(wb, ws, 'data');
+                // }
+                // // res.json(ws);
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                var filename = 'data2_' + req.query.page + '.xlsx';
+                res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                res.type('application/octet-stream');
+                res.send(wbout);
+            })
+    else res.json(null)
+}
 const queryProvAmpr = (addr) => {
     let amphur = 'ไม่พบอำเภอ';
     let province = 'ไม่พบจังหวัด';
