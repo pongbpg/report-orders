@@ -2382,7 +2382,7 @@ exports.team2 = (req, res) => {
         db.collection('orders')
             .where('orderDate', '>=', startDate)
             .where('orderDate', '<=', endDate)
-            .where('team','==',req.query.team)
+            .where('team', '==', req.query.team)
             .get()
             .then(snapShot => {
                 let data = [];
@@ -2404,7 +2404,7 @@ exports.team2 = (req, res) => {
                         admin: doc.data().admin,
                         social: doc.data().fb,
                         newcustomer: doc.data().channel,
-                        page: req.query.page,
+                        page: doc.data().page.replace('@', ''),
                         tracking: doc.data().tracking,
                         courier: doc.data().expressName,
                         amphur: xx.amphur,
