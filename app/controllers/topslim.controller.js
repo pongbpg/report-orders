@@ -2382,7 +2382,7 @@ exports.team2 = (req, res) => {
         db.collection('orders')
             .where('orderDate', '>=', startDate)
             .where('orderDate', '<=', endDate)
-            .where('team', '==', req.query.team)
+            // .where('team', '==', req.query.team)
             .get()
             .then(snapShot => {
                 let data = [];
@@ -2396,7 +2396,7 @@ exports.team2 = (req, res) => {
                     data.push({
                         id: doc.id,
                         customername: doc.data().name,
-                        customertel: doc.data().tel,
+                        customertel: '+66' + doc.data().tel,
                         customeraddr: doc.data().addr,
                         orderDate: doc.data().orderDate,
                         price: doc.data().price,
@@ -2409,7 +2409,9 @@ exports.team2 = (req, res) => {
                         courier: doc.data().expressName,
                         amphur: xx.amphur,
                         province: xx.province,
-                        postcode
+                        postcode,
+                        gen: 'F',
+                        age: Math.floor(Math.random() * 30) + 25
                     })
                 })
                 const XLSX = require('xlsx');
