@@ -2161,7 +2161,24 @@ exports.covid = (req, res) => {
                     date: doc.data().orderDate.substring(6, 8)
                 })
             })
-            res.json(orders)
+            const XLSX = require('xlsx');
+            // /* create workbook & set props*/
+            const wb = { SheetNames: [], Sheets: {} };
+
+            // // /* create file 'in memory' */
+            // for (var prop in result) {
+            var ws = XLSX.utils.json_to_sheet(orders);
+
+            // wb.Sheets['Order Template']=ws;
+            XLSX.utils.book_append_sheet(wb, ws, 'data');
+            // }
+            // // res.json(ws);
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+            var filename = 'data_com.xlsx';
+            res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+            res.type('application/octet-stream');
+            res.send(wbout);
+            // res.json(orders)
         })
 }
 exports.jt = (req, res) => {
