@@ -2187,8 +2187,10 @@ exports.move = (req, res) => {
         .where('page', '==', 'TGN')
         .get()
         .then(snapShot => {
+            let data = [];
             snapShot.forEach(doc => {
-                console.log(doc.id)
+                data.push(doc.id)
+                res.json(data)
             })
         })
 }
