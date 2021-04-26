@@ -2190,8 +2190,8 @@ exports.move = (req, res) => {
             let data = [];
             snapShot.forEach(doc => {
                 data.push(doc.id)
-                res.json(data)
             })
+            res.json(data)
         })
 }
 exports.jt = (req, res) => {
