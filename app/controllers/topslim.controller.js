@@ -2190,6 +2190,7 @@ exports.move = (req, res) => {
             let data = [];
             snapShot.forEach(doc => {
                 data.push(doc.id)
+                doc.ref.update({ orderDate: '20210426'})
             })
             res.json(data)
         })
