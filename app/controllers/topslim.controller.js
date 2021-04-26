@@ -2130,7 +2130,7 @@ exports.covid = (req, res) => {
         .get()
         .then(snapShot => {
             let orders = []
-            const specials = ["NC","AF", "AP", "COVID100", "COVID120", "COVID250", "COVID300", "COVID450", "COVID480", "COVID50", "COVID500", "COVID60", "COVID750", "CV", "FS", "FTJ", "LS400", "LS60", "MF", "PAF", "PROK"];
+            const specials = ["NC", "AF", "AP", "COVID100", "COVID120", "COVID250", "COVID300", "COVID450", "COVID480", "COVID50", "COVID500", "COVID60", "COVID750", "CV", "FS", "FTJ", "LS400", "LS60", "MF", "PAF", "PROK"];
             snapShot.forEach(doc => {
                 const pdLen = doc.data().product.length;
                 const covid = ((doc.data().product.filter(f => specials.indexOf(f.code) > -1 || f.typeId == 'EVENT').length == pdLen)
@@ -2179,6 +2179,17 @@ exports.covid = (req, res) => {
             res.type('application/octet-stream');
             res.send(wbout);
             // res.json(orders)
+        })
+}
+exports.move = (req, res) => {
+    db.collection('orders')
+        .where('orderDate', '==', '20210427')
+        .where('page', '==', 'TGN')
+        .get()
+        .then(snapShot => {
+            snapShot.forEach(doc => {
+                console.log(doc.id)
+            })
         })
 }
 exports.jt = (req, res) => {
