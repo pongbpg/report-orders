@@ -2182,19 +2182,28 @@ exports.covid = (req, res) => {
         })
 }
 exports.move = (req, res) => {
-    db.collection('orders')
-        .where('orderDate', '==', '20210427')
-        .where('page', '==', '@TO01')
-        .where('price', '==', 1350)
-        .get()
-        .then(snapShot => {
-            let data = [];
-            snapShot.forEach(doc => {
-                data.push(doc.id)
-                doc.ref.update({ page: 'TO01' })
+    if (Number(req.query.date) > 0 && Number(req.query.date) < 32 && req.query.admin && req.query.page && !isNaN(req.query.price)) {
+        const date = '202104' + (req.query.date || '27');
+        const limit = Math.round(req.query.price / 890);
+        db.collection('orders')
+            .where('orderDate', '==', date)
+            .where('page', '==', 'TO01')
+            .where('price', '==', 890)
+            .where('admin', '==', req.query.admin)
+            .limit(req.query.limit || limit)
+            .get()
+            .then(snapShot => {
+                let data = [];
+                let price = 0;
+                snapShot.forEach(doc => {
+                    data.push(doc.id)
+                    price += doc.data().price
+                    // doc.ref.update({ page: req.query.page.toUpperCase() })
+                })
+                res.json({ data, price, page: req.query.page.toUpperCase() })
             })
-            res.json(data)
-        })
+    }
+
 }
 exports.jt = (req, res) => {
     const fs = require('fs');
