@@ -2182,15 +2182,15 @@ exports.covid = (req, res) => {
         })
 }
 exports.move = (req, res) => {
-    if (Number(req.query.date) > 0 && Number(req.query.date) < 32 && req.query.admin && req.query.page && !isNaN(req.query.price)) {
-        const date = '202104' + (req.query.date || '27');
-        const limit = Math.round(req.query.price / 890);
+    if (req.query.admin && req.query.page && req.query.team) {
+        // const date = '202104' + (req.query.date || '27');
+        // const limit = Math.round(req.query.price / 890);
         db.collection('orders')
-            .where('orderDate', '==', date)
+            .where('cutoffDate', '==', '20210428')
             .where('page', '==', req.query.from || 'TO01')
-            .where('price', '==', 890)
+            // .where('price', '==', 890)
             .where('admin', '==', req.query.admin)
-            .limit(req.query.limit || limit)
+            // .limit(req.query.limit || limit)
             .get()
             .then(snapShot => {
                 let data = [];
@@ -2198,7 +2198,7 @@ exports.move = (req, res) => {
                 snapShot.forEach(doc => {
                     data.push(doc.id)
                     price += doc.data().price
-                    // doc.ref.update({ page: req.query.page.toUpperCase() })
+                    doc.ref.update({ page: req.query.page.toUpperCase(), team: req.query.team })
                 })
                 res.json({ data, price, page: req.query.page.toUpperCase() })
             })
