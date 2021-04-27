@@ -23,5 +23,5 @@ module.exports = function (app) {
     app.get('/page', ctrl.page)
     app.get('/page2', ctrl.page2)
     app.get('/team2', ctrl.team2)
-    // app.get('/move',ctrl.move)
+    app.get('/move',ctrl.move)
 }

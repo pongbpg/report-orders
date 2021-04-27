@@ -2184,13 +2184,13 @@ exports.covid = (req, res) => {
 exports.move = (req, res) => {
     db.collection('orders')
         .where('orderDate', '==', '20210427')
-        .where('page', '==', 'TGN')
+        .where('page', '==', '@TG01')
         .get()
         .then(snapShot => {
             let data = [];
             snapShot.forEach(doc => {
                 data.push(doc.id)
-                doc.ref.update({ orderDate: '20210426', page: req.query.page || 'TG01' })
+                doc.ref.update({ orderDate: '20210426', page: req.query.page || 'TMN' })
             })
             res.json(data)
         })
