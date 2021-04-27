@@ -2185,7 +2185,7 @@ exports.move = (req, res) => {
     db.collection('orders')
         .where('orderDate', '==', '20210427')
         .where('page', '==', '@TO01')
-        .where('price', '==', 890)
+        .where('price', '==', 1350)
         .get()
         .then(snapShot => {
             let data = [];
