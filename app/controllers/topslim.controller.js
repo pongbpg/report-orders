@@ -2187,7 +2187,7 @@ exports.move = (req, res) => {
         const limit = Math.round(req.query.price / 890);
         db.collection('orders')
             .where('orderDate', '==', date)
-            .where('page', '==', 'TO01')
+            .where('page', '==', req.query.from || 'TO01')
             .where('price', '==', 890)
             .where('admin', '==', req.query.admin)
             .limit(req.query.limit || limit)
