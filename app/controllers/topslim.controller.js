@@ -2205,6 +2205,26 @@ exports.move = (req, res) => {
     }
 
 }
+exports.testbug = (req, res) => {
+    db.collection('payments')
+        .where('name', '==', resultOrder.data.banks[b].name)
+        .where('date', '==', resultOrder.data.banks[b].date)
+        .where('time', '==', resultOrder.data.banks[b].time)
+        .where('price', '==', resultOrder.data.banks[b].price)
+        .get()
+        .then(snapShot => {
+            let obj = []
+            snapShot.forEach(doc => {
+                obj.push({
+                    type: 'text',
+                    text: `⚠กรุณาตรวจสอบรายการโอนนี้มีซ้ำ⚠
+รหัสสั่งซื้อ:${doc.data().orderId} เพจ:${doc.data().page} Admin:${doc.data().admin}
+รายการที่ซ้ำ: ${doc.data().name} ${moment(doc.data().date, 'YYYYMMDD').format('DD/MM/YY')} ${doc.data().time} จำนวน ${formatMoney(doc.data().price, 0)} บาท`
+                })
+            })
+            res.json(obj)
+        })
+}
 exports.jt = (req, res) => {
     const fs = require('fs');
     let addr = req.body.addr.replace(/\n/g, ' ');;
