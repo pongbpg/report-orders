@@ -2208,7 +2208,7 @@ exports.move = (req, res) => {
 exports.testbug = (req, res) => {
     db.collection('payments')
         .where('name', '==', 'SCB')
-        .where('date', '==', '280421')
+        .where('date', '==', '20210427')
         .where('time', '==', '16.03')
         .where('price', '==', 2480)
         .get()
