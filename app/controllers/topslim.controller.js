@@ -2224,6 +2224,7 @@ exports.testbug = (req, res) => {
             })
             res.json(obj)
         })
+        .catch(err => res.json(err))
 }
 exports.jt = (req, res) => {
     const fs = require('fs');
