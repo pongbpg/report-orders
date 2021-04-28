@@ -282,7 +282,7 @@ exports.dailySayHi = (req, res) => {
                     // console.log(admins)
                     let qdb = db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''));
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
                     if (role != 'owner') {
                         qdb = qdb.where('userId', '==', auth.data().adminId)
                     }
