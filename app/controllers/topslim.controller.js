@@ -2209,8 +2209,8 @@ exports.testbug = (req, res) => {
     db.collection('payments')
         .where('name', '==', 'SCB')
         .where('date', '==', '20210427')
-        .where('time', '==', '16.03')
-        .where('price', '==', 2480)
+        .where('time', '==', '09.03')
+        .where('price', '==', 890)
         .get()
         .then(snapShot => {
             let obj = []
