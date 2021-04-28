@@ -280,26 +280,29 @@ exports.dailySayHi = (req, res) => {
                     //     // console.log(pages)
                     // }
                     // console.log(admins)
-                    db.collection('orders')
+                    let qdb = db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
-                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-                        .get()
+                        .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''));
+                    if (role != 'owner') {
+                        qdb = qdb.where('userId', '==', auth.data().adminId)
+                    }
+                    qdb.get()
                         .then(snapShot => {
                             let orders = []
                             snapShot.forEach(doc => {
                                 const page = auth.data().pages.indexOf(doc.data().page.replace('@', '')) > -1;
                                 const admin = auth.data().adminId == doc.data().userId;
-                                if (role == 'owner' || page || admin)
-                                    orders.push({
-                                        id: doc.id, ...doc.data(),
-                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                        return: doc.data().return ? true : false,
-                                        totalFreight: doc.get('expressName')
-                                            ? (doc.get('expressName') == 'FLASH'
-                                                ? doc.get('freight') + (doc.get('codFee') * 1.07)
-                                                : doc.get('totalFreight')
-                                            ) : 0
-                                    })
+                                // if (role ==  'owner' || page || admin)
+                                orders.push({
+                                    id: doc.id, ...doc.data(),
+                                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                    return: doc.data().return ? true : false,
+                                    totalFreight: doc.get('expressName')
+                                        ? (doc.get('expressName') == 'FLASH'
+                                            ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                            : doc.get('totalFreight')
+                                        ) : 0
+                                })
                             })
                             r.expr(orders)
                                 // .filter(f => {
