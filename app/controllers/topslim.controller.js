@@ -269,6 +269,7 @@ exports.dailySayHi = (req, res) => {
             .then(auth => {
                 if (auth.exists) {
                     const role = auth.data().role;
+                    const lineId = auth.data().adminId;
                     // if (role == 'owner') {
                     //     pages = admins.map(m => m.id)
                     // } else {
@@ -283,121 +284,125 @@ exports.dailySayHi = (req, res) => {
                     let qdb = db.collection('orders')
                         .where('orderDate', '>=', req.query.startDate.replace(/-/g, ''))
                         .where('orderDate', '<=', req.query.endDate.replace(/-/g, ''))
-                    if (role != 'owner') {
-                        qdb = qdb.where('userId', '==', auth.data().adminId)
+                    if (role != 'owner' && lineId) {
+                        qdb = qdb.where('userId', '==', lineId)
                     }
-                    qdb.get()
-                        .then(snapShot => {
-                            let orders = []
-                            snapShot.forEach(doc => {
-                                const page = auth.data().pages.indexOf(doc.data().page.replace('@', '')) > -1;
-                                const admin = auth.data().adminId == doc.data().userId;
-                                // if (role ==  'owner' || page || admin)
-                                orders.push({
-                                    id: doc.id, ...doc.data(),
-                                    orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
-                                    return: doc.data().return ? true : false,
-                                    totalFreight: doc.get('expressName')
-                                        ? (doc.get('expressName') == 'FLASH'
-                                            ? doc.get('freight') + (doc.get('codFee') * 1.07)
-                                            : doc.get('totalFreight')
-                                        ) : 0
+                    if (role == 'owner' || lineId) {
+                        qdb.get()
+                            .then(snapShot => {
+                                let orders = []
+                                snapShot.forEach(doc => {
+                                    const page = auth.data().pages.indexOf(doc.data().page.replace('@', '')) > -1;
+                                    const admin = auth.data().adminId == doc.data().userId;
+                                    // if (role ==  'owner' || page || admin)
+                                    orders.push({
+                                        id: doc.id, ...doc.data(),
+                                        orderDate: req.query.sum == 'all' ? 'SUM' : doc.data().orderDate,
+                                        return: doc.data().return ? true : false,
+                                        totalFreight: doc.get('expressName')
+                                            ? (doc.get('expressName') == 'FLASH'
+                                                ? doc.get('freight') + (doc.get('codFee') * 1.07)
+                                                : doc.get('totalFreight')
+                                            ) : 0
+                                    })
                                 })
+                                r.expr(orders)
+                                    // .filter(f => {
+                                    //     return r.expr(pages).contains(f('page'))
+                                    // })
+                                    // .filter(f => {
+                                    //     return r.branch(r.expr(role).eq('owner'),
+                                    //         true,
+                                    //         r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
+                                    //     )
+                                    // })
+                                    .group(g => {
+                                        return g.pluck('page', 'orderDate', 'admin')
+                                    }).ungroup()
+                                    .map(m => {
+                                        return m('group').merge(m2 => {
+                                            return {
+                                                count: m('reduction').filter({ return: false }).count(),
+                                                price: m('reduction').filter({ return: false }).sum('price'),
+                                                countReturn: m('reduction').filter({ return: true }).count(),
+                                                priceReturn: m('reduction').filter({ return: true }).sum('price'),
+                                                freight: m('reduction').sum('totalFreight'),//.add(m('reduction').filter({ return: true }).count().mul(12.5)),
+                                                // promote: m('reduction').sum('promote'),
+                                                interest: m('reduction').sum('interest')
+                                            }
+                                        }).merge(r.branch(m('group')('page').match('@').eq(null), {
+                                            fb: true,
+                                            page: m('group')('page')
+                                        }, {
+                                            fb: false,
+                                            page: m('group')('page').split('@')(1)
+                                        }))
+                                    })
+                                    .group(g => {
+                                        return g.pluck('page', 'orderDate', 'admin')
+                                    })
+                                    .ungroup()
+                                    .map(m => {
+                                        return m('group').merge(m2 => {
+                                            return {
+                                                priceFb: m('reduction').filter({ fb: true }).sum('price'),
+                                                countFb: m('reduction').filter({ fb: true }).sum('count'),
+                                                priceFbRt: m('reduction').filter({ fb: true }).sum('priceReturn'),
+                                                countFbRt: m('reduction').filter({ fb: true }).sum('countReturn'),
+                                                priceLine: m('reduction').filter({ fb: false }).sum('price'),
+                                                countLine: m('reduction').filter({ fb: false }).sum('count'),
+                                                priceLineRt: m('reduction').filter({ fb: false }).sum('priceReturn'),
+                                                countLineRt: m('reduction').filter({ fb: false }).sum('countReturn'),
+                                                priceAll: m('reduction').sum('price'),
+                                                countAll: m('reduction').sum('count'),
+                                                priceRt: m('reduction').sum('priceReturn'),
+                                                countRt: m('reduction').sum('countReturn'),
+                                                freight: m('reduction').sum('freight'),
+                                                interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
+                                                interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
+                                                team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
+
+                                            }
+                                        })
+                                    })
+                                    .do(d => {
+                                        return d.merge(m => {
+                                            return {
+                                                // delivery: r.expr(costs).filter(f => {
+                                                //     return f('page').eq(m('page'))
+                                                //         .and(f('date').eq(m('orderDate')))
+                                                // }).sum('delivery'),
+                                                priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
+                                                priceXRt: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceReturn'),
+                                                countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
+                                            }
+                                        })
+                                    })
+                                    .orderBy('orderDate', 'team', r.desc('priceX'), 'page', r.desc('priceAll'))
+                                    .run()
+                                    .then(result => {
+                                        const pages = result.map(m => {
+                                            const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
+                                            // console.log(m.page)
+                                            return {
+                                                ...m,
+                                                orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll'),
+                                                page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
+                                            }
+                                        })
+
+                                        res.ireport("topslim/dailySayHi.jrxml", req.query.file || "pdf", pages, {
+                                            OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
+                                            START_DATE: moment(req.query.startDate).format('LL'),
+                                            END_DATE: moment(req.query.endDate).format('LL'),
+                                        });
+                                        // res.json(result)
+                                    })
+
                             })
-                            r.expr(orders)
-                                // .filter(f => {
-                                //     return r.expr(pages).contains(f('page'))
-                                // })
-                                // .filter(f => {
-                                //     return r.branch(r.expr(role).eq('owner'),
-                                //         true,
-                                //         r.expr(sayhiPages).contains(f('orderDate').add(f('page')))
-                                //     )
-                                // })
-                                .group(g => {
-                                    return g.pluck('page', 'orderDate', 'admin')
-                                }).ungroup()
-                                .map(m => {
-                                    return m('group').merge(m2 => {
-                                        return {
-                                            count: m('reduction').filter({ return: false }).count(),
-                                            price: m('reduction').filter({ return: false }).sum('price'),
-                                            countReturn: m('reduction').filter({ return: true }).count(),
-                                            priceReturn: m('reduction').filter({ return: true }).sum('price'),
-                                            freight: m('reduction').sum('totalFreight'),//.add(m('reduction').filter({ return: true }).count().mul(12.5)),
-                                            // promote: m('reduction').sum('promote'),
-                                            interest: m('reduction').sum('interest')
-                                        }
-                                    }).merge(r.branch(m('group')('page').match('@').eq(null), {
-                                        fb: true,
-                                        page: m('group')('page')
-                                    }, {
-                                        fb: false,
-                                        page: m('group')('page').split('@')(1)
-                                    }))
-                                })
-                                .group(g => {
-                                    return g.pluck('page', 'orderDate', 'admin')
-                                })
-                                .ungroup()
-                                .map(m => {
-                                    return m('group').merge(m2 => {
-                                        return {
-                                            priceFb: m('reduction').filter({ fb: true }).sum('price'),
-                                            countFb: m('reduction').filter({ fb: true }).sum('count'),
-                                            priceFbRt: m('reduction').filter({ fb: true }).sum('priceReturn'),
-                                            countFbRt: m('reduction').filter({ fb: true }).sum('countReturn'),
-                                            priceLine: m('reduction').filter({ fb: false }).sum('price'),
-                                            countLine: m('reduction').filter({ fb: false }).sum('count'),
-                                            priceLineRt: m('reduction').filter({ fb: false }).sum('priceReturn'),
-                                            countLineRt: m('reduction').filter({ fb: false }).sum('countReturn'),
-                                            priceAll: m('reduction').sum('price'),
-                                            countAll: m('reduction').sum('count'),
-                                            priceRt: m('reduction').sum('priceReturn'),
-                                            countRt: m('reduction').sum('countReturn'),
-                                            freight: m('reduction').sum('freight'),
-                                            interestFb: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('fb').default(0),
-                                            interestLine: r.expr(sayhis).filter({ date: m('group')('orderDate').add(m('group')('page')) }).sum('line').default(0),
-                                            team: r.expr(admins).filter({ id: m('group')('page') })(0)('team'),
-
-                                        }
-                                    })
-                                })
-                                .do(d => {
-                                    return d.merge(m => {
-                                        return {
-                                            // delivery: r.expr(costs).filter(f => {
-                                            //     return f('page').eq(m('page'))
-                                            //         .and(f('date').eq(m('orderDate')))
-                                            // }).sum('delivery'),
-                                            priceX: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceAll'),
-                                            priceXRt: d.filter({ page: m('page'), orderDate: m('orderDate') }).sum('priceReturn'),
-                                            countAdmin: d.filter({ page: m('page'), orderDate: m('orderDate') }).group('admin').ungroup().count()
-                                        }
-                                    })
-                                })
-                                .orderBy('orderDate', 'team', r.desc('priceX'), 'page', r.desc('priceAll'))
-                                .run()
-                                .then(result => {
-                                    const pages = result.map(m => {
-                                        const orderDate = m.orderDate.substr(0, 4) + '-' + m.orderDate.substr(4, 2) + '-' + m.orderDate.substr(6, 2)
-                                        // console.log(m.page)
-                                        return {
-                                            ...m,
-                                            orderDate: req.query.sum == 'all' ? 'SUM' : moment(orderDate).format('ll'),
-                                            page: m.page + ' ' + admins.find(f => f.id === m.page).admin,
-                                        }
-                                    })
-
-                                    res.ireport("topslim/dailySayHi.jrxml", req.query.file || "pdf", pages, {
-                                        OUTPUT_NAME: 'dailySayHi' + req.query.startDate.replace(/-/g, '') + "_" + req.query.endDate.replace(/-/g, ''),
-                                        START_DATE: moment(req.query.startDate).format('LL'),
-                                        END_DATE: moment(req.query.endDate).format('LL'),
-                                    });
-                                    // res.json(result)
-                                })
-
-                        })
+                    } else {
+                        res.send('ไม่มีข้อมูลในรายงานนี้ของคุณ')
+                    }
                 } else {
                     res.send('คุณไม่มีสิทธิ์ดูรายงานนี้')
                 }
