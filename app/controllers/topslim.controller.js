@@ -2207,10 +2207,10 @@ exports.move = (req, res) => {
 }
 exports.testbug = (req, res) => {
     db.collection('payments')
-        .where('name', '==', resultOrder.data.banks[b].name)
-        .where('date', '==', resultOrder.data.banks[b].date)
-        .where('time', '==', resultOrder.data.banks[b].time)
-        .where('price', '==', resultOrder.data.banks[b].price)
+        .where('name', '==', 'SCB')
+        .where('date', '==', '280421')
+        .where('time', '==', '16.03')
+        .where('price', '==', 2480)
         .get()
         .then(snapShot => {
             let obj = []
