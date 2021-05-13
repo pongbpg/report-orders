@@ -2166,7 +2166,8 @@ exports.covid = (req, res) => {
                     admin: doc.data().admin,
                     page: doc.data().page.replace('@', ''),
                     team: doc.data().team,
-                    date: doc.data().orderDate.substring(6, 8)
+                    date: doc.data().orderDate.substring(6, 8),
+                    channel: doc.data().page.indexOf('@') > -1 ? 'LINE' : "FB"
                 })
             })
             const XLSX = require('xlsx');
