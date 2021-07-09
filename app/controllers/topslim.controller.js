@@ -2329,7 +2329,7 @@ exports.crmAdmin = (req, res) => {
                     var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Topslimstore.com" } });
                     var filename = 'crm_' + data[0].admin + '_' + startDate + '_' + endDate + '.xlsx';
                     // res.setHeader("Content-Type", "application/vnd.ms-excel; charset=utf-8");
-                    res.setHeader('Content-Disposition', 'attachment;filename*=UTF-8\'\'' + filename);
+                    res.setHeader('Content-Disposition', 'attachment;filename=' + encodeURI(filename));
                     res.type('application/octet-stream');
                     res.send(wbout);
                 } else {
