@@ -2326,8 +2326,9 @@ exports.crmAdmin = (req, res) => {
                     XLSX.utils.book_append_sheet(wb, ws, 'data');
                     // }
                     // // res.json(ws);
-                    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Topslimstore.com" } });
                     var filename = 'crm_' + data[0].admin + '_' + startDate + '_' + endDate + '.xlsx';
+                    res.setHeader("Content-Type", "application/vnd.ms-excel; charset=UTF-8");
                     res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
                     res.type('application/octet-stream');
                     res.send(wbout);
