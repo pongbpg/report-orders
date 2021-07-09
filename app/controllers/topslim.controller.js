@@ -2282,14 +2282,15 @@ exports.fixCodAmount = (req, res) => {
             res.json(true)
         })
 }
-exports.page = (req, res) => {
+exports.crmAdmin = (req, res) => {
     const startDate = moment(req.query.startDate).isValid() ? req.query.startDate : false
     const endDate = moment(req.query.endDate).isValid() ? req.query.endDate : false
-    if (startDate && endDate)
+    const adminId = req.query.adminId;
+    if (startDate && endDate && adminId)
         db.collection('orders')
             .where('orderDate', '>=', startDate)
             .where('orderDate', '<=', endDate)
-            .where('page', '==', req.query.page.toUpperCase() || '')
+            .where('userId', '==', adminId)
             .get()
             .then(snapShot => {
                 let data = [];
@@ -2304,54 +2305,36 @@ exports.page = (req, res) => {
                         cod: doc.data().cod,
                         admin: doc.data().admin,
                         social: doc.data().fb,
-                        newcustomer: doc.data().channel,
-                        page: req.query.page,
-                        tracking: doc.data().tracking,
-                        courier: doc.data().expressName
+                        // newcustomer: doc.data().channel,
+                        page: req.query.page.replace('@', ''),
+                        channel: req.query.page.indexOf('@') > -1 ? 'Line' : 'Fb',
+                        // tracking: doc.data().tracking,
+                        // courier: doc.data().expressName,
+                        product: doc.data().product.map(p => p.code + '=' + p.amount)
                     })
                 })
-                db.collection('orders')
-                    .where('orderDate', '>=', startDate)
-                    .where('orderDate', '<=', endDate)
-                    .where('page', '==', '@' + req.query.page.toUpperCase() || '')
-                    .get()
-                    .then(snapShot2 => {
-                        snapShot2.forEach(doc2 => {
-                            data.push({
-                                id: doc2.id,
-                                customername: doc2.data().name,
-                                customertel: doc2.data().tel,
-                                customeraddr: doc2.data().addr,
-                                orderDate: doc2.data().orderDate,
-                                price: doc2.data().price,
-                                cod: doc2.data().cod,
-                                admin: doc2.data().admin,
-                                social: doc2.data().fb,
-                                newcustomer: doc2.data().channel,
-                                page: req.query.page,
-                                tracking: doc2.data().tracking,
-                                courier: doc2.data().expressName
-                            })
-                        })
-                        const XLSX = require('xlsx');
-                        // /* create workbook & set props*/
-                        const wb = { SheetNames: [], Sheets: {} };
+                if (data.length > 0) {
+                    const XLSX = require('xlsx');
+                    // /* create workbook & set props*/
+                    const wb = { SheetNames: [], Sheets: {} };
 
-                        // // /* create file 'in memory' */
-                        // for (var prop in result) {
-                        var ws = XLSX.utils.json_to_sheet(data);
+                    // // /* create file 'in memory' */
+                    // for (var prop in result) {
+                    var ws = XLSX.utils.json_to_sheet(data);
 
-                        // wb.Sheets['Order Template']=ws;
-                        XLSX.utils.book_append_sheet(wb, ws, 'data');
-                        // }
-                        // // res.json(ws);
-                        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
-                        var filename = 'data_' + req.query.page + '.xlsx';
-                        res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
-                        res.type('application/octet-stream');
-                        res.send(wbout);
+                    // wb.Sheets['Order Template']=ws;
+                    XLSX.utils.book_append_sheet(wb, ws, 'data');
+                    // }
+                    // // res.json(ws);
+                    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer', Props: { Author: "Microsoft Excel" } });
+                    var filename = 'crm_' + data[0].admin + '_' + startDate + '_' + endDate + '.xlsx';
+                    res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+                    res.type('application/octet-stream');
+                    res.send(wbout);
+                } else {
+                    res.json(null)
+                }
 
-                    })
             })
     else res.json(null)
 }

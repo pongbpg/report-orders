@@ -20,7 +20,7 @@ module.exports = function (app) {
     app.get('/covid', ctrl.covid)
     app.post('/jt', ctrl.jt)
     app.get('/fixCodAmount', ctrl.fixCodAmount)
-    app.get('/page', ctrl.page)
+    app.get('/crm/admin', ctrl.crmAdmin)
     app.get('/page2', ctrl.page2)
     app.get('/team2', ctrl.team2)
     app.get('/move',ctrl.move)
