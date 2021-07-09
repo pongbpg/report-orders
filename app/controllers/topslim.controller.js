@@ -2302,7 +2302,7 @@ exports.crmAdmin = (req, res) => {
                         customeraddr: doc.data().addr,
                         orderDate: doc.data().orderDate,
                         price: doc.data().price,
-                        cod: doc.data().cod,
+                        bank: doc.data().bank,
                         admin: doc.data().admin,
                         social: doc.data().fb,
                         // newcustomer: doc.data().channel,
@@ -2310,7 +2310,7 @@ exports.crmAdmin = (req, res) => {
                         channel: doc.data().page.indexOf('@') > -1 ? 'Line' : 'Fb',
                         // tracking: doc.data().tracking,
                         // courier: doc.data().expressName,
-                        product: doc.data().product.map(p => p.code + '=' + p.amount)
+                        product: doc.data().product.map(p => p.code + '=' + p.amount).toString()
                     })
                 })
                 if (data.length > 0) {
