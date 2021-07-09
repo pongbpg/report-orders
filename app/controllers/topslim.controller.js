@@ -2283,8 +2283,8 @@ exports.fixCodAmount = (req, res) => {
         })
 }
 exports.crmAdmin = (req, res) => {
-    const startDate = moment(req.query.startDate).isValid() ? req.query.startDate : false
-    const endDate = moment(req.query.endDate).isValid() ? req.query.endDate : false
+    const startDate = moment(req.query.startDate).isValid() ? req.query.startDate.replace(/-/g, '') : false
+    const endDate = moment(req.query.endDate).isValid() ? req.query.endDate.replace(/-/g, '') : false
     const adminId = req.query.adminId;
     if (startDate && endDate && adminId)
         db.collection('orders')
@@ -2306,8 +2306,8 @@ exports.crmAdmin = (req, res) => {
                         admin: doc.data().admin,
                         social: doc.data().fb,
                         // newcustomer: doc.data().channel,
-                        page: req.query.page.replace('@', ''),
-                        channel: req.query.page.indexOf('@') > -1 ? 'Line' : 'Fb',
+                        page: doc.data().page.replace('@', ''),
+                        channel: doc.data().page.indexOf('@') > -1 ? 'Line' : 'Fb',
                         // tracking: doc.data().tracking,
                         // courier: doc.data().expressName,
                         product: doc.data().product.map(p => p.code + '=' + p.amount)
